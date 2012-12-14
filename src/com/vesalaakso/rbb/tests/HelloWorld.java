@@ -1,3 +1,4 @@
+package com.vesalaakso.rbb.tests;
 import org.newdawn.slick.*;
 
 public class HelloWorld extends BasicGame {

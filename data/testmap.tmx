@@ -3,19 +3,30 @@
  <tileset firstgid="1" name="Testset" tilewidth="32" tileheight="32">
   <image source="tileset.png" width="64" height="64"/>
  </tileset>
+ <tileset firstgid="5" name="special tiles" tilewidth="32" tileheight="32">
+  <image source="tileset_meta.png" width="64" height="32"/>
+  <tile id="0">
+   <properties>
+    <property name="collidable" value="true"/>
+   </properties>
+  </tile>
+ </tileset>
  <layer name="back" width="100" height="100">
   <data encoding="base64" compression="zlib">
-   eJzt2MEKgCAQRVEl//+bo0UbCTRh4C3OgSHcdmkge2utHww1nnd7/Rw96uiRZafHmJ561NEji32VZdVjfJz1qLPTYx496thXWfTIokcWPbLs/n+8o0ct30eWk7tdPQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANZut+wCGQ==
-  </data>
- </layer>
- <layer name="hit" width="100" height="100">
-  <data encoding="base64" compression="zlib">
-   eJztwTEBAAAAwqD1T+1lC6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAbnEAAAQ==
+   eJzt2kEOgkAABEFM/P+bfQHGwyh0rEr2Ph0uQPZxHMcjcP5FobWwcaXQWti4UmgtbFwptBY2rhRaCxtXPml9npxf8TzupbBxpdBa2LhSaC1sXCm0FjauFFoLG1fu0vru3e0uG3+h0FrYuFJoLWxcKbQWNq4UWgsbVwqthY0rhdbCxpVCa2HjSqG1sHHlytaz//i+B++tsHGl0FrYuHL1vSr3rwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAvuMFDQIAxw==
   </data>
  </layer>
  <layer name="over" width="100" height="100">
   <data encoding="base64" compression="zlib">
-   eJzt0UEJAAAIADGxf2i/YgFFNrgEFwEAAADAlC32+XGLHwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHxXR0YAEw==
+   eJzt0cEJACAMBMEj/RftW/EpJOBMBQubAAAAAAAAAD+p7gA2FU8mqXgyScWTSc4fnvS6/fAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADeWcYsACs=
+  </data>
+ </layer>
+ <objectgroup name="objects" width="100" height="100">
+  <object name="SpawnPoint" x="608" y="480" width="64" height="64"/>
+ </objectgroup>
+ <layer name="meta" width="100" height="100" opacity="0.45">
+  <data encoding="base64" compression="zlib">
+   eJzt2rENAjEABMFPvv+W6QARHLxXzEjOb+XEge/ruu7A+ReF1sLGlUJrYeNKobWwcaXQWti4UmgtbFz5pPXpN4/7OEth40qhtbBxpdBa2LhSaC1sXCm0FjaunNL67u12ysZfKLQWNq4UWgsbVwqthY0rhdbCxpVCa2HjSqG1sHGl0FrYuFJoLWxcebL10/8L7uMshY0rhdbCxpWn/1X5fwUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8B0vs48C4A==
   </data>
  </layer>
 </map>

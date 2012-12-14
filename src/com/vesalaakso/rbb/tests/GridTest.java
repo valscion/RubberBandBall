@@ -1,9 +1,9 @@
+package com.vesalaakso.rbb.tests;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Cursor;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.*;
-import org.newdawn.slick.geom.Rectangle;
 
 public class GridTest extends BasicGame {
 
