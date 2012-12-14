@@ -24,8 +24,6 @@ public class TestGame extends BasicGame implements WorldListener {
 	private boolean[][] hitData;
 	private int widthInTiles;
 	private int heightInTiles;
-	private int topOffsetInTiles;
-	private int leftOffsetInTiles;
 	
 	private World world;
 
@@ -39,18 +37,22 @@ public class TestGame extends BasicGame implements WorldListener {
 		int camTileX = (int) cameraX / TILE_SIZE;
 		int camTileY = (int) cameraY / TILE_SIZE;
 
-		int camOffsetX = (int) ((camTileX - (cameraX / TILE_SIZE)) * TILE_SIZE);
-		int camOffsetY = (int) ((camTileY - (cameraY / TILE_SIZE)) * TILE_SIZE);
+		int camOffsetX = (int) (camTileX * TILE_SIZE - cameraX);
+		int camOffsetY = (int) (camTileY * TILE_SIZE - cameraY);
 
 		g.setColor(Color.gray);
 		g.fillRect(0, 0, container.getWidth(), container.getHeight());
 		g.setColor(Color.white);
 
+		
 		map.render(camOffsetX, camOffsetY,
-				camTileX - leftOffsetInTiles - 1,
-				camTileY - topOffsetInTiles - 1,
+				camTileX,
+				camTileY,
 				widthInTiles + 3, heightInTiles + 3,
 				backLayer, false);
+		
+		//map.render(0, 0, backLayer);
+		//map.render((int) (cameraX - container.getWidth() / 2), (int) (cameraY - container.getHeight() / 2), camTileX, camTileY, 20, 20, backLayer, false);
 
 		g.drawString(String.format("Camera coords: (%.2f; %.2f)",
 				cameraX, cameraY), 20, 20);
@@ -65,22 +67,22 @@ public class TestGame extends BasicGame implements WorldListener {
 		g.resetTransform();
 		
 		map.render(camOffsetX, camOffsetY,
-				camTileX - leftOffsetInTiles - 1,
-				camTileY - topOffsetInTiles - 1,
+				camTileX,
+				camTileY,
 				widthInTiles + 3, heightInTiles + 3,
 				overLayer, false);
 	}
 
 	@Override
 	public void init(GameContainer container) throws SlickException {
-		world = new World();
-		
 		// Load tilemap
 		map = new TiledMap("data/testmap.tmx");
 
 		backLayer = map.getLayerIndex("back");
 		overLayer = map.getLayerIndex("over");
 		metaLayer = map.getLayerIndex("meta");
+		
+		world = new World(map.getWidth() * TILE_SIZE, map.getHeight() * TILE_SIZE);
 
 		hitData = new boolean[map.getWidth()][map.getHeight()];
 		for (int x = 0; x < map.getWidth(); x++) {
@@ -100,14 +102,14 @@ public class TestGame extends BasicGame implements WorldListener {
 		
 		ball = new Body(new Circle(16f), 100, 100);
 		world.add(ball);
+		world.addListener(this);
+		ball.setVelocity(200f, -500f);
 
 		// caculate some layout values for rendering the tilemap. How many tiles
 		// do we need to render to fill the screen in each dimension and how far
 		// is it from the centre of the screen
 		widthInTiles = container.getWidth() / TILE_SIZE;
 		heightInTiles = container.getHeight() / TILE_SIZE;
-		leftOffsetInTiles = widthInTiles / 2;
-		topOffsetInTiles = heightInTiles / 2;
 
 		//cameraX = leftOffsetInTiles;
 		//cameraY = topOffsetInTiles;
@@ -146,13 +148,11 @@ public class TestGame extends BasicGame implements WorldListener {
 
 	@Override
 	public void collided(CollisionEvent event) {
-		// TODO Auto-generated method stub
-		
+		System.out.println("Collision");
 	}
 
 	@Override
 	public void separated(CollisionEvent event) {
-		// TODO Auto-generated method stub
-		
+		System.out.println("Separation");
 	}
 }
