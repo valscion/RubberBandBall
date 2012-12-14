@@ -3,7 +3,9 @@ package com.vesalaakso.rbb.tests;
 import org.newdawn.fizzy.Body;
 import org.newdawn.fizzy.Circle;
 import org.newdawn.fizzy.CollisionEvent;
+import org.newdawn.fizzy.DynamicBody;
 import org.newdawn.fizzy.Rectangle;
+import org.newdawn.fizzy.StaticBody;
 import org.newdawn.fizzy.World;
 import org.newdawn.fizzy.WorldListener;
 import org.newdawn.slick.*;
@@ -15,7 +17,7 @@ public class TestGame extends BasicGame implements WorldListener {
 	private static float CAMERA_SPEED = 0.3f;
 	private float cameraX, cameraY;
 	
-	private Body ball;
+	private DynamicBody<Circle> ball;
 
 	private TiledMap map;
 	private int backLayer;
@@ -59,11 +61,12 @@ public class TestGame extends BasicGame implements WorldListener {
 		
 		float x = ball.getX();
 		float y = ball.getY();
+		float r = ((Circle) ball.getShape()).getRadius();
 		
 		g.drawString(String.format("Ball coords: (%.2f, %.2f)", x, y), 20, 60);
 		
 		g.translate(-cameraX, -cameraY);
-		g.fillOval(x, y, 32, 32);
+		g.fillOval(x - r, y - r, 32, 32);
 		g.resetTransform();
 		
 		map.render(camOffsetX, camOffsetY,
@@ -82,7 +85,7 @@ public class TestGame extends BasicGame implements WorldListener {
 		overLayer = map.getLayerIndex("over");
 		metaLayer = map.getLayerIndex("meta");
 		
-		world = new World(map.getWidth() * TILE_SIZE, map.getHeight() * TILE_SIZE);
+		world = new World(9.81f);
 
 		hitData = new boolean[map.getWidth()][map.getHeight()];
 		for (int x = 0; x < map.getWidth(); x++) {
@@ -93,17 +96,17 @@ public class TestGame extends BasicGame implements WorldListener {
 				if ("true".equals(value)) {
 					hitData[x][y] = true;
 					
-					Body rect = new Body(new Rectangle(32f, 32f),
-							x * TILE_SIZE, y * TILE_SIZE, true);
-					world.add(rect);
+					Rectangle rect = new Rectangle(TILE_SIZE, TILE_SIZE);
+					world.add(new StaticBody<Rectangle>(rect,
+							x * TILE_SIZE, y * TILE_SIZE));
 				}
 			}
 		}
 		
-		ball = new Body(new Circle(16f), 100, 100);
+		Circle ballCircle = new Circle(16f);
+		ball = new DynamicBody<Circle>(ballCircle, 100f, 100f);
 		world.add(ball);
 		world.addListener(this);
-		ball.setVelocity(200f, -500f);
 
 		// caculate some layout values for rendering the tilemap. How many tiles
 		// do we need to render to fill the screen in each dimension and how far
@@ -136,6 +139,20 @@ public class TestGame extends BasicGame implements WorldListener {
 			container.exit();
 		}
 		
+		if (container.getInput().isKeyDown(Input.KEY_W)) {
+			ball.applyForce(0, -1000f);
+		}
+		if (container.getInput().isKeyDown(Input.KEY_S)) {
+			ball.applyForce(0, 1000f);
+		}
+		if (container.getInput().isKeyDown(Input.KEY_A)) {
+			ball.applyForce(-500f, 0);
+		}
+		if (container.getInput().isKeyDown(Input.KEY_D)) {
+			ball.applyForce(500f, 0);
+		}
+		
+		
 		world.update(1f/20);
 	}
 
@@ -148,11 +165,11 @@ public class TestGame extends BasicGame implements WorldListener {
 
 	@Override
 	public void collided(CollisionEvent event) {
-		System.out.println("Collision");
+		// TODO: Something here?
 	}
 
 	@Override
 	public void separated(CollisionEvent event) {
-		System.out.println("Separation");
+		// TODO: Something here?
 	}
 }
