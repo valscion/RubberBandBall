@@ -22,7 +22,6 @@ public class TestGame extends BasicGame implements WorldListener {
 	private int backLayer;
 	private int overLayer;
 	private int metaLayer;
-	private boolean[][] hitData;
 	private int widthInTiles;
 	private int heightInTiles;
 	
@@ -87,15 +86,12 @@ public class TestGame extends BasicGame implements WorldListener {
 		//world = new World(9.81f);
 		world = new World(0.0f);
 
-		hitData = new boolean[map.getWidth()][map.getHeight()];
 		for (int x = 0; x < map.getWidth(); x++) {
 			for (int y = 0; y < map.getHeight(); y++) {
 				int tileID = map.getTileId(x, y, metaLayer);
 				String value =
 						map.getTileProperty(tileID, "collidable", "false");
 				if ("true".equals(value)) {
-					hitData[x][y] = true;
-					
 					Rectangle rect = new Rectangle(TILE_SIZE, TILE_SIZE);
 					world.add(new StaticBody<Rectangle>(rect,
 							x * TILE_SIZE, y * TILE_SIZE));
