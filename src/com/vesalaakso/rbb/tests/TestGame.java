@@ -14,6 +14,10 @@ public class TestGame extends BasicGame implements WorldListener {
 
 	private static final int TILE_SIZE = 32;
 	private static float CAMERA_SPEED = 0.3f;
+	
+	private static final int SCREEN_W = 800;
+	private static final int SCREEN_H = 600;
+	
 	private float cameraX, cameraY;
 	
 	private DynamicBody<Circle> ball;
@@ -41,7 +45,7 @@ public class TestGame extends BasicGame implements WorldListener {
 		int camOffsetY = (int) (camTileY * TILE_SIZE - cameraY);
 
 		g.setColor(Color.gray);
-		g.fillRect(0, 0, container.getWidth(), container.getHeight());
+		g.fillRect(0, 0, SCREEN_W, SCREEN_H);
 		g.setColor(Color.white);
 
 		
@@ -52,7 +56,7 @@ public class TestGame extends BasicGame implements WorldListener {
 				backLayer, false);
 		
 		//map.render(0, 0, backLayer);
-		//map.render((int) (cameraX - container.getWidth() / 2), (int) (cameraY - container.getHeight() / 2), camTileX, camTileY, 20, 20, backLayer, false);
+		//map.render((int) (cameraX - SCREEN_W / 2), (int) (cameraY - SCREEN_H / 2), camTileX, camTileY, 20, 20, backLayer, false);
 
 		g.drawString(String.format("Camera coords: (%.2f; %.2f)",
 				cameraX, cameraY), 20, 20);
@@ -107,8 +111,8 @@ public class TestGame extends BasicGame implements WorldListener {
 		// caculate some layout values for rendering the tilemap. How many tiles
 		// do we need to render to fill the screen in each dimension and how far
 		// is it from the centre of the screen
-		widthInTiles = container.getWidth() / TILE_SIZE;
-		heightInTiles = container.getHeight() / TILE_SIZE;
+		widthInTiles = SCREEN_W / TILE_SIZE;
+		heightInTiles = SCREEN_H / TILE_SIZE;
 
 		//cameraX = leftOffsetInTiles;
 		//cameraY = topOffsetInTiles;
@@ -148,8 +152,8 @@ public class TestGame extends BasicGame implements WorldListener {
 			ball.applyForce(500f, 0);
 		}
 		
-		float targetX = ball.getX() - container.getWidth() / 2;
-		float targetY = ball.getY() - container.getHeight() / 2;
+		float targetX = ball.getX() - SCREEN_W / 2;
+		float targetY = ball.getY() - SCREEN_H / 2;
 		
 		// oldV + (newV - oldV) / smoothness);
 		cameraX = cameraX + (targetX - cameraX) / 5.5f;
@@ -161,7 +165,7 @@ public class TestGame extends BasicGame implements WorldListener {
 	public static void main(String[] args) throws SlickException {
 		AppGameContainer app = new AppGameContainer(new TestGame());
 
-		app.setDisplayMode(800, 600, false);
+		app.setDisplayMode(SCREEN_W, SCREEN_H, false);
 		//app.setTargetFrameRate(60);
 		app.setVSync(true);
 		app.start();
