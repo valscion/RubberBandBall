@@ -1,6 +1,5 @@
 package com.vesalaakso.rbb.tests;
 
-import org.newdawn.fizzy.Body;
 import org.newdawn.fizzy.Circle;
 import org.newdawn.fizzy.CollisionEvent;
 import org.newdawn.fizzy.DynamicBody;
@@ -85,7 +84,8 @@ public class TestGame extends BasicGame implements WorldListener {
 		overLayer = map.getLayerIndex("over");
 		metaLayer = map.getLayerIndex("meta");
 		
-		world = new World(9.81f);
+		//world = new World(9.81f);
+		world = new World(0.0f);
 
 		hitData = new boolean[map.getWidth()][map.getHeight()];
 		for (int x = 0; x < map.getWidth(); x++) {
@@ -152,6 +152,12 @@ public class TestGame extends BasicGame implements WorldListener {
 			ball.applyForce(500f, 0);
 		}
 		
+		float targetX = ball.getX() - container.getWidth() / 2;
+		float targetY = ball.getY() - container.getHeight() / 2;
+		
+		// oldV + (newV - oldV) / smoothness);
+		cameraX = cameraX + (targetX - cameraX) / 5.5f;
+		cameraY = cameraY + (targetY - cameraY) / 5.5f;
 		
 		world.update(1f/20);
 	}
@@ -160,6 +166,8 @@ public class TestGame extends BasicGame implements WorldListener {
 		AppGameContainer app = new AppGameContainer(new TestGame());
 
 		app.setDisplayMode(800, 600, false);
+		//app.setTargetFrameRate(60);
+		app.setVSync(true);
 		app.start();
 	}
 
