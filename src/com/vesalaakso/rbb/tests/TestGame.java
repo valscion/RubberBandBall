@@ -71,15 +71,10 @@ public class TestGame extends BasicGame implements WorldListener {
 				widthInTiles + 3, heightInTiles + 3,
 				backLayer, false);
 
-		//map.render(0, 0, backLayer);
-		//map.render((int) (cameraX - SCREEN_W / 2), (int) (cameraY - SCREEN_H / 2), camTileX, camTileY, 20, 20, backLayer, false);
-
 		float x = ball.getX();
 		float y = ball.getY();
 
 		g.translate(-cameraX, -cameraY);
-
-
 
 		g.fillOval(x - PLAYER_SIZE, y - PLAYER_SIZE, PLAYER_SIZE * 2, PLAYER_SIZE * 2);
 
@@ -145,23 +140,6 @@ public class TestGame extends BasicGame implements WorldListener {
 		strings.add(String.format("    Velocity: (%.2f; %.2f)",
 				ball.getXVelocity(), ball.getYVelocity()));
 
-		// Polygon shapes
-		for (Body<?> b : bodies) {
-			Shape s = b.getShape();
-
-			if (s instanceof Polygon) {
-				Polygon p = (Polygon) s;
-				strings.add(String.format("Polygon shape at (%.2f; %.2f)",
-						b.getX(), b.getY()));
-				for (int i = 0; i < p.getPointCount() ; i++) {
-					float x1 = p.getPointX(i);
-					float y1 = p.getPointY(i);
-					strings.add(String.format("  Point: (%.2f; %.2f)",
-							x1, y1));
-				}
-			}
-		}
-
 		int i = 0;
 		for (String str : strings) {
 			g.drawString(str, x, firstLineY + i * lineHeight);
@@ -183,8 +161,10 @@ public class TestGame extends BasicGame implements WorldListener {
 
 		// Different types of static triangle shapes for angled sides.
 		Map<String, Polygon> triangles = new HashMap<String, Polygon>();
+		triangles.put("top-left", createTrianglePolygon("top-left"));
 		triangles.put("bottom-left", createTrianglePolygon("bottom-left"));
-
+		triangles.put("bottom-right", createTrianglePolygon("bottom-right"));
+		triangles.put("top-right", createTrianglePolygon("top-right"));
 
 
 		for (int x = 0; x < map.getWidth(); x++) {
@@ -231,11 +211,32 @@ public class TestGame extends BasicGame implements WorldListener {
 
 	private Polygon createTrianglePolygon(String angle) {
 		Vec2[] points = null;
-		if (angle.equals("bottom-left")) {
+		if (angle.equals("top-left")) {
 			points = new Vec2[] {
-					new Vec2(0, 0),
-					new Vec2(TILE_SIZE, TILE_SIZE),
-					new Vec2(0, TILE_SIZE)
+					new Vec2(0, 0), // Left, Top
+					new Vec2(TILE_SIZE, 0), // Right, Top
+					new Vec2(0, TILE_SIZE) // Left, Bottom
+			};
+		}
+		else if (angle.equals("bottom-left")) {
+			points = new Vec2[] {
+					new Vec2(0, 0), // Left, Top
+					new Vec2(TILE_SIZE, TILE_SIZE), // Right, Bottom
+					new Vec2(0, TILE_SIZE) // Left, Bottom
+			};
+		}
+		else if (angle.equals("bottom-right")) {
+			points = new Vec2[] {
+					new Vec2(0, TILE_SIZE), // Left, Bottom
+					new Vec2(TILE_SIZE, 0), // Right, Top
+					new Vec2(TILE_SIZE, TILE_SIZE) // Right, Bottom
+			};
+		}
+		else if (angle.equals("top-right")) {
+			points = new Vec2[] {
+					new Vec2(0, 0), // Left, Top
+					new Vec2(TILE_SIZE, 0), // Right, Top
+					new Vec2(TILE_SIZE, TILE_SIZE) // Right, Bottom
 			};
 		}
 
