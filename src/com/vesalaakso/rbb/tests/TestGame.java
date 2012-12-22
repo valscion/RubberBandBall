@@ -24,17 +24,16 @@ public class TestGame extends BasicGame implements WorldListener {
 
 	private static final int TILE_SIZE = 32;
 	private static float CAMERA_SPEED = 0.3f;
-	
-	private static final float PLAYER_SIZE = 0.25f; // 50 cm
-	private static final float SCALE_FACTOR = 128;
-	
+
+	private static final float PLAYER_SIZE = 16f;
+
 	private static final int SCREEN_W = 800;
 	private static final int SCREEN_H = 600;
-	
-	private static final float MOVE_FORCE = 0.005f;
-	
+
+	private static final float MOVE_FORCE = 1500f;
+
 	private float cameraX, cameraY;
-	
+
 	private DynamicBody<Circle> ball;
 
 	private TiledMap map;
@@ -43,9 +42,9 @@ public class TestGame extends BasicGame implements WorldListener {
 	private int metaLayer;
 	private int widthInTiles;
 	private int heightInTiles;
-	
+
 	private World world;
-	
+
 	private List<Body<?>> bodies = new LinkedList<Body<?>>();
 
 	public TestGame() {
@@ -65,37 +64,39 @@ public class TestGame extends BasicGame implements WorldListener {
 		g.fillRect(0, 0, SCREEN_W, SCREEN_H);
 		g.setColor(Color.white);
 
-		
+
 		map.render(camOffsetX, camOffsetY,
 				camTileX,
 				camTileY,
 				widthInTiles + 3, heightInTiles + 3,
 				backLayer, false);
-		
+
 		//map.render(0, 0, backLayer);
 		//map.render((int) (cameraX - SCREEN_W / 2), (int) (cameraY - SCREEN_H / 2), camTileX, camTileY, 20, 20, backLayer, false);
-		
+
 		float x = ball.getX();
 		float y = ball.getY();
 
 		g.translate(-cameraX, -cameraY);
-		g.scale(SCALE_FACTOR, SCALE_FACTOR);
+
+
+
 		g.fillOval(x - PLAYER_SIZE, y - PLAYER_SIZE, PLAYER_SIZE * 2, PLAYER_SIZE * 2);
-		
+
 		// Draw static collidable bodies
 		for (Body<?> b : bodies) {
 			float bx = b.getX();
 			float by = b.getY();
-			
+
+			if (b.isTouching(ball)) {
+				g.setColor(Color.red);
+			}
+
 			Shape shape = b.getShape();
 
 			if (shape instanceof Rectangle) {
 				Rectangle rect = (Rectangle) shape;
-				if (b.isTouching(ball)) {
-					g.setColor(Color.red);
-				}
 				g.drawRect(bx, by, rect.getWidth(), rect.getHeight());
-				g.setColor(Color.white);
 			}
 			else if (shape instanceof Polygon) {
 				Polygon p = (Polygon) shape;
@@ -115,37 +116,39 @@ public class TestGame extends BasicGame implements WorldListener {
 					g.drawLine(bx + x1, by + y1, bx + x2, by + y2);
 				}
 			}
+
+			g.setColor(Color.white);
 		}
 		g.resetTransform();
-		
+
 		/*
 		map.render(camOffsetX, camOffsetY,
 				camTileX,
 				camTileY,
 				widthInTiles + 3, heightInTiles + 3,
 				overLayer, false);
-				*/
-		
+		 */
+
 		drawDebugInfo(g, 50, 10, 15);
 	}
-	
+
 	private void drawDebugInfo(Graphics g, float firstLineY, float x, float lineHeight) {
 		List<String> strings = new LinkedList<String>();
-		
+
 		// Camera
 		strings.add(String.format("Camera coords: (%.2f; %.2f)",
 				cameraX, cameraY));
-		
+
 		// Ball
 		strings.add(String.format("Ball (radius %.2f) located at (%.2f; %.2f)",
 				((Circle) ball.getShape()).getRadius(), ball.getX(), ball.getY()));
 		strings.add(String.format("    Velocity: (%.2f; %.2f)",
 				ball.getXVelocity(), ball.getYVelocity()));
-		
+
 		// Polygon shapes
 		for (Body<?> b : bodies) {
 			Shape s = b.getShape();
-			
+
 			if (s instanceof Polygon) {
 				Polygon p = (Polygon) s;
 				strings.add(String.format("Polygon shape at (%.2f; %.2f)",
@@ -158,7 +161,7 @@ public class TestGame extends BasicGame implements WorldListener {
 				}
 			}
 		}
-		
+
 		int i = 0;
 		for (String str : strings) {
 			g.drawString(str, x, firstLineY + i * lineHeight);
@@ -174,43 +177,43 @@ public class TestGame extends BasicGame implements WorldListener {
 		backLayer = map.getLayerIndex("back");
 		overLayer = map.getLayerIndex("over");
 		metaLayer = map.getLayerIndex("meta");
-		
-		//world = new World(9.81f);
-		world = new World(0.0f);
-		
+
+		world = new World(9.81f);
+		//world = new World(0.0f);
+
 		// Different types of static triangle shapes for angled sides.
 		Map<String, Polygon> triangles = new HashMap<String, Polygon>();
 		triangles.put("bottom-left", createTrianglePolygon("bottom-left"));
-		
 
-		
+
+
 		for (int x = 0; x < map.getWidth(); x++) {
 			for (int y = 0; y < map.getHeight(); y++) {
 				int tileID = map.getTileId(x, y, metaLayer);
 				String value =
 						map.getTileProperty(tileID, "collision", "false");
 				if ("all".equals(value)) {
-					Rectangle rect = new Rectangle(PLAYER_SIZE, PLAYER_SIZE);
+					Rectangle rect = new Rectangle(TILE_SIZE, TILE_SIZE);
 					StaticBody<Rectangle> body = new StaticBody<Rectangle>(
-							rect, x * PLAYER_SIZE, y * PLAYER_SIZE);
+							rect, x * TILE_SIZE, y * TILE_SIZE);
 					bodies.add(body);
 					world.add(body);
 				}
-				
+
 				else if (triangles.containsKey(value)) {
 					Polygon triangle = triangles.get(value);
 					StaticBody<Polygon> body = new StaticBody<Polygon>(triangle,
-							x * PLAYER_SIZE, y * PLAYER_SIZE);
+							x * TILE_SIZE, y * TILE_SIZE);
 					bodies.add(body);
 					world.add(body);
 				}
-				
+
 			}
 		}
-		
-		
+
+
 		Circle ballCircle = new Circle(PLAYER_SIZE);
-		ball = new DynamicBody<Circle>(ballCircle, PLAYER_SIZE * 4, PLAYER_SIZE * 4);
+		ball = new DynamicBody<Circle>(ballCircle, TILE_SIZE * 4, TILE_SIZE * 4);
 		world.add(ball);
 		world.addListener(this);
 
@@ -225,17 +228,17 @@ public class TestGame extends BasicGame implements WorldListener {
 
 		container.setShowFPS(true);
 	}
-	
+
 	private Polygon createTrianglePolygon(String angle) {
 		Vec2[] points = null;
 		if (angle.equals("bottom-left")) {
 			points = new Vec2[] {
 					new Vec2(0, 0),
-					new Vec2(0, -1 * PLAYER_SIZE),
-					new Vec2(1 * PLAYER_SIZE, 0)
+					new Vec2(TILE_SIZE, TILE_SIZE),
+					new Vec2(0, TILE_SIZE)
 			};
 		}
-		
+
 		if (points == null) {
 			return null;
 		}
@@ -264,7 +267,7 @@ public class TestGame extends BasicGame implements WorldListener {
 		if (container.getInput().isKeyDown(Input.KEY_ESCAPE)) {
 			container.exit();
 		}
-		
+
 		if (container.getInput().isKeyDown(Input.KEY_W)) {
 			ball.applyForce(0, -MOVE_FORCE);
 		}
@@ -277,14 +280,17 @@ public class TestGame extends BasicGame implements WorldListener {
 		if (container.getInput().isKeyDown(Input.KEY_D)) {
 			ball.applyForce(MOVE_FORCE, 0);
 		}
-		
-		float targetX = (ball.getX() * SCALE_FACTOR) - SCREEN_W / 2;
-		float targetY = (ball.getY() * SCALE_FACTOR) - SCREEN_H / 2;
-		
+		if (container.getInput().isKeyPressed(Input.KEY_SPACE)) {
+			ball.applyForce(0, -MOVE_FORCE * 100);
+		}
+
+		float targetX = ball.getX() - SCREEN_W / 2;
+		float targetY = ball.getY() - SCREEN_H / 2;
+
 		// oldV + (newV - oldV) / smoothness);
 		cameraX = cameraX + (targetX - cameraX) / 5.5f;
 		cameraY = cameraY + (targetY - cameraY) / 5.5f;
-		
+
 		world.update(1f/20);
 	}
 
