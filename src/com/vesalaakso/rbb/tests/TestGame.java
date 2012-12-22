@@ -1,9 +1,19 @@
 package com.vesalaakso.rbb.tests;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import org.jbox2d.collision.shapes.PolygonShape;
+import org.jbox2d.common.Vec2;
+import org.newdawn.fizzy.Body;
 import org.newdawn.fizzy.Circle;
 import org.newdawn.fizzy.CollisionEvent;
 import org.newdawn.fizzy.DynamicBody;
+import org.newdawn.fizzy.Polygon;
 import org.newdawn.fizzy.Rectangle;
+import org.newdawn.fizzy.Shape;
 import org.newdawn.fizzy.StaticBody;
 import org.newdawn.fizzy.World;
 import org.newdawn.fizzy.WorldListener;
@@ -15,8 +25,13 @@ public class TestGame extends BasicGame implements WorldListener {
 	private static final int TILE_SIZE = 32;
 	private static float CAMERA_SPEED = 0.3f;
 	
+	private static final float PLAYER_SIZE = 0.25f; // 50 cm
+	private static final float SCALE_FACTOR = 128;
+	
 	private static final int SCREEN_W = 800;
 	private static final int SCREEN_H = 600;
+	
+	private static final float MOVE_FORCE = 0.005f;
 	
 	private float cameraX, cameraY;
 	
@@ -30,6 +45,8 @@ public class TestGame extends BasicGame implements WorldListener {
 	private int heightInTiles;
 	
 	private World world;
+	
+	private List<Body<?>> bodies = new LinkedList<Body<?>>();
 
 	public TestGame() {
 		super("Test game");
@@ -44,7 +61,7 @@ public class TestGame extends BasicGame implements WorldListener {
 		int camOffsetX = (int) (camTileX * TILE_SIZE - cameraX);
 		int camOffsetY = (int) (camTileY * TILE_SIZE - cameraY);
 
-		g.setColor(Color.gray);
+		g.setColor(Color.black);
 		g.fillRect(0, 0, SCREEN_W, SCREEN_H);
 		g.setColor(Color.white);
 
@@ -57,25 +74,96 @@ public class TestGame extends BasicGame implements WorldListener {
 		
 		//map.render(0, 0, backLayer);
 		//map.render((int) (cameraX - SCREEN_W / 2), (int) (cameraY - SCREEN_H / 2), camTileX, camTileY, 20, 20, backLayer, false);
-
-		g.drawString(String.format("Camera coords: (%.2f; %.2f)",
-				cameraX, cameraY), 20, 20);
 		
 		float x = ball.getX();
 		float y = ball.getY();
-		float r = ((Circle) ball.getShape()).getRadius();
-		
-		g.drawString(String.format("Ball coords: (%.2f, %.2f)", x, y), 20, 60);
-		
+
 		g.translate(-cameraX, -cameraY);
-		g.fillOval(x - r, y - r, 32, 32);
+		g.scale(SCALE_FACTOR, SCALE_FACTOR);
+		g.fillOval(x - PLAYER_SIZE, y - PLAYER_SIZE, PLAYER_SIZE * 2, PLAYER_SIZE * 2);
+		
+		// Draw static collidable bodies
+		for (Body<?> b : bodies) {
+			float bx = b.getX();
+			float by = b.getY();
+			
+			Shape shape = b.getShape();
+
+			if (shape instanceof Rectangle) {
+				Rectangle rect = (Rectangle) shape;
+				if (b.isTouching(ball)) {
+					g.setColor(Color.red);
+				}
+				g.drawRect(bx, by, rect.getWidth(), rect.getHeight());
+				g.setColor(Color.white);
+			}
+			else if (shape instanceof Polygon) {
+				Polygon p = (Polygon) shape;
+				int count = p.getPointCount();
+				for (int i = 0; i < count; i++) {
+					float x1 = p.getPointX(i);
+					float y1 = p.getPointY(i);
+					float x2, y2;
+					if (i < count - 1) {
+						x2 = p.getPointX(i + 1);
+						y2 = p.getPointY(i + 1);
+					}
+					else {
+						x2 = p.getPointX(0);
+						y2 = p.getPointY(0);
+					}
+					g.drawLine(bx + x1, by + y1, bx + x2, by + y2);
+				}
+			}
+		}
 		g.resetTransform();
 		
+		/*
 		map.render(camOffsetX, camOffsetY,
 				camTileX,
 				camTileY,
 				widthInTiles + 3, heightInTiles + 3,
 				overLayer, false);
+				*/
+		
+		drawDebugInfo(g, 50, 10, 15);
+	}
+	
+	private void drawDebugInfo(Graphics g, float firstLineY, float x, float lineHeight) {
+		List<String> strings = new LinkedList<String>();
+		
+		// Camera
+		strings.add(String.format("Camera coords: (%.2f; %.2f)",
+				cameraX, cameraY));
+		
+		// Ball
+		strings.add(String.format("Ball (radius %.2f) located at (%.2f; %.2f)",
+				((Circle) ball.getShape()).getRadius(), ball.getX(), ball.getY()));
+		strings.add(String.format("    Velocity: (%.2f; %.2f)",
+				ball.getXVelocity(), ball.getYVelocity()));
+		
+		// Polygon shapes
+		for (Body<?> b : bodies) {
+			Shape s = b.getShape();
+			
+			if (s instanceof Polygon) {
+				Polygon p = (Polygon) s;
+				strings.add(String.format("Polygon shape at (%.2f; %.2f)",
+						b.getX(), b.getY()));
+				for (int i = 0; i < p.getPointCount() ; i++) {
+					float x1 = p.getPointX(i);
+					float y1 = p.getPointY(i);
+					strings.add(String.format("  Point: (%.2f; %.2f)",
+							x1, y1));
+				}
+			}
+		}
+		
+		int i = 0;
+		for (String str : strings) {
+			g.drawString(str, x, firstLineY + i * lineHeight);
+			i++;
+		}
 	}
 
 	@Override
@@ -89,22 +177,40 @@ public class TestGame extends BasicGame implements WorldListener {
 		
 		//world = new World(9.81f);
 		world = new World(0.0f);
+		
+		// Different types of static triangle shapes for angled sides.
+		Map<String, Polygon> triangles = new HashMap<String, Polygon>();
+		triangles.put("bottom-left", createTrianglePolygon("bottom-left"));
+		
 
+		
 		for (int x = 0; x < map.getWidth(); x++) {
 			for (int y = 0; y < map.getHeight(); y++) {
 				int tileID = map.getTileId(x, y, metaLayer);
 				String value =
-						map.getTileProperty(tileID, "collidable", "false");
-				if ("true".equals(value)) {
-					Rectangle rect = new Rectangle(TILE_SIZE, TILE_SIZE);
-					world.add(new StaticBody<Rectangle>(rect,
-							x * TILE_SIZE, y * TILE_SIZE));
+						map.getTileProperty(tileID, "collision", "false");
+				if ("all".equals(value)) {
+					Rectangle rect = new Rectangle(PLAYER_SIZE, PLAYER_SIZE);
+					StaticBody<Rectangle> body = new StaticBody<Rectangle>(
+							rect, x * PLAYER_SIZE, y * PLAYER_SIZE);
+					bodies.add(body);
+					world.add(body);
 				}
+				
+				else if (triangles.containsKey(value)) {
+					Polygon triangle = triangles.get(value);
+					StaticBody<Polygon> body = new StaticBody<Polygon>(triangle,
+							x * PLAYER_SIZE, y * PLAYER_SIZE);
+					bodies.add(body);
+					world.add(body);
+				}
+				
 			}
 		}
 		
-		Circle ballCircle = new Circle(16f);
-		ball = new DynamicBody<Circle>(ballCircle, 100f, 100f);
+		
+		Circle ballCircle = new Circle(PLAYER_SIZE);
+		ball = new DynamicBody<Circle>(ballCircle, PLAYER_SIZE * 4, PLAYER_SIZE * 4);
 		world.add(ball);
 		world.addListener(this);
 
@@ -118,6 +224,26 @@ public class TestGame extends BasicGame implements WorldListener {
 		//cameraY = topOffsetInTiles;
 
 		container.setShowFPS(true);
+	}
+	
+	private Polygon createTrianglePolygon(String angle) {
+		Vec2[] points = null;
+		if (angle.equals("bottom-left")) {
+			points = new Vec2[] {
+					new Vec2(0, 0),
+					new Vec2(0, -1 * PLAYER_SIZE),
+					new Vec2(1 * PLAYER_SIZE, 0)
+			};
+		}
+		
+		if (points == null) {
+			return null;
+		}
+		else {
+			Polygon triangle = new Polygon();
+			triangle.setPoints(points);
+			return triangle;
+		}
 	}
 
 	@Override
@@ -140,20 +266,20 @@ public class TestGame extends BasicGame implements WorldListener {
 		}
 		
 		if (container.getInput().isKeyDown(Input.KEY_W)) {
-			ball.applyForce(0, -1000f);
+			ball.applyForce(0, -MOVE_FORCE);
 		}
 		if (container.getInput().isKeyDown(Input.KEY_S)) {
-			ball.applyForce(0, 1000f);
+			ball.applyForce(0, MOVE_FORCE);
 		}
 		if (container.getInput().isKeyDown(Input.KEY_A)) {
-			ball.applyForce(-500f, 0);
+			ball.applyForce(-MOVE_FORCE, 0);
 		}
 		if (container.getInput().isKeyDown(Input.KEY_D)) {
-			ball.applyForce(500f, 0);
+			ball.applyForce(MOVE_FORCE, 0);
 		}
 		
-		float targetX = ball.getX() - SCREEN_W / 2;
-		float targetY = ball.getY() - SCREEN_H / 2;
+		float targetX = (ball.getX() * SCALE_FACTOR) - SCREEN_W / 2;
+		float targetY = (ball.getY() * SCALE_FACTOR) - SCREEN_H / 2;
 		
 		// oldV + (newV - oldV) / smoothness);
 		cameraX = cameraX + (targetX - cameraX) / 5.5f;
