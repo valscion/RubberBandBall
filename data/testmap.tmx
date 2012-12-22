@@ -1,24 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="100" height="100" tilewidth="32" tileheight="32">
- <tileset firstgid="1" name="Testset" tilewidth="32" tileheight="32">
-  <image source="tileset.png" width="64" height="64"/>
+ <tileset firstgid="1" name="Tiles" tilewidth="32" tileheight="32" spacing="1" margin="1">
+  <image source="tileset.png" width="133" height="364"/>
  </tileset>
- <tileset firstgid="5" name="special tiles" tilewidth="32" tileheight="32">
-  <image source="tileset_meta.png" width="64" height="32"/>
+ <tileset firstgid="45" name="Special tiles" tilewidth="32" tileheight="32" spacing="1" margin="1">
+  <image source="tileset_meta.png" width="133" height="67"/>
   <tile id="0">
    <properties>
-    <property name="collidable" value="true"/>
+    <property name="collision" value="all"/>
+   </properties>
+  </tile>
+  <tile id="4">
+   <properties>
+    <property name="collision" value="top-left"/>
+   </properties>
+  </tile>
+  <tile id="5">
+   <properties>
+    <property name="collision" value="bottom-left"/>
+   </properties>
+  </tile>
+  <tile id="6">
+   <properties>
+    <property name="collision" value="bottom-right"/>
+   </properties>
+  </tile>
+  <tile id="7">
+   <properties>
+    <property name="collision" value="top-right"/>
    </properties>
   </tile>
  </tileset>
  <layer name="back" width="100" height="100">
   <data encoding="base64" compression="zlib">
-   eJzt2kEOgkAABEFM/P+bfQHGwyh0rEr2Ph0uQPZxHMcjcP5FobWwcaXQWti4UmgtbFwptBY2rhRaCxtXPml9npxf8TzupbBxpdBa2LhSaC1sXCm0FjauFFoLG1fu0vru3e0uG3+h0FrYuFJoLWxcKbQWNq4UWgsbVwqthY0rhdbCxpVCa2HjSqG1sHHlytaz//i+B++tsHGl0FrYuHL1vSr3rwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAvuMFDQIAxw==
+   eJzt2l0LgjAUgOH1cRUFlV31/39ojQisjGpOPLHngXO5OXhBRN2nlFaVZ/9mxuzXivUEe57Sa4vDiP2WNQ71J6bokfWbjL2GHnX0m+yucy7cR496cpMx96pMj1j0eLRNt/tNfzZTHuqJHrHoEYsesegRix6x6DGP+7PbMz1i0SMWPWLRIxY9YtEjFj1iaalH/lZ0nPsQH7TWY64mQ+/xh97lt9ijpElXsKZEqz1+adIVrCnVco88iy+mZE3ptPT/FQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABALRdv3AVL
   </data>
  </layer>
  <layer name="over" width="100" height="100">
   <data encoding="base64" compression="zlib">
-   eJzt0cEJACAMBMEj/RftW/EpJOBMBQubAAAAAAAAAD+p7gA2FU8mqXgyScWTSc4fnvS6/fAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADeWcYsACs=
+   eJztwTEBAAAAwqD1T+1lC6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAbnEAAAQ==
   </data>
  </layer>
  <objectgroup name="objects" width="100" height="100">
@@ -26,7 +46,7 @@
  </objectgroup>
  <layer name="meta" width="100" height="100" opacity="0.45">
   <data encoding="base64" compression="zlib">
-   eJzt2rENAjEABMFPvv+W6QARHLxXzEjOb+XEge/ruu7A+ReF1sLGlUJrYeNKobWwcaXQWti4UmgtbFz5pPXpN4/7OEth40qhtbBxpdBa2LhSaC1sXCm0FjaunNL67u12ysZfKLQWNq4UWgsbVwqthY0rhdbCxpVCa2HjSqG1sHGl0FrYuFJoLWxcebL10/8L7uMshY0rhdbCxpWn/1X5fwUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8B0vs48C4A==
+   eJzt2kEKwjAUBNBcSEHr/c8mgitFqMmvZsh7kGXLTAekYE+ttVPAWcURXW/t/XleBu5nj3Gvm4ywR43XTa6d97FHnccmI79VD/aYS0LGKnu6/vudxx5zSchYJaFrQsYqCV0TMlZJ6JqQsUpC14SMVWbq+um9baaMR0vompCxSkLXhIxVKruen6eaPfrYY1xC14SMVRK6JmSsktA1IWOVkf+JfmW1Pf61yd7vF1bco2eTreOaHqvu8c0mW8c1vVbeY9YDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMB37nRKIFY=
   </data>
  </layer>
 </map>
