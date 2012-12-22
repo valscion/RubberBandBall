@@ -79,7 +79,51 @@ public class TestGame extends BasicGame implements WorldListener {
 		g.fillOval(x - PLAYER_SIZE, y - PLAYER_SIZE, PLAYER_SIZE * 2, PLAYER_SIZE * 2);
 
 		// Draw static collidable bodies
+		//drawBodies(g);
+
+		g.resetTransform();
+
+
+		map.render(camOffsetX, camOffsetY,
+				camTileX,
+				camTileY,
+				widthInTiles + 3, heightInTiles + 3,
+				overLayer, false);
+
+
+		drawDebugInfo(g, 50, 10, 15);
+	}
+
+	private void drawDebugInfo(Graphics g, float firstLineY, float x, float lineHeight) {
+		List<String> strings = new LinkedList<String>();
+
+		// Camera
+		strings.add(String.format("Camera coords: (%.2f; %.2f)",
+				cameraX, cameraY));
+
+		// Ball
+		strings.add(String.format("Ball (radius %.2f) located at (%.2f; %.2f)",
+				((Circle) ball.getShape()).getRadius(), ball.getX(), ball.getY()));
+		strings.add(String.format("    Velocity: (%.2f; %.2f)",
+				ball.getXVelocity(), ball.getYVelocity()));
+
+		int i = 0;
+		for (String str : strings) {
+			g.drawString(str, x, firstLineY + i * lineHeight);
+			i++;
+		}
+	}
+
+	/**
+	 * Draws bodies that are added to the #bodies list. This method should be
+	 * called after camera has been translated.
+	 * @param g Graphics context to draw bodies to
+	 */
+	private void drawBodies(Graphics g) {
+		Color origColor = g.getColor();
 		for (Body<?> b : bodies) {
+			g.setColor(Color.white);
+
 			float bx = b.getX();
 			float by = b.getY();
 
@@ -111,40 +155,8 @@ public class TestGame extends BasicGame implements WorldListener {
 					g.drawLine(bx + x1, by + y1, bx + x2, by + y2);
 				}
 			}
-
-			g.setColor(Color.white);
 		}
-		g.resetTransform();
-
-		/*
-		map.render(camOffsetX, camOffsetY,
-				camTileX,
-				camTileY,
-				widthInTiles + 3, heightInTiles + 3,
-				overLayer, false);
-		 */
-
-		drawDebugInfo(g, 50, 10, 15);
-	}
-
-	private void drawDebugInfo(Graphics g, float firstLineY, float x, float lineHeight) {
-		List<String> strings = new LinkedList<String>();
-
-		// Camera
-		strings.add(String.format("Camera coords: (%.2f; %.2f)",
-				cameraX, cameraY));
-
-		// Ball
-		strings.add(String.format("Ball (radius %.2f) located at (%.2f; %.2f)",
-				((Circle) ball.getShape()).getRadius(), ball.getX(), ball.getY()));
-		strings.add(String.format("    Velocity: (%.2f; %.2f)",
-				ball.getXVelocity(), ball.getYVelocity()));
-
-		int i = 0;
-		for (String str : strings) {
-			g.drawString(str, x, firstLineY + i * lineHeight);
-			i++;
-		}
+		g.setColor(origColor);
 	}
 
 	@Override

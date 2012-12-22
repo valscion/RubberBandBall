@@ -2,6 +2,66 @@
 <map version="1.0" orientation="orthogonal" width="100" height="100" tilewidth="32" tileheight="32">
  <tileset firstgid="1" name="Tiles" tilewidth="32" tileheight="32" spacing="1" margin="1">
   <image source="tileset.png" width="133" height="364"/>
+  <tile id="28">
+   <properties>
+    <property name="damage" value="bottom"/>
+   </properties>
+  </tile>
+  <tile id="30">
+   <properties>
+    <property name="damage" value="top"/>
+   </properties>
+  </tile>
+  <tile id="32">
+   <properties>
+    <property name="damage" value="left"/>
+   </properties>
+  </tile>
+  <tile id="34">
+   <properties>
+    <property name="damage" value="right"/>
+   </properties>
+  </tile>
+  <tile id="36">
+   <properties>
+    <property name="damage" value="this"/>
+   </properties>
+  </tile>
+  <tile id="37">
+   <properties>
+    <property name="damage" value="this"/>
+   </properties>
+  </tile>
+  <tile id="38">
+   <properties>
+    <property name="damage" value="this"/>
+   </properties>
+  </tile>
+  <tile id="39">
+   <properties>
+    <property name="damage" value="this"/>
+   </properties>
+  </tile>
+  <tile id="40">
+   <properties>
+    <property name="damage" value="bottom,left"/>
+   </properties>
+  </tile>
+  <tile id="41">
+   <properties>
+    <property name="damage" value="bottom,right"/>
+   </properties>
+  </tile>
+  <tile id="42">
+   <properties>
+    <property name="damage" value="top,left"/>
+   </properties>
+  </tile>
+  <tile id="43">
+   <properties>
+    <property name="damage" value="top,right"/>
+   </properties>
+  </tile>
  </tileset>
  <tileset firstgid="45" name="Special tiles" tilewidth="32" tileheight="32" spacing="1" margin="1">
   <image source="tileset_meta.png" width="133" height="67"/>
@@ -38,7 +98,7 @@
  </layer>
  <layer name="over" width="100" height="100">
   <data encoding="base64" compression="zlib">
-   eJztwTEBAAAAwqD1T+1lC6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAbnEAAAQ==
+   eJzt2MsKwjAQBdCuxV/w/ahU///7jIrbICFppnIOzDKTIRfSkmEgmnuqXab2Ffa4FK57VNh7aQ4Net4q9TlX6rMkLfKgnDxikUcsuTxOs03BVy6P1/f0ONcgvLmvYpFHLPKIJVIem1Tb3kN0FiWPdarVUOd9Zsmi5MGH/1kAACC6MdW19xB/7tfzHQvWlJga9gYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgLk8AV71BTQ=
   </data>
  </layer>
  <objectgroup name="objects" width="100" height="100">
