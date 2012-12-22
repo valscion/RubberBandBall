@@ -221,6 +221,12 @@ public class TestGame extends BasicGame implements WorldListener {
 		container.setShowFPS(true);
 	}
 
+	/**
+	 * Builds a new triangle-shaped Polygon based on the given parameter.
+	 * 
+	 * @param angle "top-left" to "bottom-right"
+	 * @return a new Polygon representing a triangular shape.
+	 */
 	private Polygon createTrianglePolygon(String angle) {
 		Vec2[] points = null;
 		if (angle.equals("top-left")) {
