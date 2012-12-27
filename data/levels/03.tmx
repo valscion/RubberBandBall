@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="36" height="32" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="Normal tiles" tilewidth="32" tileheight="32" spacing="1" margin="1">
+  <image source="../tileset.png" width="133" height="364"/>
+ </tileset>
+ <tileset firstgid="45" name="Special tiles" tilewidth="32" tileheight="32" spacing="1" margin="1">
+  <image source="../tileset_meta.png" width="133" height="67"/>
+ </tileset>
+ <layer name="back" width="36" height="32">
+  <data encoding="base64" compression="zlib">
+   eJztwQENAAAAwqD3T20PBxQAAAAAzwYSAAAB
+  </data>
+ </layer>
+ <layer name="over" width="36" height="32">
+  <data encoding="base64" compression="zlib">
+   eJztwQENAAAAwqD3T20PBxQAAAAAzwYSAAAB
+  </data>
+ </layer>
+ <objectgroup name="objects" width="36" height="32"/>
+ <layer name="meta" width="36" height="32" opacity="0.26">
+  <data encoding="base64" compression="zlib">
+   eJzt1t0KgCAMBeC9kEnW+z9bFyUYubm5+RN44NxFfhBbOgBwq827wzvnRBaNyT/FUnonZqk1lTwx6TPxjJIlRuvZMuWYl0eeQ+iRuGexuMksNR7Ls7lz3MNjYdGaWsXCk8748nzrk1LfM53nAPkdaj3XmCe3W0Z5Wu85iae3BfOM7F89mj1O3WcoD3b31f5Taj05k8X/TeNpEYknMN+pmX2Jh2PS7iGphzJZ7MQaz+rdC767jNk=
+  </data>
+ </layer>
+</map>
