@@ -36,7 +36,8 @@ public class TileMap {
 	 * Constructs a new TileMap. You need to call {@link #init}-method before
 	 * actually using the tile map however.
 	 * 
-	 * @param level the level this map represents
+	 * @param level
+	 *            the level this map represents
 	 */
 	public TileMap(int level) {
 		this.level = level;
@@ -45,7 +46,8 @@ public class TileMap {
 	/**
 	 * Initializes and loads the level.
 	 * 
-	 * @throws MapException if a mapfile was not found for this level
+	 * @throws MapException
+	 *             if a mapfile was not found for this level
 	 */
 	public void init() throws MapException {
 		String path = findMapPath(level);
@@ -86,13 +88,56 @@ public class TileMap {
 	}
 
 	/**
+	 * Gets the reference to the current Tiled tile map. Do not modify the map
+	 * outside of this class, please!
+	 * 
+	 * @return the current {@link org.newdawn.slick.tiled.TiledMap} as a
+	 *         reference.
+	 */
+	public TiledMap getTiledMap() {
+		return map;
+	}
+
+	/**
+	 * Gets the index of the back layer.
+	 * 
+	 * @return index of back layer
+	 */
+	public int getIndexOfBackLayer() {
+		return backLayer;
+	}
+
+	/**
+	 * Gets the index of the over layer.
+	 * 
+	 * @return index of over layer
+	 */
+	public int getIndexOfOverLayer() {
+		return overLayer;
+	}
+
+	/**
 	 * Finds the absolute file path to a level.
 	 * 
-	 * @param level the level to search for
+	 * @param level
+	 *            the level to search for
 	 * @return an absolute file path to the given level
-	 * @throws MapException if the file was not found for the given level
+	 * @throws MapException
+	 *             if the file was not found for the given level
 	 */
 	public static String findMapPath(int level) throws MapException {
-		return "";
+		String filename = level + ".tmx";
+		if (level >= 0 && level <= 9) {
+			// Keep it zero padded if necessary
+			filename = "0" + filename;
+		}
+
+		// The directory where the maps reside
+		String dirname = "data/levels/";
+
+		// aaand combine them.
+		String path = dirname + filename;
+
+		return path;
 	}
 }

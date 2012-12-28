@@ -2,6 +2,8 @@ package com.vesalaakso.rbb.painters;
 
 import org.newdawn.slick.Graphics;
 
+import com.vesalaakso.rbb.game.Camera;
+
 /**
  * Classes that implement this interface will handle drawing of every single
  * thing in the game.
@@ -27,8 +29,9 @@ interface Painter {
 	 * @param g
 	 *            <code>Graphics</code>-object which will be used to draw stuff
 	 *            to screen.
-	 * @param cameraX x-coordinate of the camera
-	 * @param cameraY y-coordinate of the camera
+	 * @param cam
+	 *            a <code>Camera</code> that can be consulted to get information
+	 *            about the location one will draw stuff to
 	 */
-	public void paint(Graphics g, float cameraX, float cameraY);
+	public void paint(Graphics g, Camera cam);
 }
