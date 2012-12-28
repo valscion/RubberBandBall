@@ -1,6 +1,7 @@
 package com.vesalaakso.rbb.tests;
 import org.newdawn.slick.*;
 
+@SuppressWarnings("javadoc")
 public class HelloWorld extends BasicGame {
 
 	public HelloWorld() {

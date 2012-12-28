@@ -5,6 +5,7 @@ import org.lwjgl.input.Cursor;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.*;
 
+@SuppressWarnings("javadoc")
 public class GridTest extends BasicGame {
 
 	private Image cursorImg;
@@ -148,7 +149,7 @@ public class GridTest extends BasicGame {
 		mouseX = x;
 		mouseY = y;
 		
-		cursorX = ((int) (mouseX / 32)) * 32 + 16;
-		cursorY = ((int) (mouseY / 32)) * 32 + 16;
+		cursorX = (mouseX / 32) * 32 + 16;
+		cursorY = (mouseY / 32) * 32 + 16;
 	}
 }

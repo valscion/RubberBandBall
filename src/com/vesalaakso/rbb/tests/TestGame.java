@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.newdawn.fizzy.Body;
 import org.newdawn.fizzy.Circle;
@@ -20,6 +19,7 @@ import org.newdawn.fizzy.WorldListener;
 import org.newdawn.slick.*;
 import org.newdawn.slick.tiled.TiledMap;
 
+@SuppressWarnings("javadoc")
 public class TestGame extends BasicGame implements WorldListener {
 
 	private static final int TILE_SIZE = 32;
