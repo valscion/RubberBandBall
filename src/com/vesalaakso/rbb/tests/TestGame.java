@@ -79,7 +79,7 @@ public class TestGame extends BasicGame implements WorldListener {
 		g.fillOval(x - PLAYER_SIZE, y - PLAYER_SIZE, PLAYER_SIZE * 2, PLAYER_SIZE * 2);
 
 		// Draw static collidable bodies
-		//drawBodies(g);
+		drawBodies(g);
 
 		g.resetTransform();
 

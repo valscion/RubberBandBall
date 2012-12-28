@@ -1,18 +1,24 @@
 package com.vesalaakso.rbb.game;
 
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
+
+import com.vesalaakso.rbb.game.exceptions.MapException;
 
 /**
  * Represents a tile map. Drawing of the tile map is located in
  * {@link TileMapPainter} class.
  */
 public class TileMap {
-	
+
 	/** Size of a single tile, in pixels. */
 	public static final int TILE_SIZE = 32;
 
-	/** The tile map this instance represents */
+	/** The {@link org.newdawn.slick.tiled.TiledMap} this instance represents */
 	private TiledMap map;
+
+	/** The current level this map represents */
+	private int level;
 
 	/** Index of the back layer that is drawn first */
 	private int backLayer;
@@ -26,9 +32,67 @@ public class TileMap {
 	 */
 	private int metaLayer;
 
-	/** The width of the map, in tiles. */
-	private int widthInTiles;
+	/**
+	 * Constructs a new TileMap. You need to call {@link #init}-method before
+	 * actually using the tile map however.
+	 * 
+	 * @param level the level this map represents
+	 */
+	public TileMap(int level) {
+		this.level = level;
+	}
 
-	/** The height of the map, in tiles. */
-	private int heightInTiles;
+	/**
+	 * Initializes and loads the level.
+	 * 
+	 * @throws MapException if a mapfile was not found for this level
+	 */
+	public void init() throws MapException {
+		String path = findMapPath(level);
+		try {
+			this.map = new TiledMap(path);
+		}
+		catch (SlickException e) {
+			throw new MapException("Failed to load map " + level, e);
+		}
+
+		// Find the layer indexes
+		backLayer = this.map.getLayerIndex("back");
+		overLayer = this.map.getLayerIndex("over");
+		metaLayer = this.map.getLayerIndex("meta");
+
+		// Validate that layer indexes were actually found.
+		if (backLayer == -1 || overLayer == -1 || metaLayer == -1) {
+			throw new MapException("Invalid map layers for level " + level);
+		}
+	}
+
+	/**
+	 * Gets the map width in tiles.
+	 * 
+	 * @return map width in tiles
+	 */
+	public int getWidthInTiles() {
+		return map.getWidth();
+	}
+
+	/**
+	 * Gets the map height in tiles.
+	 * 
+	 * @return map height in tiles
+	 */
+	public int getHeightInTiles() {
+		return map.getHeight();
+	}
+
+	/**
+	 * Finds the absolute file path to a level.
+	 * 
+	 * @param level the level to search for
+	 * @return an absolute file path to the given level
+	 * @throws MapException if the file was not found for the given level
+	 */
+	public static String findMapPath(int level) throws MapException {
+		return "";
+	}
 }
