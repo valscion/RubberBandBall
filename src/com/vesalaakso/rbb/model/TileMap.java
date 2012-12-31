@@ -1,9 +1,9 @@
-package com.vesalaakso.rbb.game;
+package com.vesalaakso.rbb.model;
 
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
 
-import com.vesalaakso.rbb.game.exceptions.MapException;
+import com.vesalaakso.rbb.model.exceptions.MapException;
 
 /**
  * Represents a tile map. Drawing of the tile map is located in

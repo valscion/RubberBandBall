@@ -1,9 +1,9 @@
-package com.vesalaakso.rbb.painters;
+package com.vesalaakso.rbb.view;
 
 import org.newdawn.slick.tiled.TiledMap;
 
-import com.vesalaakso.rbb.game.Camera;
-import com.vesalaakso.rbb.game.TileMap;
+import com.vesalaakso.rbb.model.Camera;
+import com.vesalaakso.rbb.model.TileMap;
 
 /**
  * Handles the drawing of the tile map.

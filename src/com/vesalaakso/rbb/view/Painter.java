@@ -1,8 +1,8 @@
-package com.vesalaakso.rbb.painters;
+package com.vesalaakso.rbb.view;
 
 import org.newdawn.slick.Graphics;
 
-import com.vesalaakso.rbb.game.Camera;
+import com.vesalaakso.rbb.model.Camera;
 
 /**
  * Classes that implement this interface will handle drawing of every single

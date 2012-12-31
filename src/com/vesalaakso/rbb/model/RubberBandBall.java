@@ -1,4 +1,4 @@
-package com.vesalaakso.rbb.game;
+package com.vesalaakso.rbb.model;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
@@ -7,10 +7,10 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.util.Log;
 
-import com.vesalaakso.rbb.game.exceptions.MapException;
-import com.vesalaakso.rbb.painters.PainterContainer;
-import com.vesalaakso.rbb.painters.TileMapBackLayerPainter;
-import com.vesalaakso.rbb.painters.TileMapOverLayerPainter;
+import com.vesalaakso.rbb.model.exceptions.MapException;
+import com.vesalaakso.rbb.view.PainterContainer;
+import com.vesalaakso.rbb.view.TileMapBackLayerPainter;
+import com.vesalaakso.rbb.view.TileMapOverLayerPainter;
 
 /**
  * The game. You lost it.

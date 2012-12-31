@@ -1,11 +1,11 @@
-package com.vesalaakso.rbb.painters;
+package com.vesalaakso.rbb.view;
 
 import java.util.LinkedList;
 import java.util.List;
 
 import org.newdawn.slick.Graphics;
 
-import com.vesalaakso.rbb.game.Camera;
+import com.vesalaakso.rbb.model.Camera;
 
 /**
  * Every instance of classes that implement {@link Painter} interface are stored

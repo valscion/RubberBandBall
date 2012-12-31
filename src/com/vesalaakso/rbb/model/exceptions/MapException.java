@@ -1,4 +1,4 @@
-package com.vesalaakso.rbb.game.exceptions;
+package com.vesalaakso.rbb.model.exceptions;
 
 /**
  * Exception that is thrown when a given map was not found.

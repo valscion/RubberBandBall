@@ -1,7 +1,9 @@
-package com.vesalaakso.rbb.game;
+package com.vesalaakso.rbb.model;
 
 /**
- * Represents the camera. TODO: Explain what a Camera actually *is*!
+ * Represents the camera. A camera is used to specify the area of the world
+ * which currently will be drawn. Moving the camera will paint a different area
+ * of the world.
  * 
  * @author Vesa
  * 
