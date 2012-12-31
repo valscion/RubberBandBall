@@ -26,7 +26,7 @@ public class RubberBandBall extends BasicGame {
 	 */
 	private PainterContainer painterContainer = new PainterContainer();
 
-	/** A camera. TODO: What is a camera? */
+	/** A camera which controls the area of the world that is drawn. */
 	private Camera camera = new Camera(0, 0);
 
 	/** Constructs a new game. */
@@ -74,7 +74,7 @@ public class RubberBandBall extends BasicGame {
 	 * Starting point for the game.
 	 * 
 	 * @param args Command line parameters
-	 * */
+	 */
 	public static void main(String[] args) {
 		try {
 			AppGameContainer app = new AppGameContainer(new RubberBandBall());

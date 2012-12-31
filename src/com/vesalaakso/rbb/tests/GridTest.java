@@ -25,8 +25,6 @@ public class GridTest extends BasicGame {
 	@Override
 	public void render(GameContainer container, Graphics g)
 			throws SlickException {
-		// TODO Auto-generated method stub
-		
 		Color colorDark = new Color(64, 64, 64);
 		Color color1 = new Color(0, 64, 0);
 		Color color2 = new Color(0, 0, 64);
@@ -86,8 +84,6 @@ public class GridTest extends BasicGame {
 	@Override
 	public void update(GameContainer container, int delta)
 			throws SlickException {
-		// TODO Auto-generated method stub
-		
 		if (change != -1) {
 			int gridX = mouseX / 32;
 			int gridY = mouseY / 32;
