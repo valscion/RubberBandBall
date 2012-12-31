@@ -15,7 +15,7 @@ public abstract class TileMapPainter implements Painter {
 
 	/**
 	 * An empty constructor with no access modifier to prevent other than
-	 * subclasses instantiating this class.
+	 * the classes in this package instantiating this class.
 	 */
 	TileMapPainter() {
 	}
