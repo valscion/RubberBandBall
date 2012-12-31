@@ -4,9 +4,12 @@ import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.util.Log;
 
+import com.vesalaakso.rbb.controller.CameraController;
+import com.vesalaakso.rbb.controller.InputMaster;
 import com.vesalaakso.rbb.model.exceptions.MapException;
 import com.vesalaakso.rbb.view.PainterContainer;
 import com.vesalaakso.rbb.view.TileMapBackLayerPainter;
@@ -26,6 +29,9 @@ public class RubberBandBall extends BasicGame {
 	 */
 	private PainterContainer painterContainer = new PainterContainer();
 
+	/** InputMaster to handle the coordination of various input controllers. */
+	private InputMaster inputMaster;
+
 	/** A camera which controls the area of the world that is drawn. */
 	private Camera camera = new Camera(0, 0);
 
@@ -40,8 +46,18 @@ public class RubberBandBall extends BasicGame {
 		painterContainer.addPainter(new TileMapOverLayerPainter(map));
 	}
 
+	/** A helper method which adds all the controllers to the game. */
+	private void addControllers(Input input) {
+		inputMaster = new InputMaster(input);
+		inputMaster.addController(new CameraController(camera));
+	}
+
 	@Override
 	public void init(GameContainer container) throws SlickException {
+		// Remove the default input handlers, as input handling is done via
+		// InputMaster class and not this.
+		container.getInput().removeAllListeners();
+
 		// Try to load the map
 		try {
 			map = new TileMap(3);
@@ -55,13 +71,16 @@ public class RubberBandBall extends BasicGame {
 
 		// Add the painters next
 		addPainters();
+
+		// And then the controllers
+		addControllers(container.getInput());
 	}
 
 	@Override
 	public void update(GameContainer container, int delta)
 			throws SlickException {
-		// TODO Auto-generated method stub
-
+		// Update the controllers.
+		inputMaster.updateControllers(delta);
 	}
 
 	@Override

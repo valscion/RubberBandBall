@@ -47,4 +47,15 @@ public class Camera {
 		return y;
 	}
 
+	/**
+	 * Translates the camera according to the given coordinates.
+	 * 
+	 * @param moveX the amount to move the camera in x-axis
+	 * @param moveY the amount to move the camera in y-axis
+	 */
+	public void translate(float moveX, float moveY) {
+		x += moveX;
+		y += moveY;
+	}
+
 }
