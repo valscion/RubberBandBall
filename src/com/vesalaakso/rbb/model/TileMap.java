@@ -57,6 +57,9 @@ public class TileMap {
 		catch (SlickException e) {
 			throw new MapException("Failed to load map " + level, e);
 		}
+		catch (RuntimeException e) {
+			throw new MapException("Failed to load map " + level, e);
+		}
 
 		// Find the layer indexes
 		backLayer = this.map.getLayerIndex("back");
