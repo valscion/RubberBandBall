@@ -51,9 +51,9 @@
    </properties>
   </object>
  </objectgroup>
- <layer name="meta" width="36" height="32" opacity="0.26">
+ <layer name="meta" width="36" height="32" opacity="0.5">
   <data encoding="base64" compression="zlib">
-   eJzt1t0KgCAMBeC9kEnW+z9bFyUYubm5+RN44NxFfhBbOgBwq827wzvnRBaNyT/FUnonZqk1lTwx6TPxjJIlRuvZMuWYl0eeQ+iRuGexuMksNR7Ls7lz3MNjYdGaWsXCk8748nzrk1LfM53nAPkdaj3XmCe3W0Z5Wu85iae3BfOM7F89mj1O3WcoD3b31f5Taj05k8X/TeNpEYknMN+pmX2Jh2PS7iGphzJZ7MQaz+rdC767jNk=
+   eJztll0KxCAMhL2QXbbt/c+2LyuEkOjkr4XSgby0Jn4BHdPa89SVuJPny76dzcek9Yb2KbFEmD7/0DRqSowzFi/Tioeu43usWIaiPJsQCPPLY9dh5EHuV3fyWFlQeWpmsmR4bSYLeo9XdTL8OYOF1r4ip7I2z6F3PKqn8HCfGTE7kwf5vzfZQ6NngedrPNxb+o08ks95Z6coT5X/a0L6vlISj7auKrw8ER9H5xm+vzT7ZrwpXh7KlPm+RXgqZOHZwZrUn61hmYcRpogPWXlWTFFP9PCMvKo3oKp2hX6uUjSb
   </data>
  </layer>
 </map>
