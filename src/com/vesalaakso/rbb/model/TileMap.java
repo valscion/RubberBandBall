@@ -1,5 +1,8 @@
 package com.vesalaakso.rbb.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
 
@@ -31,6 +34,18 @@ public class TileMap {
 	 * This layer is not drawn.
 	 */
 	private int metaLayer;
+
+	/** Spawn area. */
+	private TileMapArea spawnArea;
+
+	/** Safe areas */
+	private List<TileMapArea> safeAreas = new ArrayList<TileMapArea>();
+
+	/** Trigger areas. */
+	private List<TileMapArea> triggerAreas = new ArrayList<TileMapArea>();
+
+	/** Finish area. */
+	private TileMapArea finishArea;
 
 	/**
 	 * Constructs a new TileMap. You need to call {@link #init}-method before
@@ -75,7 +90,37 @@ public class TileMap {
 		for (int i = 0, iMax = map.getObjectGroupCount(); i < iMax; i++) {
 			for (int j = 0, jMax = map.getObjectCount(i); j < jMax; j++) {
 				TileMapArea area = new TileMapArea(map, i, j);
-				System.out.println(area);
+				
+				String typeStr = area.type.toUpperCase();
+				try {
+					TileMapAreaType areaType = TileMapAreaType.valueOf(typeStr);
+					switch (areaType) {
+						case SPAWN:
+							if (spawnArea != null) {
+								throw new MapException("Level " + level
+										+ " has more than one spawn area");
+							}
+							spawnArea = area;
+							break;
+						case SAFE:
+							safeAreas.add(area);
+							break;
+						case TRIGGER:
+							triggerAreas.add(area);
+							break;
+						case FINISH:
+							if (finishArea != null) {
+								throw new MapException("Level " + level
+										+ " has more than one finish area");
+							}
+							finishArea = area;
+							break;
+					}
+				}
+				catch (IllegalArgumentException e) {
+					throw new MapException(
+							"Invalid object type in level " + level, e);
+				}
 			}
 		}
 	}
@@ -125,6 +170,43 @@ public class TileMap {
 	 */
 	public int getIndexOfOverLayer() {
 		return overLayer;
+	}
+
+	/**
+	 * Returns the spawn area.
+	 * 
+	 * @return spawn area
+	 */
+	public TileMapArea getSpawnArea() {
+		return spawnArea;
+	}
+
+	/**
+	 * Returns the safe areas.
+	 * 
+	 * @return safe areas
+	 */
+	public List<TileMapArea> getSafeAreas() {
+		return safeAreas;
+	}
+
+	/**
+	 * Returns the trigger areas.
+	 * 
+	 * @return trigger areas
+	 */
+
+	public List<TileMapArea> getTriggerAreas() {
+		return triggerAreas;
+	}
+
+	/**
+	 * Returns the finish area.
+	 * 
+	 * @return finish area
+	 */
+	public TileMapArea getFinishArea() {
+		return finishArea;
 	}
 
 	/**
