@@ -1,4 +1,4 @@
-package com.vesalaakso.rbb.model;
+package com.vesalaakso.rbb;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
@@ -10,6 +10,8 @@ import org.newdawn.slick.util.Log;
 
 import com.vesalaakso.rbb.controller.CameraController;
 import com.vesalaakso.rbb.controller.InputMaster;
+import com.vesalaakso.rbb.model.Camera;
+import com.vesalaakso.rbb.model.TileMap;
 import com.vesalaakso.rbb.model.exceptions.MapException;
 import com.vesalaakso.rbb.view.PainterContainer;
 import com.vesalaakso.rbb.view.TileMapBackLayerPainter;
