@@ -53,6 +53,15 @@ public class RubberBandBall extends BasicGame {
 		inputMaster = new InputMaster(input);
 		inputMaster.addController(new CameraController(camera));
 	}
+	
+	/**
+	 * Gets the current map.
+	 * 
+	 * @return the current <code>TileMap</code>
+	 */
+	public TileMap getMap() {
+		return map;
+	}
 
 	@Override
 	public void init(GameContainer container) throws SlickException {
