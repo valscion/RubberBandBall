@@ -8,7 +8,7 @@
 	<classpathentry kind="lib" path="lib/jbox2d-library-2.1.2.jar"/>
 	<classpathentry kind="lib" path="lib/lwjgl.jar">
 		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Studio1 projekti/lib/native/windows"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="RubberBandBall/lib/native/windows"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
