@@ -36,6 +36,10 @@ public class PlayerPainter implements Painter {
 		return true;
 	}
 
+	/**
+	 * @see com.vesalaakso.rbb.view.Painter#paint(org.newdawn.slick.Graphics,
+	 * com.vesalaakso.rbb.model.Camera)
+	 */
 	@Override
 	public void paint(Graphics g, Camera cam) {
 		// Calculate top left coords based on the center coordinates of the

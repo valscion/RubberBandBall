@@ -173,6 +173,15 @@ public class TileMap {
 	}
 
 	/**
+	 * Gets the index of the meta layer.
+	 * 
+	 * @return index of meta layer
+	 */
+	public int getIndexOfMetaLayer() {
+		return metaLayer;
+	}
+
+	/**
 	 * Returns the spawn area.
 	 * 
 	 * @return spawn area
