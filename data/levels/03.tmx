@@ -47,7 +47,7 @@
   <object name="FinishArea" type="finish" x="928" y="736" width="160" height="224"/>
   <object name="ExplosionArea" type="trigger" x="128" y="480" width="96" height="64">
    <properties>
-    <property name="type" value="explosion"/>
+    <property name="action" value="drop:tnt"/>
    </properties>
   </object>
  </objectgroup>
