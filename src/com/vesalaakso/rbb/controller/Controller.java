@@ -13,12 +13,12 @@ import org.newdawn.slick.command.InputProviderListener;
 public interface Controller extends InputProviderListener {
 
 	/**
-	 * This method is used to get a list of {@link CommandEnum} enums that this
+	 * This method is used to get a list of {@link Command} enums that this
 	 * <code>Controller</code> will handle.
 	 * 
 	 * @return List of commands this class will handle.
 	 */
-	public List<CommandEnum> getCommands();
+	public List<Command> getCommands();
 
 	/**
 	 * Every controller acts upon every tick of the game loop through this

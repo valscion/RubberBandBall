@@ -33,9 +33,9 @@ public class InputMaster {
 
 	/** Resets the default keys to all commands. */
 	public void resetBindings() {
-		for (CommandEnum cmdEnum : CommandEnum.values()) {
-			provider.clearCommand(cmdEnum.basicCommand);
-			provider.bindCommand(cmdEnum.defaultControl, cmdEnum.basicCommand);
+		for (Command command : Command.values()) {
+			provider.clearCommand(command.basicCommand);
+			provider.bindCommand(command.defaultControl, command.basicCommand);
 		}
 	}
 

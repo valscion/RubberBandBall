@@ -3,7 +3,6 @@ package com.vesalaakso.rbb.controller;
 import java.util.List;
 
 import org.newdawn.slick.command.BasicCommand;
-import org.newdawn.slick.command.Command;
 
 import com.google.common.collect.ImmutableList;
 import com.vesalaakso.rbb.model.Camera;
@@ -14,12 +13,12 @@ import com.vesalaakso.rbb.model.Camera;
 public class CameraController implements Controller {
 
 	/** All the commands this class would like to handle. */
-	private static final List<CommandEnum> commands =
+	private static final List<Command> commands =
 			ImmutableList.of(
-					CommandEnum.CAMERA_MOVE_LEFT,
-					CommandEnum.CAMERA_MOVE_RIGHT,
-					CommandEnum.CAMERA_MOVE_UP,
-					CommandEnum.CAMERA_MOVE_DOWN);
+					Command.CAMERA_MOVE_LEFT,
+					Command.CAMERA_MOVE_RIGHT,
+					Command.CAMERA_MOVE_UP,
+					Command.CAMERA_MOVE_DOWN);
 
 	/** The <code>Camera</code> we will control. */
 	private Camera camera;
@@ -45,10 +44,10 @@ public class CameraController implements Controller {
 	 * @see org.newdawn.slick.command.InputProviderListener#controlPressed(org.newdawn.slick.command.Command)
 	 */
 	@Override
-	public void controlPressed(Command c) {
-		CommandEnum com = CommandEnum.valueOf(((BasicCommand) c).getName());
+	public void controlPressed(org.newdawn.slick.command.Command pCommand) {
+		Command cmd = Command.valueOfCommand((BasicCommand) pCommand);
 
-		switch (com) {
+		switch (cmd) {
 			case CAMERA_MOVE_LEFT: cameraMoveX = -1.0f; break;
 			case CAMERA_MOVE_RIGHT: cameraMoveX = 1.0f; break;
 			case CAMERA_MOVE_UP: cameraMoveY = -1.0f; break;
@@ -57,18 +56,18 @@ public class CameraController implements Controller {
 
 		System.out.println(
 				String.format("Pressed: %s, moving camera x: %.2f, y: %.2f",
-						com, cameraMoveX, cameraMoveY));
+						cmd, cameraMoveX, cameraMoveY));
 	}
 
 	/**
 	 * @see org.newdawn.slick.command.InputProviderListener#controlReleased(org.newdawn.slick.command.Command)
 	 */
 	@Override
-	public void controlReleased(Command c) {
-		CommandEnum com = CommandEnum.valueOf(((BasicCommand) c).getName());
-		System.out.println("Released: " + com);
+	public void controlReleased(org.newdawn.slick.command.Command pCommand) {
+		Command cmd = Command.valueOfCommand((BasicCommand) pCommand);
+		System.out.println("Released: " + cmd);
 		
-		switch (com) {
+		switch (cmd) {
 			case CAMERA_MOVE_LEFT: // Falls below
 			case CAMERA_MOVE_RIGHT: cameraMoveX = 0; break;
 			case CAMERA_MOVE_UP: // Falls below
@@ -80,7 +79,7 @@ public class CameraController implements Controller {
 	 * @see Controller#getCommands()
 	 */
 	@Override
-	public List<CommandEnum> getCommands() {
+	public List<Command> getCommands() {
 		return commands;
 	}
 

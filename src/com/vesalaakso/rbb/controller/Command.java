@@ -14,7 +14,7 @@ import org.newdawn.slick.command.KeyControl;
  * @author Vesa Laakso
  * 
  */
-public enum CommandEnum {
+public enum Command {
 	/** Camera movement in negative x-direction, default key: A */
 	CAMERA_MOVE_LEFT(new KeyControl(Input.KEY_A)),
 	/** Camera movement in positive x-direction, default key: D */
@@ -26,7 +26,7 @@ public enum CommandEnum {
 
 	/** The <code>BasicCommand</code> that is represented by the enum value. */
 	public final BasicCommand basicCommand;
-	
+
 	/** The default control associated with this enum and command */
 	public final Control defaultControl;
 
@@ -34,8 +34,26 @@ public enum CommandEnum {
 	 * Constructs an enum and creates a new <code>BasicCommand</code> with the
 	 * exact same name as the enums <code>toString()</code> method returns.
 	 */
-	private CommandEnum(Control defaultControl) {
+	private Command(Control defaultControl) {
 		this.basicCommand = new BasicCommand(this.toString());
 		this.defaultControl = defaultControl;
+	}
+
+	/**
+	 * Finds and returns the enum representing the given
+	 * <code>org.newdawn.slick.command.BasicCommand</code>.
+	 * 
+	 * @param basicCommand
+	 *            the BasicCommand used to find the correct enum
+	 * 
+	 * @return the <code>Command</code> represented by the given
+	 *         <code>BasicCommand</code>.
+	 * 
+	 * @throws IllegalArgumentException
+	 *             if an enum with the given <code>BasicCommand</code> does not
+	 *             exist.
+	 */
+	public static Command valueOfCommand(BasicCommand basicCommand) {
+		return Command.valueOf(basicCommand.getName());
 	}
 }
