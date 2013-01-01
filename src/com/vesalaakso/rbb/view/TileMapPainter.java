@@ -32,9 +32,9 @@ public abstract class TileMapPainter implements Painter {
 	}
 
 	/**
-	 * Gets the current {@link} TileMap that is to be drawn.
+	 * Gets the current {@link TileMap} that is to be drawn.
 	 * 
-	 * @return current {@link} TileMap that is to be drawn.
+	 * @return current {@link TileMap} that is to be drawn.
 	 */
 	protected TileMap getMap() {
 		return map;
