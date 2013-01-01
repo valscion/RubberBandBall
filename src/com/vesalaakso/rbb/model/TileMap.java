@@ -52,7 +52,7 @@ public class TileMap {
 	public void init() throws MapException {
 		String path = findMapPath(level);
 		try {
-			this.map = new TiledMap(path);
+			map = new TiledMap(path);
 		}
 		catch (SlickException e) {
 			throw new MapException("Failed to load map " + level, e);
@@ -62,13 +62,21 @@ public class TileMap {
 		}
 
 		// Find the layer indexes
-		backLayer = this.map.getLayerIndex("back");
-		overLayer = this.map.getLayerIndex("over");
-		metaLayer = this.map.getLayerIndex("meta");
+		backLayer = map.getLayerIndex("back");
+		overLayer = map.getLayerIndex("over");
+		metaLayer = map.getLayerIndex("meta");
 
 		// Validate that layer indexes were actually found.
 		if (backLayer == -1 || overLayer == -1 || metaLayer == -1) {
 			throw new MapException("Invalid map layers for level " + level);
+		}
+
+		// Loop through every object and store them
+		for (int i = 0, iMax = map.getObjectGroupCount(); i < iMax; i++) {
+			for (int j = 0, jMax = map.getObjectCount(i); j < jMax; j++) {
+				TileMapArea area = new TileMapArea(map, i, j);
+				System.out.println(area);
+			}
 		}
 	}
 

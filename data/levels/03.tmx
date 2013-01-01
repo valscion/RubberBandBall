@@ -42,10 +42,14 @@
   </data>
  </layer>
  <objectgroup name="objects" width="36" height="32">
-  <object name="SpawnArea" x="160" y="192" width="160" height="96"/>
-  <object name="SafeArea" x="576" y="544" width="160" height="64"/>
-  <object name="FinishArea" x="928" y="736" width="160" height="224"/>
-  <object name="ExplosionArea" x="128" y="480" width="96" height="64"/>
+  <object name="SpawnArea" type="spawn" x="160" y="192" width="160" height="96"/>
+  <object name="SafeArea" type="safe" x="576" y="544" width="160" height="64"/>
+  <object name="FinishArea" type="finish" x="928" y="736" width="160" height="224"/>
+  <object name="ExplosionArea" type="trigger" x="128" y="480" width="96" height="64">
+   <properties>
+    <property name="type" value="explosion"/>
+   </properties>
+  </object>
  </objectgroup>
  <layer name="meta" width="36" height="32" opacity="0.26">
   <data encoding="base64" compression="zlib">
