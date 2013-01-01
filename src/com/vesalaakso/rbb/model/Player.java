@@ -29,17 +29,16 @@ public class Player {
 	 */
 	public Player(RubberBandBall game) {
 		this.game = game;
-		resetPosition();
 	}
 
-	/** Helper method to put the player in the starting coordinates. */
-	private void resetPosition() {
+	/** Resets the position of the player. */
+	public void resetPosition() {
 		TileMap map = game.getMap();
 
 		// Set the player to the center of the spawn area
 		TileMapArea spawn = map.getSpawnArea();
-		xWorld = spawn.x + (spawn.width - this.radius) * .5f;
-		yWorld = spawn.x + (spawn.width - this.radius) * .5f;
+		xWorld = spawn.x + spawn.width * .5f;
+		yWorld = spawn.y + spawn.height * .5f;
 	}
 
 	/**

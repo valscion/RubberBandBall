@@ -11,9 +11,11 @@ import org.newdawn.slick.util.Log;
 import com.vesalaakso.rbb.controller.CameraController;
 import com.vesalaakso.rbb.controller.InputMaster;
 import com.vesalaakso.rbb.model.Camera;
+import com.vesalaakso.rbb.model.Player;
 import com.vesalaakso.rbb.model.TileMap;
 import com.vesalaakso.rbb.model.exceptions.MapException;
 import com.vesalaakso.rbb.view.PainterContainer;
+import com.vesalaakso.rbb.view.PlayerPainter;
 import com.vesalaakso.rbb.view.TileMapBackLayerPainter;
 import com.vesalaakso.rbb.view.TileMapOverLayerPainter;
 
@@ -37,6 +39,9 @@ public class RubberBandBall extends BasicGame {
 	/** A camera which controls the area of the world that is drawn. */
 	private Camera camera = new Camera(0, 0);
 
+	/** What would a game be without a player? */
+	private Player player = new Player(this);
+
 	/** Constructs a new game. */
 	public RubberBandBall() {
 		super("Rubber band ball");
@@ -45,6 +50,7 @@ public class RubberBandBall extends BasicGame {
 	/** A helper method which adds all the painters in the correct order. */
 	private void addPainters() {
 		painterContainer.addPainter(new TileMapBackLayerPainter(map));
+		painterContainer.addPainter(new PlayerPainter(player));
 		painterContainer.addPainter(new TileMapOverLayerPainter(map));
 	}
 
@@ -53,7 +59,7 @@ public class RubberBandBall extends BasicGame {
 		inputMaster = new InputMaster(input);
 		inputMaster.addController(new CameraController(camera));
 	}
-	
+
 	/**
 	 * Gets the current map.
 	 * 
@@ -80,6 +86,9 @@ public class RubberBandBall extends BasicGame {
 			return;
 		}
 
+		// Reset player position
+		player.resetPosition();
+
 		// Add the painters next
 		addPainters();
 
@@ -103,14 +112,15 @@ public class RubberBandBall extends BasicGame {
 	/**
 	 * Starting point for the game.
 	 * 
-	 * @param args Command line parameters
+	 * @param args
+	 *            Command line parameters
 	 */
 	public static void main(String[] args) {
 		try {
 			AppGameContainer app = new AppGameContainer(new RubberBandBall());
 
 			app.setDisplayMode(800, 600, false);
-			//app.setTargetFrameRate(60);
+			// app.setTargetFrameRate(60);
 			app.setVSync(true);
 			app.start();
 		}

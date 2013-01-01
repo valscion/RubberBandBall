@@ -44,7 +44,7 @@ public class TileMapArea {
 		x = tmap.getObjectX(groupID, objectID);
 		y = tmap.getObjectY(groupID, objectID);
 		width = tmap.getObjectWidth(groupID, objectID);
-		height = tmap.getObjectWidth(groupID, objectID);
+		height = tmap.getObjectHeight(groupID, objectID);
 		
 		// TODO: If the area has properties, add them as well.
 	}

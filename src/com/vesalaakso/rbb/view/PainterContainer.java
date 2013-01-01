@@ -17,7 +17,13 @@ import com.vesalaakso.rbb.model.Camera;
 public class PainterContainer {
 
 	/** Everything that is to be painted. */
-	List<Painter> painters = new LinkedList<Painter>();
+	private List<Painter> painters = new LinkedList<Painter>();
+
+	/**
+	 * If the drawing has been translated to world coordinates, this will be
+	 * <code>true</code>.
+	 */
+	private boolean isWorldTranslationOn = false;
 
 	/**
 	 * Adds a new <code>Painter</code> to the end of the painters list. The
@@ -44,6 +50,19 @@ public class PainterContainer {
 	 */
 	public void paintAll(Graphics g, Camera cam) {
 		for (Painter p : this.painters) {
+			if (p.isDrawnToWorldCoordinates() != isWorldTranslationOn) {
+				if (isWorldTranslationOn) {
+					// We wanted to go back to regular drawing mode.
+					g.resetTransform();
+				}
+				else {
+					// We wanted translation.
+					g.translate(-cam.getX(), -cam.getY());
+				}
+
+				// Flip the flag.
+				isWorldTranslationOn = !isWorldTranslationOn;
+			}
 			p.paint(g, cam);
 		}
 	}
