@@ -1,110 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="100" height="100" tilewidth="32" tileheight="32">
- <tileset firstgid="1" name="Tiles" tilewidth="32" tileheight="32" spacing="1" margin="1">
-  <image source="tileset.png" width="133" height="364"/>
-  <tile id="28">
-   <properties>
-    <property name="damage" value="bottom"/>
-   </properties>
-  </tile>
-  <tile id="30">
-   <properties>
-    <property name="damage" value="top"/>
-   </properties>
-  </tile>
-  <tile id="32">
-   <properties>
-    <property name="damage" value="left"/>
-   </properties>
-  </tile>
-  <tile id="34">
-   <properties>
-    <property name="damage" value="right"/>
-   </properties>
-  </tile>
-  <tile id="36">
-   <properties>
-    <property name="damage" value="this"/>
-   </properties>
-  </tile>
-  <tile id="37">
-   <properties>
-    <property name="damage" value="this"/>
-   </properties>
-  </tile>
-  <tile id="38">
-   <properties>
-    <property name="damage" value="this"/>
-   </properties>
-  </tile>
-  <tile id="39">
-   <properties>
-    <property name="damage" value="this"/>
-   </properties>
-  </tile>
-  <tile id="40">
-   <properties>
-    <property name="damage" value="bottom,left"/>
-   </properties>
-  </tile>
-  <tile id="41">
-   <properties>
-    <property name="damage" value="bottom,right"/>
-   </properties>
-  </tile>
-  <tile id="42">
-   <properties>
-    <property name="damage" value="top,left"/>
-   </properties>
-  </tile>
-  <tile id="43">
-   <properties>
-    <property name="damage" value="top,right"/>
-   </properties>
-  </tile>
- </tileset>
- <tileset firstgid="45" name="Special tiles" tilewidth="32" tileheight="32" spacing="1" margin="1">
-  <image source="tileset_meta.png" width="133" height="67"/>
-  <tile id="0">
-   <properties>
-    <property name="collision" value="all"/>
-   </properties>
-  </tile>
-  <tile id="4">
-   <properties>
-    <property name="collision" value="top-left"/>
-   </properties>
-  </tile>
-  <tile id="5">
-   <properties>
-    <property name="collision" value="bottom-left"/>
-   </properties>
-  </tile>
-  <tile id="6">
-   <properties>
-    <property name="collision" value="bottom-right"/>
-   </properties>
-  </tile>
-  <tile id="7">
-   <properties>
-    <property name="collision" value="top-right"/>
-   </properties>
-  </tile>
- </tileset>
+ <tileset firstgid="1" source="Tiles.tsx"/>
+ <tileset firstgid="45" source="Special tiles.tsx"/>
  <layer name="back" width="100" height="100">
   <data encoding="base64" compression="zlib">
-   eJzt2l0LgjAUgOH1cRUFlV31/39ojQisjGpOPLHngXO5OXhBRN2nlFaVZ/9mxuzXivUEe57Sa4vDiP2WNQ71J6bokfWbjL2GHnX0m+yucy7cR496cpMx96pMj1j0eLRNt/tNfzZTHuqJHrHoEYsesegRix6x6DGP+7PbMz1i0SMWPWLRIxY9YtEjFj1iaalH/lZ0nPsQH7TWY64mQ+/xh97lt9ijpElXsKZEqz1+adIVrCnVco88iy+mZE3ptPT/FQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABALRdv3AVL
+   eJzt2s0KgkAUgNHpZxUFlq16/wetoY2VUY0j3phz4C5nHPhARO1SSpvK072ZKfu1YjvDnuf02uI4Yb91jUP9iTl6ZMMmU6+hRx3DJofbXAr30aOe3GTKvSrTIxY9Hu3T/X4znN2ch3qiRyx6xKJHLHrEokcseiwjP8eNPbfpEYsesegRix6x6BGLHrHoEUtLPfK3otPSh/igtR5LNRl7jz/2Lr/FHiVN+oI1JVrt8UuTvmBNqZZ75Fl9MSVrSqel/68AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGq5Akv6BUc=
   </data>
  </layer>
  <layer name="over" width="100" height="100">
   <data encoding="base64" compression="zlib">
-   eJzt2MsKwjAQBdCuxV/w/ahU///7jIrbICFppnIOzDKTIRfSkmEgmnuqXab2Ffa4FK57VNh7aQ4Net4q9TlX6rMkLfKgnDxikUcsuTxOs03BVy6P1/f0ONcgvLmvYpFHLPKIJVIem1Tb3kN0FiWPdarVUOd9Zsmi5MGH/1kAACC6MdW19xB/7tfzHQvWlJga9gYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgLk8AV71BTQ=
+   eJzt2DEKgEAMRcG9iPrvf0o7ISBaCGbRGUiV5pUhYzCb9WTok+4AinQHUKQ7gCLdARS52G1vRXBIdwAA8AnuuPn4nQEAAMAzy80AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMCf7QZOArk=
   </data>
  </layer>
  <objectgroup name="objects" width="100" height="100">
   <object name="SpawnPoint" x="608" y="480" width="64" height="64"/>
  </objectgroup>
- <layer name="meta" width="100" height="100" opacity="0.45">
+ <layer name="meta" width="100" height="100" opacity="0.13">
   <data encoding="base64" compression="zlib">
    eJzt2kEKwjAUBNBcSEHr/c8mgitFqMmvZsh7kGXLTAekYE+ttVPAWcURXW/t/XleBu5nj3Gvm4ywR43XTa6d97FHnccmI79VD/aYS0LGKnu6/vudxx5zSchYJaFrQsYqCV0TMlZJ6JqQsUpC14SMVWbq+um9baaMR0vompCxSkLXhIxVKruen6eaPfrYY1xC14SMVRK6JmSsktA1IWOVkf+JfmW1Pf61yd7vF1bco2eTreOaHqvu8c0mW8c1vVbeY9YDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMB37nRKIFY=
   </data>
