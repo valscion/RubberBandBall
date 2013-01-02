@@ -47,6 +47,10 @@ public class TileMap {
 	/** Finish area. */
 	private TileMapArea finishArea;
 
+	/** Collidable tiles in this map */
+	private List<CollidableTile> collidableTiles =
+			new ArrayList<CollidableTile>();
+
 	/**
 	 * Constructs a new TileMap. You need to call {@link #init}-method before
 	 * actually using the tile map however.
@@ -87,6 +91,15 @@ public class TileMap {
 		}
 
 		// Loop through every object and store them
+		saveAllObjects();
+
+		// Store everything that is storable in the meta layer, i.e. save the
+		// collidable tiles
+		saveAllSpecialTiles();
+	}
+
+	/** Loops through every object in the map and stores them. */
+	private void saveAllObjects() throws MapException {
 		for (int i = 0, iMax = map.getObjectGroupCount(); i < iMax; i++) {
 			for (int j = 0, jMax = map.getObjectCount(i); j < jMax; j++) {
 				TileMapArea area = new TileMapArea(map, i, j);
@@ -120,6 +133,31 @@ public class TileMap {
 				catch (IllegalArgumentException e) {
 					throw new MapException(
 							"Invalid object type in level " + level, e);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Loops through every special tile in the meta layer and saves them to the
+	 * appropriate attributes. Right now the only thing saved is the collision
+	 * tiles.
+	 */
+	private void saveAllSpecialTiles() throws MapException {
+		for (int x = 0; x < map.getWidth(); x++) {
+			for (int y = 0; y < map.getHeight(); y++) {
+				int tileID = map.getTileId(x, y, metaLayer);
+				String value =
+						map.getTileProperty(tileID, "collision", "false");
+				if (! value.equals("false")) {
+					try {
+						CollidableTile tile = new CollidableTile(x, y, this);
+						collidableTiles.add(tile);
+					}
+					catch (MapException e) {
+						throw new MapException("Invalid special tile in level "
+								+ level, e);
+					}
 				}
 			}
 		}
@@ -216,6 +254,15 @@ public class TileMap {
 	 */
 	public TileMapArea getFinishArea() {
 		return finishArea;
+	}
+
+	/**
+	 * Returns the collidable tiles in a list that should NOT be modified.
+	 * 
+	 * @return collidable tiles in a list
+	 */
+	public List<CollidableTile> getCollidableTiles() {
+		return collidableTiles;
 	}
 
 	/**
