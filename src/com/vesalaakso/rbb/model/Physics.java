@@ -1,5 +1,6 @@
 package com.vesalaakso.rbb.model;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.jbox2d.common.Vec2;
@@ -135,5 +136,20 @@ public class Physics {
 		Polygon triangle = new Polygon();
 		triangle.setPoints(points);
 		return triangle;
+	}
+
+	/**
+	 * Gets all the bodies associated with the physics engine in a
+	 * <code>List</code> backed by <code>LinkedList</code>.
+	 * 
+	 * @return list of all bodies in the physics world
+	 */
+	public List<Body<?>> getBodies() {
+		List<Body<?>> ret = new LinkedList<Body<?>>();
+		
+		// Add all the static tile bodies
+		ret.addAll(bodyTileMap.keySet());
+		
+		return ret;
 	}
 }

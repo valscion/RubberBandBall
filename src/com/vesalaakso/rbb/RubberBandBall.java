@@ -16,6 +16,7 @@ import com.vesalaakso.rbb.model.Player;
 import com.vesalaakso.rbb.model.TileMap;
 import com.vesalaakso.rbb.model.exceptions.MapException;
 import com.vesalaakso.rbb.view.PainterContainer;
+import com.vesalaakso.rbb.view.PhysicsPainter;
 import com.vesalaakso.rbb.view.PlayerPainter;
 import com.vesalaakso.rbb.view.TileMapBackLayerPainter;
 import com.vesalaakso.rbb.view.TileMapOverLayerPainter;
@@ -56,6 +57,7 @@ public class RubberBandBall extends BasicGame {
 		painterContainer.addPainter(new TileMapBackLayerPainter(map));
 		painterContainer.addPainter(new PlayerPainter(player));
 		painterContainer.addPainter(new TileMapOverLayerPainter(map));
+		painterContainer.addPainter(new PhysicsPainter(physics));
 	}
 
 	/** A helper method which adds all the controllers to the game. */
