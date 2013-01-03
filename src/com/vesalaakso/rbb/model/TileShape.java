@@ -18,4 +18,17 @@ public enum TileShape {
 	/** A triangle with the long sides at top and right */
 	TRIANGLE_TOP_RIGHT;
 
+	/**
+	 * A helper method which tells if the current shape is triangular.
+	 * 
+	 * @return <code>true</code>, if the current shape was triangular,
+	 *         <code>false</code> otherwise
+	 */
+	public boolean isTriangular() {
+		if (this != RECTANGLE) {
+			return true;
+		}
+		return false;
+	}
+
 }

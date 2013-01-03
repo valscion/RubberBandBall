@@ -11,6 +11,7 @@ import org.newdawn.slick.util.Log;
 import com.vesalaakso.rbb.controller.CameraController;
 import com.vesalaakso.rbb.controller.InputMaster;
 import com.vesalaakso.rbb.model.Camera;
+import com.vesalaakso.rbb.model.Physics;
 import com.vesalaakso.rbb.model.Player;
 import com.vesalaakso.rbb.model.TileMap;
 import com.vesalaakso.rbb.model.exceptions.MapException;
@@ -41,6 +42,9 @@ public class RubberBandBall extends BasicGame {
 
 	/** What would a game be without a player? */
 	private Player player = new Player(this);
+
+	/** Of course we need physics, here it is! */
+	private Physics physics = new Physics();
 
 	/** Constructs a new game. */
 	public RubberBandBall() {
@@ -75,10 +79,11 @@ public class RubberBandBall extends BasicGame {
 		// InputMaster class and not this.
 		container.getInput().removeAllListeners();
 
-		// Try to load the map
+		// Try to load the map and everything related to it.
 		try {
 			map = new TileMap(3);
 			map.init();
+			physics.addCollidablesFromMap(map);
 		}
 		catch (MapException e) {
 			Log.error(e.getMessage(), e);
@@ -99,6 +104,9 @@ public class RubberBandBall extends BasicGame {
 	@Override
 	public void update(GameContainer container, int delta)
 			throws SlickException {
+		// Update the physics
+		physics.update();
+
 		// Update the controllers.
 		inputMaster.updateControllers(delta);
 	}
