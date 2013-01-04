@@ -3,6 +3,7 @@ package com.vesalaakso.rbb.view;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
 import com.vesalaakso.rbb.model.Camera;
@@ -63,7 +64,17 @@ public class PainterContainer {
 				// Flip the flag.
 				isWorldTranslationOn = !isWorldTranslationOn;
 			}
+
+			// Store the color before drawing this Painter
+			Color origColor = g.getColor();
+
+			// Paint.
 			p.paint(g, cam);
+
+			// Restore color, if needed.
+			if (g.getColor().equals(origColor) == false) {
+				g.setColor(origColor);
+			}
 		}
 	}
 }

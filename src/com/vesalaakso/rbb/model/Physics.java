@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.jbox2d.common.Vec2;
 import org.newdawn.fizzy.Body;
+import org.newdawn.fizzy.Circle;
+import org.newdawn.fizzy.DynamicBody;
 import org.newdawn.fizzy.Polygon;
 import org.newdawn.fizzy.Rectangle;
 import org.newdawn.fizzy.StaticBody;
@@ -30,6 +32,12 @@ public class Physics {
 	/** The bodies associated with the map, linked to the collidable tile. */
 	private BiMap<Body<?>, CollidableTile> bodyTileMap = HashBiMap.create();
 
+	/** The player whose body will be added to the physics engine. */
+	private Player player;
+
+	/** The body of the player. */
+	private Body<Circle> playerBody = null;
+
 	/**
 	 * Constructs the physics engine and boots it up.
 	 */
@@ -40,6 +48,9 @@ public class Physics {
 	/** Makes the physics engine tick. Call on every update. */
 	public void update() {
 		world.update(1 / 20f);
+		if (player != null) {
+			player.setPosition(playerBody.getX(), playerBody.getY());
+		}
 	}
 
 	/**
@@ -139,6 +150,26 @@ public class Physics {
 	}
 
 	/**
+	 * Adds the player to the physics engine.
+	 * 
+	 * @param player
+	 *            the <code>Player</code>
+	 * @throws NullPointerException
+	 *             if the given player is <code>nullq</code>.
+	 */
+	public void addPlayer(Player player) {
+		if (player == null) {
+			throw new NullPointerException("player was null");
+		}
+		this.player = player;
+
+		Circle shape = new Circle(player.getRadius());
+		playerBody = new DynamicBody<Circle>(shape, player.getX(),
+				player.getY());
+		world.add(playerBody);
+	}
+
+	/**
 	 * Gets all the bodies associated with the physics engine in a
 	 * <code>List</code> backed by <code>LinkedList</code>.
 	 * 
@@ -146,10 +177,15 @@ public class Physics {
 	 */
 	public List<Body<?>> getBodies() {
 		List<Body<?>> ret = new LinkedList<Body<?>>();
-		
+
 		// Add all the static tile bodies
 		ret.addAll(bodyTileMap.keySet());
-		
+
+		// If player has a body set, add it too.
+		if (playerBody != null) {
+			ret.add(playerBody);
+		}
+
 		return ret;
 	}
 }

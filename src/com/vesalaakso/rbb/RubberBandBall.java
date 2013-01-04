@@ -96,6 +96,9 @@ public class RubberBandBall extends BasicGame {
 		// Reset player position
 		player.resetPosition();
 
+		// Add player to physics
+		physics.addPlayer(player);
+
 		// Add the painters next
 		addPainters();
 

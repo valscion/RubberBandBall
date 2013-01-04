@@ -3,6 +3,7 @@ package com.vesalaakso.rbb.view;
 import java.util.List;
 
 import org.newdawn.fizzy.Body;
+import org.newdawn.fizzy.Circle;
 import org.newdawn.fizzy.Polygon;
 import org.newdawn.fizzy.Rectangle;
 import org.newdawn.fizzy.Shape;
@@ -49,10 +50,6 @@ public class PhysicsPainter implements Painter {
 
 	@Override
 	public void paint(Graphics g, Camera cam) {
-		// Always when changing color, remember to store the original value and
-		// restore it in the end.
-		Color origColor = g.getColor();
-		
 		// Get all the physics bodies in the physics world.
 		List<Body<?>> bodies = physics.getBodies();
 
@@ -76,6 +73,11 @@ public class PhysicsPainter implements Painter {
 				Rectangle rect = (Rectangle) shape;
 				g.drawRect(bx, by, rect.getWidth(), rect.getHeight());
 			}
+			else if (shape instanceof Circle) {
+				Circle c = (Circle) shape;
+				float r = c.getRadius();
+				g.drawOval(bx - r, by - r, r * 2, r * 2);
+			}
 			else if (shape instanceof Polygon) {
 				Polygon p = (Polygon) shape;
 				int count = p.getPointCount();
@@ -95,7 +97,6 @@ public class PhysicsPainter implements Painter {
 				}
 			}
 		}
-		g.setColor(origColor);
 	}
 
 }

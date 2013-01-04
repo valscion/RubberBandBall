@@ -1,5 +1,6 @@
 package com.vesalaakso.rbb.view;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
 import com.vesalaakso.rbb.model.Camera;
@@ -15,6 +16,9 @@ public class PlayerPainter implements Painter {
 	/** The Player this instance will draw. */
 	private Player player;
 
+	/** The Color used to draw player. */
+	private final Color playerColor;
+
 	/**
 	 * Constructs a new <code>PlayerPainter</code> and associates it with the
 	 * given {@link Player}.
@@ -24,6 +28,12 @@ public class PlayerPainter implements Painter {
 	 */
 	public PlayerPainter(Player player) {
 		this.player = player;
+
+		// Build the color for the player from HSB colors
+		java.awt.Color tmpC = java.awt.Color.getHSBColor(0.75f, 0.5f, 0.5f);
+
+		this.playerColor =
+				new Color(tmpC.getRed(), tmpC.getGreen(), tmpC.getBlue());
 	}
 
 	/**
@@ -50,6 +60,8 @@ public class PlayerPainter implements Painter {
 		// And the width as well
 		float width = player.getRadius() * 2;
 
+		// Draw a circle representing the player
+		g.setColor(playerColor);
 		g.fillOval(x, y, width, width);
 	}
 }

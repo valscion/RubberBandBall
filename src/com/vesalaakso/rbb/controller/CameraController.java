@@ -61,7 +61,7 @@ public class CameraController implements Controller {
 	@Override
 	public void controlReleased(org.newdawn.slick.command.Command pCommand) {
 		Command cmd = Command.valueOfCommand((BasicCommand) pCommand);
-		
+
 		switch (cmd) {
 			case CAMERA_MOVE_LEFT: // Falls below
 			case CAMERA_MOVE_RIGHT: cameraMoveX = 0; break;

@@ -68,4 +68,17 @@ public class Player {
 		return radius;
 	}
 
+	/**
+	 * Sets the position for the player.
+	 * 
+	 * @param x
+	 *            new x-position
+	 * @param y
+	 *            new y-position
+	 */
+	public void setPosition(float x, float y) {
+		xWorld = x;
+		yWorld = y;
+	}
+
 }
