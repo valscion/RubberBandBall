@@ -53,10 +53,6 @@ public class CameraController implements Controller {
 			case CAMERA_MOVE_UP: cameraMoveY = -1.0f; break;
 			case CAMERA_MOVE_DOWN: cameraMoveY = 1.0f; break;
 		}
-
-		System.out.println(
-				String.format("Pressed: %s, moving camera x: %.2f, y: %.2f",
-						cmd, cameraMoveX, cameraMoveY));
 	}
 
 	/**
@@ -65,7 +61,6 @@ public class CameraController implements Controller {
 	@Override
 	public void controlReleased(org.newdawn.slick.command.Command pCommand) {
 		Command cmd = Command.valueOfCommand((BasicCommand) pCommand);
-		System.out.println("Released: " + cmd);
 		
 		switch (cmd) {
 			case CAMERA_MOVE_LEFT: // Falls below
