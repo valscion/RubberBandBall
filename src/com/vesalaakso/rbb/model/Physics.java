@@ -14,6 +14,7 @@ import org.newdawn.fizzy.World;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import com.vesalaakso.rbb.controller.PlayerCollisionListener;
 import com.vesalaakso.rbb.model.exceptions.MapException;
 
 /**
@@ -167,6 +168,8 @@ public class Physics {
 		playerBody = new DynamicBody<Circle>(shape, player.getX(),
 				player.getY());
 		world.add(playerBody);
+		world.addBodyListener(playerBody,
+				new PlayerCollisionListener(this, player));
 	}
 
 	/**
