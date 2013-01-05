@@ -191,4 +191,20 @@ public class Physics {
 
 		return ret;
 	}
+
+	/**
+	 * Gets only the body of the player.
+	 * 
+	 * @return physics body of the player.
+	 */
+	public Body<Circle> getPlayerBody() {
+		return playerBody;
+	}
+
+	/**
+	 * Stops the movement of the player.
+	 */
+	public void stopPlayer() {
+		playerBody.setActive(false);
+	}
 }

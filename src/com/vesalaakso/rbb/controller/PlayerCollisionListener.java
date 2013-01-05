@@ -36,7 +36,7 @@ public class PlayerCollisionListener implements WorldListener {
 	}
 
 	/**
-	 * @see org.newdawn.fizzy.WorldListener#collided(org.newdawn.fizzy.CollisionEvent)
+	 * @see org.newdawn.fizzy.WorldListener#collided
 	 */
 	@Override
 	public void collided(CollisionEvent event) {
@@ -48,7 +48,7 @@ public class PlayerCollisionListener implements WorldListener {
 	}
 
 	/**
-	 * @see org.newdawn.fizzy.WorldListener#separated(org.newdawn.fizzy.CollisionEvent)
+	 * @see org.newdawn.fizzy.WorldListener#separated
 	 */
 	@Override
 	public void separated(CollisionEvent event) {
