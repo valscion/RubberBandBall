@@ -72,8 +72,8 @@ public class Physics implements Updateable {
 
 			if (isPlayerLaunched && playerBody.isSleeping()) {
 				// We've arrived somewhere. Control to the player, ahoy!
-				player.onStop();
 				isPlayerLaunched = false;
+				player.onStop();
 			}
 		}
 	}
@@ -118,6 +118,8 @@ public class Physics implements Updateable {
 			}
 
 			// Now we have our pretty body, let's use it as it should be used.
+			body.setRestitution(0); // No bouncing
+			body.setFriction(1); // Friction is set by the colliding object
 			bodyTileMap.put(body, tile);
 			world.add(body);
 		}
@@ -188,9 +190,33 @@ public class Physics implements Updateable {
 		}
 		this.player = player;
 
-		Circle shape = new Circle(player.getRadius());
-		playerBody = new DynamicBody<Circle>(shape, player.getX(),
-				player.getY());
+		// Values which control the physics object representing the player.
+		// These are specified here in order to get a better picture of all the
+		// different values.
+		float radius = player.getRadius();
+
+		// How dense the circle will be, 25.0f is the default value.
+		float density = 25.0f;
+
+		// Restitution specifies how much will the circle bounce off when it
+		// hits a wall. 0.9f is the default.
+		float restitution = 0.3f;
+
+		// Friction plays just a little role in regards to circles but it still
+		// has its uses. Default value for friction is 0.1f.
+		float friction = 10f;
+
+		// Since friction doesn't do much when we're creating a circle, we use
+		// angular damping instead which slows the circles spinning down.
+		// Max value is 1.0f
+		float angularDamping = 0.9f;
+
+		Circle shape = new Circle(radius, density, restitution, friction);
+		playerBody =
+				new DynamicBody<Circle>(shape, player.getX(), player.getY());
+		playerBody.setAngularDamping(angularDamping);
+
+		// Add the player to the world
 		world.add(playerBody);
 		world.addBodyListener(playerBody,
 				new PlayerCollisionListener(player, particleManager));
