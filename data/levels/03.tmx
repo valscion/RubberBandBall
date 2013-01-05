@@ -41,7 +41,7 @@
    eJztwQENAAAAwqD3T20PBxQAAAAAzwYSAAAB
   </data>
  </layer>
- <objectgroup name="objects" width="36" height="32">
+ <objectgroup name="areas" width="36" height="32">
   <object name="SpawnArea" type="spawn" x="160" y="192" width="160" height="96"/>
   <object name="SafeArea" type="safe" x="576" y="544" width="160" height="64"/>
   <object name="FinishArea" type="finish" x="928" y="736" width="160" height="224"/>
@@ -50,10 +50,29 @@
     <property name="action" value="drop:tnt"/>
    </properties>
   </object>
+  <object name="LastLevelFinish" type="transition" x="0" y="128" width="64" height="160">
+   <properties>
+    <property name="collision" value="all"/>
+    <property name="level" value="2"/>
+   </properties>
+  </object>
+  <object name="Explodable" type="responsive" x="128" y="544" width="96" height="32">
+   <properties>
+    <property name="respondTo" value="explosion"/>
+    <property name="response" value="destroy"/>
+   </properties>
+  </object>
+  <object name="ThisLevelFinish" type="transition" x="1088" y="736" width="64" height="224">
+   <properties>
+    <property name="collision" value="all"/>
+    <property name="level" value="4"/>
+   </properties>
+  </object>
+  <object name="ThisLevelStart" type="transition" x="320" y="160" width="32" height="160"/>
  </objectgroup>
  <layer name="meta" width="36" height="32" opacity="0.5">
   <data encoding="base64" compression="zlib">
-   eJztll0KxCAMhL2QXbbt/c+2LyuEkOjkr4XSgby0Jn4BHdPa89SVuJPny76dzcek9Yb2KbFEmD7/0DRqSowzFi/Tioeu43usWIaiPJsQCPPLY9dh5EHuV3fyWFlQeWpmsmR4bSYLeo9XdTL8OYOF1r4ip7I2z6F3PKqn8HCfGTE7kwf5vzfZQ6NngedrPNxb+o08ks95Z6coT5X/a0L6vlISj7auKrw8ER9H5xm+vzT7ZrwpXh7KlPm+RXgqZOHZwZrUn61hmYcRpogPWXlWTFFP9PCMvKo3oKp2hX6uUjSb
+   eJztll0KxCAMhL2QXbbt/c+2LyuEkOjkr4XSgby0Jn4BHdPa89SVuJPny76dzcek9Yb2KbFEmD7/0DRqSowzFi/Tioeu43usWIaiPJsQCPPLY9dh5EHuV3fyWFlQeWpmsmR4bSYLeo9XdTL8OYOF1r4ip7I2z6F3PKqn8HCfGTE7kwf5vzfZQ6NngedrPNxb+o08ks95Z6coT5X/a0L6vlISj7auKrw8ER/X5hk+Q/D9pdk3403x8lCmzPctwlMhC88O1qT+bA2UB2WK+JCVZ8UU9UQPz8iregOqalfoB1ECNeQ=
   </data>
  </layer>
 </map>

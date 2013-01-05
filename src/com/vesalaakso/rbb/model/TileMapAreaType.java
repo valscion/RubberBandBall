@@ -13,5 +13,9 @@ public enum TileMapAreaType {
 	/** Area where the player can relaunch his ball */
 	SAFE,
 	/** Area which triggers an action */
-	TRIGGER;
+	TRIGGER,
+	/** Area which is used to do stuff when moving from level to another */
+	TRANSITION,
+	/** Area which responds to a triggered action */
+	RESPONSIVE;
 }

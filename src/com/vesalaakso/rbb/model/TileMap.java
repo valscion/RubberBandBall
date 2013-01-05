@@ -128,6 +128,14 @@ public class TileMap {
 							}
 							finishArea = area;
 							break;
+						case RESPONSIVE:
+							// TODO: Add responsive areas
+							break;
+						case TRANSITION:
+							// TODO: Add transition areas
+							break;
+						default:
+							break;
 					}
 				}
 				catch (IllegalArgumentException e) {
