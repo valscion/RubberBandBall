@@ -75,7 +75,12 @@ public class PhysicsPainter implements Painter {
 			else if (shape instanceof Circle) {
 				Circle c = (Circle) shape;
 				float r = c.getRadius();
+				// Draw the outer bounds
 				g.drawOval(bx - r, by - r, r * 2, r * 2);
+				// And then a line representing the angle.
+				g.drawLine(bx, by,
+						bx + (float) Math.cos(b.getRotation()) * r,
+						by + (float) Math.sin(b.getRotation()) * r);
 			}
 			else if (shape instanceof Polygon) {
 				Polygon p = (Polygon) shape;
