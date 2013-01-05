@@ -15,6 +15,7 @@ import com.vesalaakso.rbb.controller.CameraController;
 import com.vesalaakso.rbb.controller.InputMaster;
 import com.vesalaakso.rbb.controller.RubberBandController;
 import com.vesalaakso.rbb.controller.Updateable;
+import com.vesalaakso.rbb.model.Camera;
 import com.vesalaakso.rbb.model.ParticleManager;
 import com.vesalaakso.rbb.model.Physics;
 import com.vesalaakso.rbb.model.Player;
@@ -82,7 +83,7 @@ public class RubberBandBall extends BasicGame {
 	/** A helper method which adds all the controllers to the game. */
 	private void addControllers(Input input) {
 		inputMaster = new InputMaster(input);
-		inputMaster.addKeyListener(new CameraController());
+		inputMaster.addKeyListener(new CameraController(player));
 		inputMaster.addMouseListener(new RubberBandController(rubberBand));
 	}
 
@@ -95,6 +96,9 @@ public class RubberBandBall extends BasicGame {
 
 	@Override
 	public void init(GameContainer container) throws SlickException {
+		// First things first. Initialize the camera properly.
+		Camera.init(container.getWidth(), container.getHeight());
+
 		// Remove the default input handlers, as input handling is done via
 		// InputMaster class and not this.
 		container.getInput().removeAllListeners();
@@ -111,9 +115,10 @@ public class RubberBandBall extends BasicGame {
 			return;
 		}
 
-		// Make the player
+		// Make the player and set cameras position to its position
 		player = new Player(map);
 		player.reset();
+		Camera.get().setPosition(player.getX(), player.getY());
 
 		// Add player to physics
 		physics.addPlayer(player);
