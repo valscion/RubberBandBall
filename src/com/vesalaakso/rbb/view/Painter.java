@@ -31,9 +31,6 @@ interface Painter {
 	 * @param g
 	 *            <code>Graphics</code>-object which will be used to draw stuff
 	 *            to screen.
-	 * @param cam
-	 *            a <code>Camera</code> that can be consulted to get information
-	 *            about the location one will draw stuff to
 	 */
-	public void paint(Graphics g, Camera cam);
+	public void paint(Graphics g);
 }

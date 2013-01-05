@@ -5,7 +5,6 @@ import java.util.List;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.particles.ParticleSystem;
 
-import com.vesalaakso.rbb.model.Camera;
 import com.vesalaakso.rbb.model.ParticleManager;
 
 /**
@@ -35,7 +34,7 @@ public class ParticleSystemPainter implements Painter {
 	}
 
 	@Override
-	public void paint(Graphics g, Camera cam) {
+	public void paint(Graphics g) {
 		// ParticleManager is a singleton class, get it's instance.
 		ParticleManager pm = ParticleManager.get();
 

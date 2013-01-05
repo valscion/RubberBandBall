@@ -10,7 +10,6 @@ import org.newdawn.fizzy.Shape;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
-import com.vesalaakso.rbb.model.Camera;
 import com.vesalaakso.rbb.model.Physics;
 
 /**
@@ -49,7 +48,7 @@ public class PhysicsPainter implements Painter {
 	}
 
 	@Override
-	public void paint(Graphics g, Camera cam) {
+	public void paint(Graphics g) {
 		// Get all the physics bodies in the physics world.
 		List<Body<?>> bodies = physics.getBodies();
 

@@ -45,11 +45,9 @@ public abstract class TileMapPainter implements Painter {
 	 * 
 	 * @param layer
 	 *            which layer should be drawn
-	 * @param cam
-	 *            a Camera that can be consulted to get information about the
-	 *            location one will draw stuff to
 	 */
-	protected void drawLayer(int layer, Camera cam) {
+	protected void drawLayer(int layer) {
+		Camera cam = Camera.get();
 		TiledMap tmap = map.getTiledMap();
 
 		// Calculate the top left tile that will be drawn first

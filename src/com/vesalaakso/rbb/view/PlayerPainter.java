@@ -3,7 +3,6 @@ package com.vesalaakso.rbb.view;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
-import com.vesalaakso.rbb.model.Camera;
 import com.vesalaakso.rbb.model.Player;
 
 /**
@@ -51,7 +50,7 @@ public class PlayerPainter implements Painter {
 	 * com.vesalaakso.rbb.model.Camera)
 	 */
 	@Override
-	public void paint(Graphics g, Camera cam) {
+	public void paint(Graphics g) {
 		// Calculate top left coords based on the center coordinates of the
 		// player.
 		float x = player.getX() - player.getRadius();

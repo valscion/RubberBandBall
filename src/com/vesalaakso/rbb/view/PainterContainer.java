@@ -45,11 +45,8 @@ public class PainterContainer {
 	 * @param g
 	 *            <code>Graphics</code>-object which will be used to draw stuff
 	 *            to screen.
-	 * @param cam
-	 *            a <code>Camera</code> that can be consulted to get information
-	 *            about the location one will draw stuff to
 	 */
-	public void paintAll(Graphics g, Camera cam) {
+	public void paintAll(Graphics g) {
 		for (Painter p : this.painters) {
 			if (p.isDrawnToWorldCoordinates() != isWorldTranslationOn) {
 				if (isWorldTranslationOn) {
@@ -58,6 +55,7 @@ public class PainterContainer {
 				}
 				else {
 					// We wanted translation.
+					Camera cam = Camera.get();
 					g.translate(-cam.getX(), -cam.getY());
 				}
 
@@ -69,7 +67,7 @@ public class PainterContainer {
 			Color origColor = g.getColor();
 
 			// Paint.
-			p.paint(g, cam);
+			p.paint(g);
 
 			// Restore color, if needed.
 			if (g.getColor().equals(origColor) == false) {

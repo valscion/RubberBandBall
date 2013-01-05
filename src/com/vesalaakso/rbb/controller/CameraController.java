@@ -20,9 +20,6 @@ public class CameraController implements Controller {
 					Command.CAMERA_MOVE_UP,
 					Command.CAMERA_MOVE_DOWN);
 
-	/** The <code>Camera</code> we will control. */
-	private Camera camera;
-
 	/** The speed of which the camera will be moved in x-axis. */
 	private float cameraMoveX = 0.0f;
 
@@ -30,14 +27,9 @@ public class CameraController implements Controller {
 	private float cameraMoveY = 0.0f;
 
 	/**
-	 * Constructs a new CameraController and associates the given {@link Camera}
-	 * with it.
-	 * 
-	 * @param camera
-	 *            the {@link Camera} to be controlled
+	 * Constructs a new CameraController.
 	 */
-	public CameraController(Camera camera) {
-		this.camera = camera;
+	public CameraController() {
 	}
 
 	/**
@@ -83,8 +75,9 @@ public class CameraController implements Controller {
 	 */
 	@Override
 	public void update(int delta) {
-		// Move 100px / sec in both directions
-		camera.translate(cameraMoveX * delta * .1f,cameraMoveY * delta * .1f);
+		// Move camera 100px / sec in both directions
+		Camera.get().translate(cameraMoveX * delta * .1f,
+				cameraMoveY * delta * .1f);
 	}
 
 }

@@ -2,7 +2,6 @@ package com.vesalaakso.rbb.view;
 
 import org.newdawn.slick.Graphics;
 
-import com.vesalaakso.rbb.model.Camera;
 import com.vesalaakso.rbb.model.TileMap;
 
 /**
@@ -28,9 +27,9 @@ public class TileMapBackLayerPainter extends TileMapPainter {
 	 * @see Painter#paint
 	 */
 	@Override
-	public void paint(Graphics g, Camera cam) {
+	public void paint(Graphics g) {
 		int backlayer = this.getMap().getIndexOfBackLayer();
-		super.drawLayer(backlayer, cam);
+		super.drawLayer(backlayer);
 	}
 
 }

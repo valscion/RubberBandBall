@@ -40,9 +40,6 @@ public class RubberBandBall extends BasicGame {
 	/** InputMaster to handle the coordination of various input controllers. */
 	private InputMaster inputMaster;
 
-	/** A camera which controls the area of the world that is drawn. */
-	private Camera camera = new Camera(0, 0);
-
 	/** What would a game be without a player? */
 	private Player player = new Player(this);
 
@@ -66,7 +63,7 @@ public class RubberBandBall extends BasicGame {
 	/** A helper method which adds all the controllers to the game. */
 	private void addControllers(Input input) {
 		inputMaster = new InputMaster(input);
-		inputMaster.addController(new CameraController(camera));
+		inputMaster.addController(new CameraController());
 	}
 
 	/**
@@ -125,7 +122,7 @@ public class RubberBandBall extends BasicGame {
 	@Override
 	public void render(GameContainer container, Graphics g)
 			throws SlickException {
-		painterContainer.paintAll(g, camera);
+		painterContainer.paintAll(g);
 	}
 
 	/**
