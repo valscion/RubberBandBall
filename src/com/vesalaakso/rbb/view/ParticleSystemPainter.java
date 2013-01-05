@@ -6,7 +6,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.particles.ParticleSystem;
 
 import com.vesalaakso.rbb.model.Camera;
-import com.vesalaakso.rbb.model.ParticleSystemContainer;
+import com.vesalaakso.rbb.model.ParticleManager;
 
 /**
  * A <code>Painter</code> responsible for drawing all the particle systems.
@@ -15,19 +15,12 @@ import com.vesalaakso.rbb.model.ParticleSystemContainer;
  */
 public class ParticleSystemPainter implements Painter {
 
-	/** The particle systems to paint are here. */
-	private ParticleSystemContainer pSystemContainer;
-
 	/**
-	 * Constructs a new <code>ParticleSystemPainter</code> and associates it
-	 * with the given <code>ParticleSystemContainer</code>.
-	 * 
-	 * @param psc
-	 *            the ParticleSystemContainer which handles the saving and
-	 *            destroying of particle systems.
+	 * Constructs a new <code>ParticleSystemPainter</code>.
 	 */
-	public ParticleSystemPainter(ParticleSystemContainer psc) {
-		this.pSystemContainer = psc;
+	public ParticleSystemPainter() {
+		// We can use the singleton class to get the ParticleManager when
+		// needed - thus we don't need to do any initialization here.
 	}
 
 	/**
@@ -43,9 +36,12 @@ public class ParticleSystemPainter implements Painter {
 
 	@Override
 	public void paint(Graphics g, Camera cam) {
+		// ParticleManager is a singleton class, get it's instance.
+		ParticleManager pm = ParticleManager.get();
+
 		// Get all of the ParticleSystems there are.
-		List<ParticleSystem> systems = pSystemContainer.getSystems();
-		
+		List<ParticleSystem> systems = pm.getSystems();
+
 		// Loop through them all and render them.
 		for (ParticleSystem ps : systems) {
 			ps.render();

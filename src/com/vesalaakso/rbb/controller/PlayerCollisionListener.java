@@ -3,6 +3,7 @@ package com.vesalaakso.rbb.controller;
 import org.newdawn.fizzy.CollisionEvent;
 import org.newdawn.fizzy.WorldListener;
 
+import com.vesalaakso.rbb.model.ParticleManager;
 import com.vesalaakso.rbb.model.Physics;
 import com.vesalaakso.rbb.model.Player;
 
@@ -39,10 +40,11 @@ public class PlayerCollisionListener implements WorldListener {
 	 */
 	@Override
 	public void collided(CollisionEvent event) {
-		// TODO: LOTS OF PARTICLES!!!!111oneone
-		System.out.printf("Thuck @ (%.1f; %.1f) or (%.1f; %.1f)%n",
-				player.getX(), player.getY(),
-				event.getBodyB().getX(), event.getBodyB().getY());
+		// Particles!
+		ParticleManager pm = ParticleManager.get();
+		pm.addExplosionEmitter(player.getX(), player.getY());
+
+		//physics.stopPlayer();
 	}
 
 	/**
@@ -50,9 +52,7 @@ public class PlayerCollisionListener implements WorldListener {
 	 */
 	@Override
 	public void separated(CollisionEvent event) {
-		System.out.printf("Bloink @ (%.1f; %.1f) or (%.1f; %.1f)%n",
-				player.getX(), player.getY(),
-				event.getBodyB().getX(), event.getBodyB().getY());
+		// No-op
 	}
 
 }

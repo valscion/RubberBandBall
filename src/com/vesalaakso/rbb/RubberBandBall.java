@@ -11,11 +11,13 @@ import org.newdawn.slick.util.Log;
 import com.vesalaakso.rbb.controller.CameraController;
 import com.vesalaakso.rbb.controller.InputMaster;
 import com.vesalaakso.rbb.model.Camera;
+import com.vesalaakso.rbb.model.ParticleManager;
 import com.vesalaakso.rbb.model.Physics;
 import com.vesalaakso.rbb.model.Player;
 import com.vesalaakso.rbb.model.TileMap;
 import com.vesalaakso.rbb.model.exceptions.MapException;
 import com.vesalaakso.rbb.view.PainterContainer;
+import com.vesalaakso.rbb.view.ParticleSystemPainter;
 import com.vesalaakso.rbb.view.PhysicsPainter;
 import com.vesalaakso.rbb.view.PlayerPainter;
 import com.vesalaakso.rbb.view.TileMapBackLayerPainter;
@@ -57,6 +59,7 @@ public class RubberBandBall extends BasicGame {
 		painterContainer.addPainter(new TileMapBackLayerPainter(map));
 		painterContainer.addPainter(new PlayerPainter(player));
 		painterContainer.addPainter(new TileMapOverLayerPainter(map));
+		painterContainer.addPainter(new ParticleSystemPainter());
 		painterContainer.addPainter(new PhysicsPainter(physics));
 	}
 
@@ -111,6 +114,9 @@ public class RubberBandBall extends BasicGame {
 			throws SlickException {
 		// Update the physics
 		physics.update();
+
+		// Update the particle systems
+		ParticleManager.get().update(delta);
 
 		// Update the controllers.
 		inputMaster.updateControllers(delta);
