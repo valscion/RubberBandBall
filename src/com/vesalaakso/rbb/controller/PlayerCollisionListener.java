@@ -4,7 +4,6 @@ import org.newdawn.fizzy.CollisionEvent;
 import org.newdawn.fizzy.WorldListener;
 
 import com.vesalaakso.rbb.model.ParticleManager;
-import com.vesalaakso.rbb.model.Physics;
 import com.vesalaakso.rbb.model.Player;
 
 /**
@@ -13,9 +12,6 @@ import com.vesalaakso.rbb.model.Player;
  * @author Vesa Laakso
  */
 public class PlayerCollisionListener implements WorldListener {
-
-	/** The physics simulation where to get The Magic (tm) */
-	private Physics physics;
 
 	/** The player who is colliding */
 	private Player player;
@@ -36,9 +32,8 @@ public class PlayerCollisionListener implements WorldListener {
 	 *            the ParticleManager which will be used to create particles
 	 *            when needed
 	 */
-	public PlayerCollisionListener(Physics physics, Player player,
+	public PlayerCollisionListener(Player player,
 			ParticleManager particleManager) {
-		this.physics = physics;
 		this.player = player;
 		this.particleManager = particleManager;
 	}
@@ -50,8 +45,6 @@ public class PlayerCollisionListener implements WorldListener {
 	public void collided(CollisionEvent event) {
 		// Particles!
 		particleManager.addExplosionEmitter(player.getX(), player.getY());
-
-		// physics.stopPlayer();
 	}
 
 	/**

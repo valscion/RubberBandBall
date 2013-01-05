@@ -184,7 +184,7 @@ public class Physics implements Updateable {
 				player.getY());
 		world.add(playerBody);
 		world.addBodyListener(playerBody,
-				new PlayerCollisionListener(this, player, particleManager));
+				new PlayerCollisionListener(player, particleManager));
 	}
 
 	/**
