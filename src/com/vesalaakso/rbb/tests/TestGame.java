@@ -188,6 +188,8 @@ public class TestGame extends BasicGame implements WorldListener {
 					Rectangle rect = new Rectangle(TILE_SIZE, TILE_SIZE);
 					StaticBody<Rectangle> body = new StaticBody<Rectangle>(
 							rect, x * TILE_SIZE, y * TILE_SIZE);
+					body.setRestitution(0);
+					body.setFriction(1);
 					bodies.add(body);
 					world.add(body);
 				}
@@ -206,6 +208,9 @@ public class TestGame extends BasicGame implements WorldListener {
 
 		Circle ballCircle = new Circle(PLAYER_SIZE);
 		ball = new DynamicBody<Circle>(ballCircle, TILE_SIZE * 4, TILE_SIZE * 4);
+		ball.setRestitution(0);
+		ball.setFriction(10);
+		ball.setAngularDamping(1);
 		world.add(ball);
 		world.addListener(this);
 
