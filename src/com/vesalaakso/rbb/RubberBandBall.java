@@ -1,5 +1,8 @@
 package com.vesalaakso.rbb;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
@@ -10,16 +13,18 @@ import org.newdawn.slick.util.Log;
 
 import com.vesalaakso.rbb.controller.CameraController;
 import com.vesalaakso.rbb.controller.InputMaster;
-import com.vesalaakso.rbb.model.Camera;
-import com.vesalaakso.rbb.model.ParticleManager;
+import com.vesalaakso.rbb.controller.RubberBandController;
+import com.vesalaakso.rbb.controller.Updateable;
 import com.vesalaakso.rbb.model.Physics;
 import com.vesalaakso.rbb.model.Player;
+import com.vesalaakso.rbb.model.RubberBand;
 import com.vesalaakso.rbb.model.TileMap;
 import com.vesalaakso.rbb.model.exceptions.MapException;
 import com.vesalaakso.rbb.view.PainterContainer;
 import com.vesalaakso.rbb.view.ParticleSystemPainter;
 import com.vesalaakso.rbb.view.PhysicsPainter;
 import com.vesalaakso.rbb.view.PlayerPainter;
+import com.vesalaakso.rbb.view.RubberBandPainter;
 import com.vesalaakso.rbb.view.TileMapBackLayerPainter;
 import com.vesalaakso.rbb.view.TileMapOverLayerPainter;
 
@@ -37,11 +42,20 @@ public class RubberBandBall extends BasicGame {
 	 */
 	private PainterContainer painterContainer = new PainterContainer();
 
+	/**
+	 * All the stuff which need to be updated in update()-method are stored
+	 * here.
+	 */
+	private List<Updateable> updateables = new LinkedList<Updateable>();
+
 	/** InputMaster to handle the coordination of various input controllers. */
 	private InputMaster inputMaster;
 
 	/** What would a game be without a player? */
-	private Player player = new Player(this);
+	private Player player;
+
+	/** The player is controlled by this rubber band! */
+	private RubberBand rubberBand;
 
 	/** Of course we need physics, here it is! */
 	private Physics physics = new Physics();
@@ -56,6 +70,7 @@ public class RubberBandBall extends BasicGame {
 		painterContainer.addPainter(new TileMapBackLayerPainter(map));
 		painterContainer.addPainter(new PlayerPainter(player));
 		painterContainer.addPainter(new TileMapOverLayerPainter(map));
+		painterContainer.addPainter(new RubberBandPainter(rubberBand));
 		painterContainer.addPainter(new ParticleSystemPainter());
 		painterContainer.addPainter(new PhysicsPainter(physics));
 	}
@@ -63,16 +78,10 @@ public class RubberBandBall extends BasicGame {
 	/** A helper method which adds all the controllers to the game. */
 	private void addControllers(Input input) {
 		inputMaster = new InputMaster(input);
-		inputMaster.addController(new CameraController());
-	}
+		inputMaster.addKeyListener(new CameraController());
+		inputMaster.addMouseListener(new RubberBandController(rubberBand));
 
-	/**
-	 * Gets the current map.
-	 * 
-	 * @return the current <code>TileMap</code>
-	 */
-	public TileMap getMap() {
-		return map;
+		updateables.add(inputMaster);
 	}
 
 	@Override
@@ -93,8 +102,10 @@ public class RubberBandBall extends BasicGame {
 			return;
 		}
 
-		// Reset player position
+		// Make the player and rubber band
+		player = new Player(map);
 		player.resetPosition();
+		rubberBand = new RubberBand(player);
 
 		// Add player to physics
 		physics.addPlayer(player);
@@ -109,14 +120,10 @@ public class RubberBandBall extends BasicGame {
 	@Override
 	public void update(GameContainer container, int delta)
 			throws SlickException {
-		// Update the physics
-		physics.update();
-
-		// Update the particle systems
-		ParticleManager.get().update(delta);
-
-		// Update the controllers.
-		inputMaster.updateControllers(delta);
+		// Update everything that wants to be updated.
+		for (Updateable u : updateables) {
+			u.update(delta);
+		}
 	}
 
 	@Override

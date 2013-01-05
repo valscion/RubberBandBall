@@ -1,6 +1,5 @@
 package com.vesalaakso.rbb.model;
 
-import com.vesalaakso.rbb.RubberBandBall;
 
 /**
  * Represents the ball player moves.
@@ -9,8 +8,8 @@ import com.vesalaakso.rbb.RubberBandBall;
  */
 public class Player {
 
-	/** The game <code>Player</code> belongs to. */
-	private RubberBandBall game;
+	/** The map <code>Player</code> belongs to. */
+	private TileMap map;
 
 	/** Center x-coordinate of the player. */
 	private float xWorld;
@@ -22,19 +21,17 @@ public class Player {
 	private float radius = 16f;
 
 	/**
-	 * Constructs the <code>Player</code> and associates it with the given game.
+	 * Constructs the <code>Player</code> and associates it with the given map.
 	 * 
-	 * @param game
-	 *            the game to associate the new <code>Player</code> with
+	 * @param map
+	 *            the map to associate the new <code>Player</code> with
 	 */
-	public Player(RubberBandBall game) {
-		this.game = game;
+	public Player(TileMap map) {
+		this.map = map;
 	}
 
 	/** Resets the position of the player. */
 	public void resetPosition() {
-		TileMap map = game.getMap();
-
 		// Set the player to the center of the spawn area
 		TileMapArea spawn = map.getSpawnArea();
 		xWorld = spawn.x + spawn.width * .5f;
