@@ -63,7 +63,7 @@ public class Physics implements Updateable {
 	 */
 	@Override
 	public void update(int delta) {
-		world.update(1 / 20f);
+		world.update(1 / 60f);
 		if (player != null) {
 			player.setPosition(playerBody.getX(), playerBody.getY());
 		}
