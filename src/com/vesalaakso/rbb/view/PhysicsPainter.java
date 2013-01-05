@@ -54,7 +54,12 @@ public class PhysicsPainter implements Painter {
 
 		// Loop through them and draw them.
 		for (Body<?> b : bodies) {
-			g.setColor(Color.white);
+			if (b.isSleeping() || b.isStatic() || !b.isActive()) {
+				g.setColor(Color.white);
+			}
+			else {
+				g.setColor(Color.red);
+			}
 
 			float bx = b.getX();
 			float by = b.getY();
