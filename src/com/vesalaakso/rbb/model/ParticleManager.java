@@ -10,16 +10,15 @@ import org.newdawn.slick.particles.ParticleIO;
 import org.newdawn.slick.particles.ParticleSystem;
 import org.newdawn.slick.util.Log;
 
+import com.vesalaakso.rbb.controller.Updateable;
+
 /**
- * A singleton class responsible for all the particle systems in the game.
+ * A class responsible for all the particle systems in the game.
  * 
  * @author Vesa Laakso
  */
-public class ParticleManager {
+public class ParticleManager implements Updateable {
 
-	/** The one and only instance of this class. */
-	private static ParticleManager _instance = new ParticleManager();
-	
 	/** Maximum amount of explosions */
 	private static final int MAX_EXPLOSIONS = 40;
 
@@ -34,18 +33,9 @@ public class ParticleManager {
 	private int nextExplosionID = 0;
 
 	/**
-	 * Get the instance of this singleton class.
-	 * 
-	 * @return the one and only instance of this class.
-	 */
-	public static ParticleManager get() {
-		return _instance;
-	}
-
-	/**
 	 * Constructs a new <code>ParticleManager</code>.
 	 */
-	private ParticleManager() {
+	public ParticleManager() {
 		String dir = "data/slick_particle_effects/";
 		String file = "explosion.xml";
 		ParticleSystem.setRelativePath(dir);
@@ -67,11 +57,8 @@ public class ParticleManager {
 
 	/**
 	 * Updates the particle systems.
-	 * 
-	 * @param delta
-	 *            The amount of time thats passed since last update in
-	 *            milliseconds
 	 */
+	@Override
 	public void update(int delta) {
 		for (int i = 0; i < runningExplosionSystems; i++) {
 			ParticleSystem system = explosionSystems.get(i);
@@ -99,7 +86,7 @@ public class ParticleManager {
 		if (runningExplosionSystems < MAX_EXPLOSIONS) {
 			runningExplosionSystems++;
 		}
-		
+
 		// Next time, get the next explosion.
 		nextExplosionID++;
 		if (nextExplosionID == MAX_EXPLOSIONS) {

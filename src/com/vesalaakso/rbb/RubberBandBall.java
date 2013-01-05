@@ -15,6 +15,7 @@ import com.vesalaakso.rbb.controller.CameraController;
 import com.vesalaakso.rbb.controller.InputMaster;
 import com.vesalaakso.rbb.controller.RubberBandController;
 import com.vesalaakso.rbb.controller.Updateable;
+import com.vesalaakso.rbb.model.ParticleManager;
 import com.vesalaakso.rbb.model.Physics;
 import com.vesalaakso.rbb.model.Player;
 import com.vesalaakso.rbb.model.RubberBand;
@@ -57,8 +58,11 @@ public class RubberBandBall extends BasicGame {
 	/** The player is controlled by this rubber band! */
 	private RubberBand rubberBand;
 
+	/** Ooh, particles, yes please! */
+	private ParticleManager particleManager = new ParticleManager();
+
 	/** Of course we need physics, here it is! */
-	private Physics physics = new Physics();
+	private Physics physics = new Physics(particleManager);
 
 	/** Constructs a new game. */
 	public RubberBandBall() {
@@ -71,7 +75,7 @@ public class RubberBandBall extends BasicGame {
 		painterContainer.addPainter(new PlayerPainter(player));
 		painterContainer.addPainter(new TileMapOverLayerPainter(map));
 		painterContainer.addPainter(new RubberBandPainter(rubberBand));
-		painterContainer.addPainter(new ParticleSystemPainter());
+		painterContainer.addPainter(new ParticleSystemPainter(particleManager));
 		painterContainer.addPainter(new PhysicsPainter(physics));
 	}
 
@@ -80,8 +84,13 @@ public class RubberBandBall extends BasicGame {
 		inputMaster = new InputMaster(input);
 		inputMaster.addKeyListener(new CameraController());
 		inputMaster.addMouseListener(new RubberBandController(rubberBand));
+	}
 
+	/** A helper method which adds all updateables. */
+	private void addUpdateables() {
 		updateables.add(inputMaster);
+		updateables.add(physics);
+		updateables.add(particleManager);
 	}
 
 	@Override
@@ -115,6 +124,9 @@ public class RubberBandBall extends BasicGame {
 
 		// And then the controllers
 		addControllers(container.getInput());
+
+		// Finally add all objects which hook to the update()-method.
+		addUpdateables();
 	}
 
 	@Override

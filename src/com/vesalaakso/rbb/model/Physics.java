@@ -15,6 +15,7 @@ import org.newdawn.fizzy.World;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.vesalaakso.rbb.controller.PlayerCollisionListener;
+import com.vesalaakso.rbb.controller.Updateable;
 import com.vesalaakso.rbb.model.exceptions.MapException;
 
 /**
@@ -22,10 +23,16 @@ import com.vesalaakso.rbb.model.exceptions.MapException;
  * 
  * @author Vesa Laakso
  */
-public class Physics {
+public class Physics implements Updateable {
 
 	/** Default gravity */
 	private static final float DEFAULT_GRAVITY = 9.81f;
+
+	/**
+	 * The ParticleManager which will create nice little effects as events in
+	 * the physics world will happen.
+	 */
+	private ParticleManager particleManager;
 
 	/** The <code>World</code> in which The Magic (tm) happens. */
 	private World world;
@@ -40,14 +47,22 @@ public class Physics {
 	private Body<Circle> playerBody = null;
 
 	/**
-	 * Constructs the physics engine and boots it up.
+	 * Constructs the physics engine and boots it up with default gravity.
+	 * 
+	 * @param particleManager
+	 *            the <code>ParticleManager</code> responsible for all the nice
+	 *            and juicy particles
 	 */
-	public Physics() {
-		world = new World(DEFAULT_GRAVITY);
+	public Physics(ParticleManager particleManager) {
+		this.particleManager = particleManager;
+		this.world = new World(DEFAULT_GRAVITY);
 	}
 
-	/** Makes the physics engine tick. Call on every update. */
-	public void update() {
+	/**
+	 * Makes the physics engine tick. Call on every update.
+	 */
+	@Override
+	public void update(int delta) {
 		world.update(1 / 20f);
 		if (player != null) {
 			player.setPosition(playerBody.getX(), playerBody.getY());
@@ -169,7 +184,7 @@ public class Physics {
 				player.getY());
 		world.add(playerBody);
 		world.addBodyListener(playerBody,
-				new PlayerCollisionListener(this, player));
+				new PlayerCollisionListener(this, player, particleManager));
 	}
 
 	/**

@@ -14,12 +14,18 @@ import com.vesalaakso.rbb.model.ParticleManager;
  */
 public class ParticleSystemPainter implements Painter {
 
+	/** The ParticleManager associated with this Painter. */
+	private ParticleManager particleManager;
+
 	/**
-	 * Constructs a new <code>ParticleSystemPainter</code>.
+	 * Constructs a new <code>ParticleSystemPainter</code> and associates it
+	 * with the given <code>ParticleManager</code>.
+	 * 
+	 * @param particleManager
+	 *            the <code>ParticleManager</code> to be drawn.
 	 */
-	public ParticleSystemPainter() {
-		// We can use the singleton class to get the ParticleManager when
-		// needed - thus we don't need to do any initialization here.
+	public ParticleSystemPainter(ParticleManager particleManager) {
+		this.particleManager = particleManager;
 	}
 
 	/**
@@ -35,11 +41,8 @@ public class ParticleSystemPainter implements Painter {
 
 	@Override
 	public void paint(Graphics g) {
-		// ParticleManager is a singleton class, get it's instance.
-		ParticleManager pm = ParticleManager.get();
-
 		// Get all of the ParticleSystems there are.
-		List<ParticleSystem> systems = pm.getSystems();
+		List<ParticleSystem> systems = particleManager.getSystems();
 
 		// Loop through them all and render them.
 		for (ParticleSystem ps : systems) {

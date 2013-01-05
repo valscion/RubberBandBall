@@ -20,6 +20,9 @@ public class PlayerCollisionListener implements WorldListener {
 	/** The player who is colliding */
 	private Player player;
 
+	/** Ooh, we can create particles, yes! */
+	private ParticleManager particleManager;
+
 	/**
 	 * Constructs a new <code>PlayerCollisionListener</code> and lets it know
 	 * what physics simulation handles the physics and who is the
@@ -28,11 +31,16 @@ public class PlayerCollisionListener implements WorldListener {
 	 * @param physics
 	 *            the physics simulation where The Magic (tm) happens
 	 * @param player
-	 *            the {@link Player}-model for the collisions.
+	 *            the {@link Player}-model for the collisions
+	 * @param particleManager
+	 *            the ParticleManager which will be used to create particles
+	 *            when needed
 	 */
-	public PlayerCollisionListener(Physics physics, Player player) {
+	public PlayerCollisionListener(Physics physics, Player player,
+			ParticleManager particleManager) {
 		this.physics = physics;
 		this.player = player;
+		this.particleManager = particleManager;
 	}
 
 	/**
@@ -41,10 +49,9 @@ public class PlayerCollisionListener implements WorldListener {
 	@Override
 	public void collided(CollisionEvent event) {
 		// Particles!
-		ParticleManager pm = ParticleManager.get();
-		pm.addExplosionEmitter(player.getX(), player.getY());
+		particleManager.addExplosionEmitter(player.getX(), player.getY());
 
-		//physics.stopPlayer();
+		// physics.stopPlayer();
 	}
 
 	/**
