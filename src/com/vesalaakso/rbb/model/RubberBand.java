@@ -13,6 +13,9 @@ public class RubberBand {
 	/** The <code>Player</code> from which the rubber band will be pulled */
 	private Player player;
 
+	/** The <code>Physics</code> to interact with when the player is launched */
+	private Physics physics;
+
 	/** Are we pulling the rubber band currently? */
 	private boolean isPulled;
 
@@ -24,12 +27,16 @@ public class RubberBand {
 
 	/**
 	 * Constructs a new rubber band model and associates it with the given
-	 * <code>Player</code>.
+	 * <code>Player</code> and <code>Physics</code>.
 	 * 
 	 * @param player
+	 *            the <code>Player</code> from which the rubber band is pulled
+	 * @param physics
+	 *            the <code>Physics</code> engine behind all The Magic (tm).
 	 */
-	public RubberBand(Player player) {
+	public RubberBand(Player player, Physics physics) {
 		this.player = player;
+		this.physics = physics;
 	}
 
 	/**
@@ -40,10 +47,14 @@ public class RubberBand {
 	 * @param y
 	 *            the start y-coordinate for the pull in screen coordinates
 	 * 
-	 * @return true if the pull actually started, i.e. coordinates were close
-	 *         enough to the player.
+	 * @return <code>true</code> if the pull actually started
 	 */
 	public boolean startPull(float x, float y) {
+		if (!player.isReadyForLaunch()) {
+			// Player isn't ready to be pulled, so don't.
+			return false;
+		}
+
 		// Calculate the real start point, with Camera coordinates added to the
 		// vector representing the starting point
 		Vector2f point = new Vector2f(x, y);
@@ -80,6 +91,29 @@ public class RubberBand {
 		Camera.toWorldCoordinates(point);
 		currentEndPoint = point;
 		isPulled = false;
+
+		// Ok, now launch the player to somewhere!
+
+		// Calculate the vector between the start point and the end point.
+		Vector2f diffVector = new Vector2f(startPoint).sub(point);
+
+		// The calculated force to launch the player in both axis is the same
+		// as the scalar projection of the x- and y-axis vectors and the
+		// diffVector.
+		double radAngleX = Math.toRadians(diffVector.getTheta());
+		double radAngleY = Math.toRadians(diffVector.getTheta() + 90);
+
+		float forceX = (float) (Math.cos(radAngleX) * diffVector.length());
+		float forceY = (float) (Math.cos(radAngleY) * diffVector.length());
+
+		System.out.println("Launching the player!");
+		System.out.println("    diffVector length: " + diffVector.length());
+		System.out.println("     diffVector angle: " + diffVector.getTheta());
+		System.out.println("              x-force: " + forceX);
+		System.out.println("              y-force: " + forceY);
+
+		player.setLaunched();
+		physics.launchPlayer(forceX, forceY);
 	}
 
 	/**

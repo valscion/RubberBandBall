@@ -46,6 +46,9 @@ public class Physics implements Updateable {
 	/** The body of the player. */
 	private Body<Circle> playerBody = null;
 
+	/** Whether the player has been launched yet. */
+	private boolean isPlayerLaunched;
+
 	/**
 	 * Constructs the physics engine and boots it up with default gravity.
 	 * 
@@ -66,6 +69,12 @@ public class Physics implements Updateable {
 		world.update(1 / 60f);
 		if (player != null) {
 			player.setPosition(playerBody.getX(), playerBody.getY());
+
+			if (isPlayerLaunched && playerBody.isSleeping()) {
+				// We've arrived somewhere. Control to the player, ahoy!
+				player.onStop();
+				isPlayerLaunched = false;
+			}
 		}
 	}
 
@@ -185,6 +194,9 @@ public class Physics implements Updateable {
 		world.add(playerBody);
 		world.addBodyListener(playerBody,
 				new PlayerCollisionListener(player, particleManager));
+
+		// Also, make the player not yet take part in any collision.
+		playerBody.setActive(false);
 	}
 
 	/**
@@ -217,9 +229,14 @@ public class Physics implements Updateable {
 	}
 
 	/**
-	 * Stops the movement of the player.
+	 * Launches the player by applying a force to him.
+	 * 
+	 * @param forceX the power of the force in x-axis
+	 * @param forceY the power of the force in y-axis
 	 */
-	public void stopPlayer() {
-		playerBody.setActive(false);
+	public void launchPlayer(float forceX, float forceY) {
+		isPlayerLaunched = true;
+		playerBody.setActive(true);
+		playerBody.setVelocity(forceX, forceY);
 	}
 }

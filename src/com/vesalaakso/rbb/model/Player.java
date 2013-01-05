@@ -20,6 +20,9 @@ public class Player {
 	/** Radius of the ball representing the player. */
 	private float radius = 16f;
 
+	/** Is player ready to be launched or not */
+	private boolean isReadyForLaunch;
+
 	/**
 	 * Constructs the <code>Player</code> and associates it with the given map.
 	 * 
@@ -30,12 +33,15 @@ public class Player {
 		this.map = map;
 	}
 
-	/** Resets the position of the player. */
-	public void resetPosition() {
+	/** Resets the position and status of the player. */
+	public void reset() {
 		// Set the player to the center of the spawn area
 		TileMapArea spawn = map.getSpawnArea();
 		xWorld = spawn.x + spawn.width * .5f;
 		yWorld = spawn.y + spawn.height * .5f;
+
+		// Make player ready to be launched
+		isReadyForLaunch = true;
 	}
 
 	/**
@@ -76,6 +82,30 @@ public class Player {
 	public void setPosition(float x, float y) {
 		xWorld = x;
 		yWorld = y;
+	}
+
+	/**
+	 * Returns whether player is ready for launch or not.
+	 * 
+	 * @return <code>true</code> if player to be launched
+	 */
+	public boolean isReadyForLaunch() {
+		return isReadyForLaunch;
+	}
+
+	/**
+	 * This method gets called once the player has ended up somewhere.
+	 */
+	public void onStop() {
+		System.out.println("I stopped!");
+		isReadyForLaunch = true;
+	}
+
+	/**
+	 * Marks the player as not ready for launch.
+	 */
+	public void setLaunched() {
+		isReadyForLaunch = false;
 	}
 
 }

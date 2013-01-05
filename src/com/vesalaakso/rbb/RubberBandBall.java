@@ -111,13 +111,15 @@ public class RubberBandBall extends BasicGame {
 			return;
 		}
 
-		// Make the player and rubber band
+		// Make the player
 		player = new Player(map);
-		player.resetPosition();
-		rubberBand = new RubberBand(player);
+		player.reset();
 
 		// Add player to physics
 		physics.addPlayer(player);
+
+		// Add the rubber band to the game
+		rubberBand = new RubberBand(player, physics);
 
 		// Add the painters next
 		addPainters();
