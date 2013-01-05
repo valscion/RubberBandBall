@@ -101,7 +101,7 @@ public class RubberBand {
 		// as the scalar projection of the x- and y-axis vectors and the
 		// diffVector.
 		double radAngleX = Math.toRadians(diffVector.getTheta());
-		double radAngleY = Math.toRadians(diffVector.getTheta() + 90);
+		double radAngleY = Math.toRadians(diffVector.getTheta() - 90);
 
 		float forceX = (float) (Math.cos(radAngleX) * diffVector.length());
 		float forceY = (float) (Math.cos(radAngleY) * diffVector.length());
