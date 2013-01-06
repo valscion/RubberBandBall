@@ -162,7 +162,7 @@ public class TestGame extends BasicGame implements WorldListener {
 	@Override
 	public void init(GameContainer container) throws SlickException {
 		// Load tilemap
-		map = new TiledMap("data/testmap.tmx");
+		map = new TiledMap("data/levels/testmap.tmx");
 
 		backLayer = map.getLayerIndex("back");
 		overLayer = map.getLayerIndex("over");

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="37" height="19" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" source="Tiles.tsx"/>
+ <tileset firstgid="45" source="Special tiles.tsx"/>
+ <layer name="back" width="37" height="19">
+  <data encoding="base64" compression="zlib">
+   eJzt1rEJwDAQQ1EZJ72dZP9Zc9pAhYrD6IPa44EbLwCz0VbtQq9uxKQUk1ZMWjFpxaTlMr21x3CHuUxfbRvusJPfzllMWjTxXzcajZ4fIGIBsA==
+  </data>
+ </layer>
+ <layer name="over" width="37" height="19">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjIJRMApGwSgYBSMByKJheukdTAAA1fwA6Q==
+  </data>
+ </layer>
+ <objectgroup name="areas" width="37" height="19">
+  <object name="SpawnArea" type="spawn" x="576" y="544" width="32" height="32"/>
+ </objectgroup>
+ <layer name="meta" width="37" height="19" opacity="0.5">
+  <data encoding="base64" compression="zlib">
+   eJzTZWBg0B2EeDCBUTcRB0bdRBwYdRNxYNRNxIFRNxEHqOUmYyA2ooI5IEAtN5kAsSEVzAGB4Rx31ATD3U16VDJnoNuSuDAAY2ET9Q==
+  </data>
+ </layer>
+</map>
