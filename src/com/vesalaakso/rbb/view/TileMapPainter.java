@@ -55,8 +55,8 @@ public abstract class TileMapPainter implements Painter {
 		int camTileY = (int) cam.getY() / TileMap.TILE_SIZE;
 
 		// How many pixels will the camera be offset
-		int camOffsetX = (int) (camTileX * TileMap.TILE_SIZE - cam.getX());
-		int camOffsetY = (int) (camTileY * TileMap.TILE_SIZE - cam.getY());
+		int camOffsetX = (int) (camTileX * TileMap.TILE_SIZE - cam.getX() + .5);
+		int camOffsetY = (int) (camTileY * TileMap.TILE_SIZE - cam.getY() + .5);
 
 		// Drawing it now.
 		tmap.render(camOffsetX, camOffsetY, camTileX, camTileY,
