@@ -14,9 +14,11 @@ import org.newdawn.fizzy.Polygon;
 import org.newdawn.fizzy.Rectangle;
 import org.newdawn.fizzy.Shape;
 import org.newdawn.fizzy.StaticBody;
+import org.newdawn.fizzy.Vector;
 import org.newdawn.fizzy.World;
 import org.newdawn.fizzy.WorldListener;
 import org.newdawn.slick.*;
+import org.newdawn.slick.fills.GradientFill;
 import org.newdawn.slick.tiled.TiledMap;
 
 @SuppressWarnings("javadoc")
@@ -46,6 +48,10 @@ public class TestGame extends BasicGame implements WorldListener {
 	private World world;
 
 	private List<Body<?>> bodies = new LinkedList<Body<?>>();
+	
+	private Map<Vector, Float> flashes = new HashMap<Vector, Float>();
+	
+	private Image spaceBgImg;
 
 	public TestGame() {
 		super("Test game");
@@ -54,15 +60,25 @@ public class TestGame extends BasicGame implements WorldListener {
 	@Override
 	public void render(GameContainer container, Graphics g)
 			throws SlickException {
+		// set background to white
+		g.setColor(Color.white);
+
+		g.drawImage(spaceBgImg, -(cameraX + SCREEN_W / 2) * .1f, 
+				-(cameraY + SCREEN_H / 2) * .1f);
+		
+		g.resetTransform();
+		
 		int camTileX = (int) cameraX / TILE_SIZE;
 		int camTileY = (int) cameraY / TILE_SIZE;
 
 		int camOffsetX = (int) (camTileX * TILE_SIZE - cameraX);
 		int camOffsetY = (int) (camTileY * TILE_SIZE - cameraY);
 
+		/*
 		g.setColor(Color.black);
 		g.fillRect(0, 0, SCREEN_W, SCREEN_H);
 		g.setColor(Color.white);
+		*/
 
 
 		map.render(camOffsetX, camOffsetY,
@@ -90,6 +106,29 @@ public class TestGame extends BasicGame implements WorldListener {
 				widthInTiles + 3, heightInTiles + 3,
 				overLayer, false);
 
+		
+		
+		g.translate(-cameraX, -cameraY);
+		for (Map.Entry<Vector, Float> flash : flashes.entrySet()) {
+			float flashX = flash.getKey().x;
+			float flashY = flash.getKey().y;
+			float brightness = flash.getValue();
+			
+			if (brightness <= 0) {
+				continue;
+			}
+			
+			Color startC = new Color(0.0f, 0.0f, 1.0f, brightness);
+			Color endC = new Color(0.0f, 0.0f, 1.0f, 0.0f);
+			
+			GradientFill fill = new GradientFill(0, 0, startC, TILE_SIZE, 0, endC, true);
+			
+			g.fill(new org.newdawn.slick.geom.Rectangle(flashX, flashY, TILE_SIZE, TILE_SIZE), fill);
+			
+			flash.setValue(brightness - .01f);
+		}
+		
+		g.resetTransform();
 
 		drawDebugInfo(g, 50, 10, 15);
 	}
@@ -161,6 +200,12 @@ public class TestGame extends BasicGame implements WorldListener {
 
 	@Override
 	public void init(GameContainer container) throws SlickException {
+		// Load/generate starfield
+		//float[] depths = {1f};
+		//stars = new SimpleStars(container.getWidth(), container.getHeight(), depths);
+		
+		spaceBgImg = new Image("data/spacebg.png");
+		
 		// Load tilemap
 		map = new TiledMap("data/levels/testmap.tmx");
 
@@ -329,7 +374,17 @@ public class TestGame extends BasicGame implements WorldListener {
 
 	@Override
 	public void collided(CollisionEvent event) {
-		// TODO: Something here?
+		Body<?> otherBody = event.getBodyA();
+		if (otherBody == ball) {
+			otherBody = event.getBodyB();
+		}
+		
+		float x = otherBody.getX() +
+				event.getContact().getReferencePoint().x;
+		float y = otherBody.getY() + 
+				event.getContact().getReferencePoint().y;
+		
+		flashes.put(new Vector(x, y), 1.0f);
 	}
 
 	@Override
