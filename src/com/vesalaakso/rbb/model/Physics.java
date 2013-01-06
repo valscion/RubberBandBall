@@ -44,7 +44,10 @@ public class Physics implements Updateable {
 	private Player player;
 
 	/** The body of the player. */
-	private Body<Circle> playerBody = null;
+	private Body<Circle> playerBody;
+
+	/** Should we simulate friction on every update call */
+	private boolean isSimulatingFriction;
 
 	/**
 	 * Constructs the physics engine and boots it up with default gravity.
@@ -70,6 +73,20 @@ public class Physics implements Updateable {
 			if (!player.isReadyForLaunch() && playerBody.isSleeping()) {
 				// We've arrived somewhere. Control to the player, ahoy!
 				player.onStop();
+			}
+			else if (isSimulatingFriction && !playerBody.isSleeping()) {
+				// Simulate friction against the body.
+				float angVel = playerBody.getAngularVelocity();
+				int dir = playerBody.getXVelocity() > 0 ? -1 : 1;
+
+				if (angVel > -.1f && angVel < .1f) {
+					// Ok, a velocity smaller than 0.1f will be considered
+					// stopped.
+					playerBody.setAngularVelocity(0);
+				}
+				else {
+					playerBody.applyTorque(dir * 1000f);
+				}
 			}
 		}
 	}
@@ -198,16 +215,12 @@ public class Physics implements Updateable {
 		// hits a wall. 0.9f is the default.
 		float restitution = 0.3f;
 
-		// Friction plays just a little role in regards to circles but it still
-		// has its uses. Default value for friction is 0.1f.
-		float friction = 10f;
+		// Since friction doesn't do anything when we're creating a circle, we
+		// simulate it ourselves elsewhere. Angular damping specifies the amount
+		// of spinning force the circle will lose over time at every update.
+		float angularDamping = 0.1f;
 
-		// Since friction doesn't do much when we're creating a circle, we use
-		// angular damping instead which slows the circles spinning down.
-		// Max value is 1.0f
-		float angularDamping = 0.9f;
-
-		Circle shape = new Circle(radius, density, restitution, friction);
+		Circle shape = new Circle(radius, density, restitution);
 		playerBody =
 				new DynamicBody<Circle>(shape, player.getX(), player.getY());
 		playerBody.setAngularDamping(angularDamping);
@@ -215,7 +228,7 @@ public class Physics implements Updateable {
 		// Add the player to the world
 		world.add(playerBody);
 		world.addBodyListener(playerBody,
-				new PlayerCollisionListener(player, particleManager));
+				new PlayerCollisionListener(this, player, particleManager));
 
 		// Also, make the player not yet take part in any collision.
 		playerBody.setActive(false);
@@ -259,5 +272,38 @@ public class Physics implements Updateable {
 	public void launchPlayer(float forceX, float forceY) {
 		playerBody.setActive(true);
 		playerBody.setVelocity(forceX, forceY);
+		isSimulatingFriction = false;
+	}
+
+	/**
+	 * Tries to simulate a rolling friction for the player body.
+	 * 
+	 * @param otherBody
+	 *            the <code>Body</code> in to which the player collides
+	 *            currently.
+	 */
+	public void startSimulatingFriction(Body<?> otherBody) {
+		CollidableTile tile = bodyTileMap.get(otherBody);
+		TileShape tileShape = tile.getTileShape();
+
+		if (tileShape == TileShape.RECTANGLE) {
+			// For now, only simulate friction for rectangles. And only if the
+			// rectangle is below us.
+			if (playerBody.getY() < otherBody.getY()) {
+				System.out.println("Starting friction simulation");
+				isSimulatingFriction = true;
+			}
+		}
+	}
+
+	/**
+	 * Stops the rolling friction simulation, called when player is no longer
+	 * colliding to the previous simulated body.
+	 */
+	public void stopSimulatingFriction() {
+		if (isSimulatingFriction) {
+			System.out.println("Stopped friction simulation");
+			isSimulatingFriction = false;
+		}
 	}
 }
