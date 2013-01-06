@@ -45,6 +45,9 @@ public class RubberBandPainter implements Painter {
 			return;
 		}
 
+		// Rubber band will be drawn anti-aliased.
+		g.setAntiAlias(true);
+
 		Vector2f p1 = rubberBand.getStartPoint();
 		Vector2f p2 = rubberBand.getEndPoint();
 
@@ -56,6 +59,9 @@ public class RubberBandPainter implements Painter {
 		g.drawLine(p1.x, p1.y, p2.x, p2.y);
 
 		g.setLineWidth(oldLineWidth);
+
+		// Reset anti-aliasing
+		g.setAntiAlias(false);
 	}
 
 }
