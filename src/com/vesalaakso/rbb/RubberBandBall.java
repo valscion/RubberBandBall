@@ -27,6 +27,7 @@ import com.vesalaakso.rbb.view.ParticleSystemPainter;
 import com.vesalaakso.rbb.view.PhysicsPainter;
 import com.vesalaakso.rbb.view.PlayerPainter;
 import com.vesalaakso.rbb.view.RubberBandPainter;
+import com.vesalaakso.rbb.view.TileMapAreaPainter;
 import com.vesalaakso.rbb.view.TileMapBackLayerPainter;
 import com.vesalaakso.rbb.view.TileMapOverLayerPainter;
 
@@ -72,6 +73,7 @@ public class RubberBandBall extends BasicGame {
 
 	/** A helper method which adds all the painters in the correct order. */
 	private void addPainters() {
+		painterContainer.addPainter(new TileMapAreaPainter(map));
 		painterContainer.addPainter(new TileMapBackLayerPainter(map));
 		painterContainer.addPainter(new PlayerPainter(player));
 		painterContainer.addPainter(new TileMapOverLayerPainter(map));

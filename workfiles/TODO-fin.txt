@@ -1,7 +1,7 @@
 TODO:
 
-- Suoja-alueet erinäköisiksi ja toimimaan
-- Sama alkualueelle ja loppualueelle
+- Suoja-alueet erinäköisiksi ja toimimaan - DONE
+- Sama alkualueelle ja loppualueelle - DONE
 - Tasojen välillä siirtyminen
 - Pausevalikko
 - Alkuvalikko
