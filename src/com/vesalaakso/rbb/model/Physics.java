@@ -321,6 +321,7 @@ public class Physics implements Updateable, MapChangeListener {
 		for (Body<?> mapBody : bodyTileMap.keySet()) {
 			world.remove(mapBody);
 		}
+		bodyTileMap.clear();
 		if (playerBody != null) {
 			world.remove(playerBody);
 		}

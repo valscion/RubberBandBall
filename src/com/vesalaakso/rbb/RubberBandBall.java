@@ -178,9 +178,6 @@ public class RubberBandBall extends BasicGame {
 			throw new SlickException("Failed to change to the first map.", e);
 		}
 
-		// Set the camera at first to players position
-		Camera.get().setPosition(player.getX(), player.getY());
-
 		// Finally add all objects which hook to the update()-method.
 		addUpdateables();
 	}
@@ -197,8 +194,16 @@ public class RubberBandBall extends BasicGame {
 			throws SlickException {
 		// The game was not meant to last forever, my friend.
 		if (stopAtNextUpdate) {
-			container.exit();
-			return;
+			// container.exit();
+			// Ha-ha! Fooled you! Change level instead :)
+			try {
+				mapChanger.changeMap(mapContainer.getMap(), new TileMap(3));
+			}
+			catch (MapException e) {
+				Log.error("Failed to change the map.");
+				throw new SlickException("Failed to change the map.", e);
+			}
+			stopAtNextUpdate = false;
 		}
 
 		// Update everything that wants to be updated.
