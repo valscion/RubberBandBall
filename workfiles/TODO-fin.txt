@@ -1,0 +1,13 @@
+TODO:
+
+- Suoja-alueet erinäköisiksi ja toimimaan
+- Sama alkualueelle ja loppualueelle
+- Tasojen välillä siirtyminen
+- Pausevalikko
+- Alkuvalikko
+- Ohjeet
+- Kuva pelaajalle
+- Piikit tappamaan
+- Lisää tasoja
+- Partikkelimanagerista efektimanageri -> äänet myös
+- Taustamusiikki
