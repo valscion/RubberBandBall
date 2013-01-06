@@ -17,6 +17,7 @@ import com.vesalaakso.rbb.controller.MapChanger;
 import com.vesalaakso.rbb.controller.MenuKeyController;
 import com.vesalaakso.rbb.controller.RubberBandController;
 import com.vesalaakso.rbb.controller.Updateable;
+import com.vesalaakso.rbb.model.Background;
 import com.vesalaakso.rbb.model.Camera;
 import com.vesalaakso.rbb.model.ParticleManager;
 import com.vesalaakso.rbb.model.Physics;
@@ -25,6 +26,7 @@ import com.vesalaakso.rbb.model.RubberBand;
 import com.vesalaakso.rbb.model.TileMap;
 import com.vesalaakso.rbb.model.TileMapContainer;
 import com.vesalaakso.rbb.model.exceptions.MapException;
+import com.vesalaakso.rbb.view.BackgroundPainter;
 import com.vesalaakso.rbb.view.PainterContainer;
 import com.vesalaakso.rbb.view.ParticleSystemPainter;
 import com.vesalaakso.rbb.view.PhysicsPainter;
@@ -79,6 +81,9 @@ public class RubberBandBall extends BasicGame {
 	/** Of course we need physics, here it is! */
 	private Physics physics;
 
+	/** And some eye candy. */
+	private Background background;
+
 	/** If the game should stop at next update()-call, this flag knows. */
 	private boolean stopAtNextUpdate;
 
@@ -89,6 +94,7 @@ public class RubberBandBall extends BasicGame {
 
 	/** A helper method which adds all the painters in the correct order. */
 	private void addPainters() {
+		painterContainer.addPainter(new BackgroundPainter(background));
 		painterContainer.addPainter(new TileMapAreaPainter(mapContainer));
 		painterContainer.addPainter(new TileMapBackLayerPainter(mapContainer));
 		painterContainer.addPainter(new PlayerPainter(player));
@@ -124,6 +130,7 @@ public class RubberBandBall extends BasicGame {
 	private void addUpdateables() {
 		updateables.add(inputMaster);
 		updateables.add(physics);
+		updateables.add(background);
 		updateables.add(particleManager);
 	}
 
@@ -148,6 +155,9 @@ public class RubberBandBall extends BasicGame {
 		// Remove the default input handlers, as input handling is done via
 		// InputMaster class and not this.
 		container.getInput().removeAllListeners();
+
+		// Load the background image
+		background = new Background();
 
 		// Construct the object representing the player
 		player = new Player();

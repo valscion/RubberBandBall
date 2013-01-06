@@ -120,6 +120,24 @@ public class Camera {
 	}
 
 	/**
+	 * Gets the half width of the screen <code>Camera</code> is used for.
+	 * 
+	 * @return half width of the screen
+	 */
+	public int getHalfScreenWidth() {
+		return halfWidth;
+	}
+
+	/**
+	 * Gets the half height of the screen <code>Camera</code> is used for.
+	 * 
+	 * @return half height of the screen
+	 */
+	public int getHalfScreenHeight() {
+		return halfHeight;
+	}
+
+	/**
 	 * Translates the camera according to the given coordinates.
 	 * 
 	 * @param moveX
