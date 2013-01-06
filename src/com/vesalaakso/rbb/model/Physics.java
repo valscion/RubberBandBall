@@ -46,9 +46,6 @@ public class Physics implements Updateable {
 	/** The body of the player. */
 	private Body<Circle> playerBody = null;
 
-	/** Whether the player has been launched yet. */
-	private boolean isPlayerLaunched;
-
 	/**
 	 * Constructs the physics engine and boots it up with default gravity.
 	 * 
@@ -70,9 +67,8 @@ public class Physics implements Updateable {
 		if (player != null) {
 			player.setPosition(playerBody.getX(), playerBody.getY());
 
-			if (isPlayerLaunched && playerBody.isSleeping()) {
+			if (!player.isReadyForLaunch() && playerBody.isSleeping()) {
 				// We've arrived somewhere. Control to the player, ahoy!
-				isPlayerLaunched = false;
 				player.onStop();
 			}
 		}
@@ -261,7 +257,6 @@ public class Physics implements Updateable {
 	 * @param forceY the power of the force in y-axis
 	 */
 	public void launchPlayer(float forceX, float forceY) {
-		isPlayerLaunched = true;
 		playerBody.setActive(true);
 		playerBody.setVelocity(forceX, forceY);
 	}
