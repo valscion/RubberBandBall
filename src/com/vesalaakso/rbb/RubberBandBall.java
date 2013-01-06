@@ -14,6 +14,7 @@ import org.newdawn.slick.util.Log;
 import com.vesalaakso.rbb.controller.CameraController;
 import com.vesalaakso.rbb.controller.InputMaster;
 import com.vesalaakso.rbb.controller.MapChanger;
+import com.vesalaakso.rbb.controller.MenuKeyController;
 import com.vesalaakso.rbb.controller.RubberBandController;
 import com.vesalaakso.rbb.controller.Updateable;
 import com.vesalaakso.rbb.model.Camera;
@@ -78,6 +79,9 @@ public class RubberBandBall extends BasicGame {
 	/** Of course we need physics, here it is! */
 	private Physics physics;
 
+	/** If the game should stop at next update()-call, this flag knows. */
+	private boolean stopAtNextUpdate;
+
 	/** Constructs a new game. */
 	public RubberBandBall() {
 		super("Rubber band ball");
@@ -98,6 +102,7 @@ public class RubberBandBall extends BasicGame {
 	private void addControllers(Input input) {
 		inputMaster = new InputMaster(input);
 		inputMaster.addKeyListener(new CameraController(player));
+		inputMaster.addKeyListener(new MenuKeyController(this));
 		inputMaster.addMouseListener(new RubberBandController(rubberBand));
 	}
 
@@ -120,6 +125,13 @@ public class RubberBandBall extends BasicGame {
 		updateables.add(inputMaster);
 		updateables.add(physics);
 		updateables.add(particleManager);
+	}
+
+	/**
+	 * Makes the game quit on the next update-loop.
+	 */
+	public void stop() {
+		stopAtNextUpdate = true;
 	}
 
 	/**
@@ -183,6 +195,12 @@ public class RubberBandBall extends BasicGame {
 	@Override
 	public void update(GameContainer container, int delta)
 			throws SlickException {
+		// The game was not meant to last forever, my friend.
+		if (stopAtNextUpdate) {
+			container.exit();
+			return;
+		}
+
 		// Update everything that wants to be updated.
 		for (Updateable u : updateables) {
 			u.update(delta);

@@ -41,6 +41,7 @@ public class CameraController extends KeyAdapter implements Updateable {
 			case CAMERA_MOVE_RIGHT: cameraMoveX = 1.0f; break;
 			case CAMERA_MOVE_UP: cameraMoveY = -1.0f; break;
 			case CAMERA_MOVE_DOWN: cameraMoveY = 1.0f; break;
+			default: // Not ours.
 		}
 	}
 
@@ -56,6 +57,7 @@ public class CameraController extends KeyAdapter implements Updateable {
 			case CAMERA_MOVE_RIGHT: cameraMoveX = 0; break;
 			case CAMERA_MOVE_UP: // Falls below
 			case CAMERA_MOVE_DOWN: cameraMoveY = 0; break;
+			default: // Not ours.
 		}
 	}
 

@@ -17,7 +17,9 @@ public enum Key {
 	/** Camera movement in negative y-direction, default key: W */
 	CAMERA_MOVE_UP(Input.KEY_W),
 	/** Camera movement in positive y-direction, default key: S */
-	CAMERA_MOVE_DOWN(Input.KEY_S);
+	CAMERA_MOVE_DOWN(Input.KEY_S),
+	/** Goes back in a menu or opens pause menu, default key: ESCAPE */
+	GO_BACK(Input.KEY_ESCAPE);
 
 	/** The Input key constant mapped to the enum */
 	public final int id;
