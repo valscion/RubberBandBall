@@ -1,12 +1,14 @@
 package com.vesalaakso.rbb.model;
 
+import com.vesalaakso.rbb.controller.MapChangeListener;
+
 
 /**
  * Represents the ball player moves.
  * 
  * @author Vesa Laakso
  */
-public class Player {
+public class Player implements MapChangeListener {
 
 	/** The map <code>Player</code> belongs to. */
 	private TileMap map;
@@ -24,17 +26,15 @@ public class Player {
 	private boolean isReadyForLaunch;
 
 	/**
-	 * Constructs the <code>Player</code> and associates it with the given map.
-	 * 
-	 * @param map
-	 *            the map to associate the new <code>Player</code> with
+	 * Constructs the <code>Player</code>. The new Player is pretty much useless
+	 * and dangerous before it has a map set, so it should not be used before
+	 * the {@link #onMapChange(TileMap, TileMap)} method is called.
 	 */
-	public Player(TileMap map) {
-		this.map = map;
+	public Player() {
 	}
 
-	/** Resets the position and status of the player. */
-	public void reset() {
+	/** A helper method to reset the position and status of the player. */
+	private void reset() {
 		// Set the player to the center of the spawn area
 		TileMapArea spawn = map.getSpawnArea();
 		xWorld = spawn.x + spawn.width * .5f;
@@ -106,6 +106,16 @@ public class Player {
 	 */
 	public void setLaunched() {
 		isReadyForLaunch = false;
+	}
+
+	/**
+	 * Resets the state of the player when the map is changed.
+	 * @see MapChangeListener#onMapChange(TileMap, TileMap)
+	 */
+	@Override
+	public void onMapChange(TileMap oldMap, TileMap newMap) {
+		map = newMap;
+		reset();
 	}
 
 }

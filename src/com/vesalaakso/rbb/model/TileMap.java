@@ -17,6 +17,9 @@ public class TileMap {
 	/** Size of a single tile, in pixels. */
 	public static final int TILE_SIZE = 32;
 
+	/** Is the map initialized yet */
+	private boolean isInitialized = false;
+
 	/** The {@link org.newdawn.slick.tiled.TiledMap} this instance represents */
 	private TiledMap map;
 
@@ -49,7 +52,7 @@ public class TileMap {
 
 	/** Collidable tiles in this map */
 	private List<CollidableTile> collidableTiles =
-			new ArrayList<CollidableTile>();
+		new ArrayList<CollidableTile>();
 
 	/**
 	 * Constructs a new TileMap. You need to call {@link #init}-method before
@@ -96,6 +99,19 @@ public class TileMap {
 		// Store everything that is storable in the meta layer, i.e. save the
 		// collidable tiles
 		saveAllSpecialTiles();
+
+		// The map is initialized.
+		isInitialized = true;
+	}
+
+	/**
+	 * Returns the flag indicating whether the map is initialized or not.
+	 * 
+	 * @return <code>true</code> if the {@link #init()}-method has been called
+	 *         successfully.
+	 */
+	public boolean isInitialized() {
+		return isInitialized;
 	}
 
 	/** Loops through every object in the map and stores them. */
@@ -103,7 +119,7 @@ public class TileMap {
 		for (int i = 0, iMax = map.getObjectGroupCount(); i < iMax; i++) {
 			for (int j = 0, jMax = map.getObjectCount(i); j < jMax; j++) {
 				TileMapArea area = new TileMapArea(map, i, j);
-				
+
 				String typeStr = area.type.toUpperCase();
 				try {
 					TileMapAreaType areaType = TileMapAreaType.valueOf(typeStr);
@@ -139,8 +155,8 @@ public class TileMap {
 					}
 				}
 				catch (IllegalArgumentException e) {
-					throw new MapException(
-							"Invalid object type in level " + level, e);
+					throw new MapException("Invalid object type in level "
+							+ level, e);
 				}
 			}
 		}
@@ -156,8 +172,8 @@ public class TileMap {
 			for (int y = 0; y < map.getHeight(); y++) {
 				int tileID = map.getTileId(x, y, metaLayer);
 				String value =
-						map.getTileProperty(tileID, "collision", "false");
-				if (! value.equals("false")) {
+					map.getTileProperty(tileID, "collision", "false");
+				if (!value.equals("false")) {
 					try {
 						CollidableTile tile = new CollidableTile(x, y, this);
 						collidableTiles.add(tile);

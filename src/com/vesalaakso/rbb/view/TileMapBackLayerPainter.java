@@ -2,7 +2,7 @@ package com.vesalaakso.rbb.view;
 
 import org.newdawn.slick.Graphics;
 
-import com.vesalaakso.rbb.model.TileMap;
+import com.vesalaakso.rbb.model.TileMapContainer;
 
 /**
  * Handles the painting of the back layer of a map.
@@ -15,10 +15,12 @@ public class TileMapBackLayerPainter extends TileMapPainter {
 	 * Constructs a new {@link TileMapBackLayerPainter} and initializes the map
 	 * it draws.
 	 * 
-	 * @param map the map which will be drawn
+	 * @param mapContainer
+	 *            The {@link TileMapContainer} which will be queried to get the
+	 *            current map to be drawn.
 	 */
-	public TileMapBackLayerPainter(TileMap map) {
-		this.setMap(map);
+	public TileMapBackLayerPainter(TileMapContainer mapContainer) {
+		super(mapContainer);
 	}
 
 	/**

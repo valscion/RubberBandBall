@@ -13,6 +13,7 @@ import org.newdawn.slick.util.Log;
 
 import com.vesalaakso.rbb.controller.CameraController;
 import com.vesalaakso.rbb.controller.InputMaster;
+import com.vesalaakso.rbb.controller.MapChanger;
 import com.vesalaakso.rbb.controller.RubberBandController;
 import com.vesalaakso.rbb.controller.Updateable;
 import com.vesalaakso.rbb.model.Camera;
@@ -21,6 +22,7 @@ import com.vesalaakso.rbb.model.Physics;
 import com.vesalaakso.rbb.model.Player;
 import com.vesalaakso.rbb.model.RubberBand;
 import com.vesalaakso.rbb.model.TileMap;
+import com.vesalaakso.rbb.model.TileMapContainer;
 import com.vesalaakso.rbb.model.exceptions.MapException;
 import com.vesalaakso.rbb.view.PainterContainer;
 import com.vesalaakso.rbb.view.ParticleSystemPainter;
@@ -36,8 +38,18 @@ import com.vesalaakso.rbb.view.TileMapOverLayerPainter;
  */
 public class RubberBandBall extends BasicGame {
 
-	/** The current tile map */
-	private TileMap map;
+	/**
+	 * The current map is always stored in this <code>TileMapContainer</code>.
+	 * The underlying <code>TileMap</code> object may change but this object
+	 * stays.
+	 */
+	private final TileMapContainer mapContainer = new TileMapContainer();
+
+	/**
+	 * The <code>MapChanger</code> responsible for changing the map and
+	 * notifying everything that needs to be notified.
+	 */
+	private MapChanger mapChanger = new MapChanger();
 
 	/**
 	 * A <code>PainterContainer</code> which stores everything that can be
@@ -64,7 +76,7 @@ public class RubberBandBall extends BasicGame {
 	private ParticleManager particleManager = new ParticleManager();
 
 	/** Of course we need physics, here it is! */
-	private Physics physics = new Physics(particleManager);
+	private Physics physics;
 
 	/** Constructs a new game. */
 	public RubberBandBall() {
@@ -73,10 +85,10 @@ public class RubberBandBall extends BasicGame {
 
 	/** A helper method which adds all the painters in the correct order. */
 	private void addPainters() {
-		painterContainer.addPainter(new TileMapAreaPainter(map));
-		painterContainer.addPainter(new TileMapBackLayerPainter(map));
+		painterContainer.addPainter(new TileMapAreaPainter(mapContainer));
+		painterContainer.addPainter(new TileMapBackLayerPainter(mapContainer));
 		painterContainer.addPainter(new PlayerPainter(player));
-		painterContainer.addPainter(new TileMapOverLayerPainter(map));
+		painterContainer.addPainter(new TileMapOverLayerPainter(mapContainer));
 		painterContainer.addPainter(new RubberBandPainter(rubberBand));
 		painterContainer.addPainter(new ParticleSystemPainter(particleManager));
 		painterContainer.addPainter(new PhysicsPainter(physics));
@@ -89,6 +101,20 @@ public class RubberBandBall extends BasicGame {
 		inputMaster.addMouseListener(new RubberBandController(rubberBand));
 	}
 
+	/**
+	 * A helper method for hooking everything that should be hooked to map
+	 * changes.
+	 */
+	private void addMapChangerHooks() {
+		// The first hook must be for the mapContainer!
+		mapChanger.addListener(mapContainer);
+
+		mapChanger.addListener(player);
+		mapChanger.addListener(rubberBand);
+		mapChanger.addListener(physics);
+		mapChanger.addListener(particleManager);
+	}
+
 	/** A helper method which adds all updateables. */
 	private void addUpdateables() {
 		updateables.add(inputMaster);
@@ -96,6 +122,12 @@ public class RubberBandBall extends BasicGame {
 		updateables.add(particleManager);
 	}
 
+	/**
+	 * From slick: Initialise the game. This can be used to load static
+	 * resources. It's called before the game loop starts
+	 * 
+	 * @see org.newdawn.slick.BasicGame#init(org.newdawn.slick.GameContainer)
+	 */
 	@Override
 	public void init(GameContainer container) throws SlickException {
 		// First things first. Initialize the camera properly.
@@ -105,25 +137,11 @@ public class RubberBandBall extends BasicGame {
 		// InputMaster class and not this.
 		container.getInput().removeAllListeners();
 
-		// Try to load the map and everything related to it.
-		try {
-			map = new TileMap(3);
-			map.init();
-			physics.addCollidablesFromMap(map);
-		}
-		catch (MapException e) {
-			Log.error(e.getMessage(), e);
-			container.exit();
-			return;
-		}
+		// Construct the object representing the player
+		player = new Player();
 
-		// Make the player and set cameras position to its position
-		player = new Player(map);
-		player.reset();
-		Camera.get().setPosition(player.getX(), player.getY());
-
-		// Add player to physics
-		physics.addPlayer(player);
+		// Physics world, too
+		physics = new Physics(player, particleManager);
 
 		// Add the rubber band to the game
 		rubberBand = new RubberBand(player, physics);
@@ -134,10 +152,34 @@ public class RubberBandBall extends BasicGame {
 		// And then the controllers
 		addControllers(container.getInput());
 
+		// When map changes, something needs to be modified. Set it so.
+		addMapChangerHooks();
+
+		// Now create the first map and use the hooks we just initialized to
+		// initialize the game.
+		try {
+			mapChanger.changeMap(null, new TileMap(3));
+		}
+		catch (MapException e) {
+			// So we couldn't load even the first map... that's sad.
+			Log.error("Failed to change to the first map.");
+			throw new SlickException("Failed to change to the first map.", e);
+		}
+
+		// Set the camera at first to players position
+		Camera.get().setPosition(player.getX(), player.getY());
+
 		// Finally add all objects which hook to the update()-method.
 		addUpdateables();
 	}
 
+	/**
+	 * From slick: Update the game logic here. No rendering should take place in
+	 * this method though it won't do any harm.
+	 * 
+	 * @see org.newdawn.slick.BasicGame#update(org.newdawn.slick.GameContainer,
+	 *      int)
+	 */
 	@Override
 	public void update(GameContainer container, int delta)
 			throws SlickException {
@@ -147,6 +189,16 @@ public class RubberBandBall extends BasicGame {
 		}
 	}
 
+	/**
+	 * From slick: Render the game's screen here.
+	 * 
+	 * @param g
+	 *            The graphics context that can be used to render. However,
+	 *            normal rendering routines can also be used.
+	 * 
+	 * @see org.newdawn.slick.Game#render(org.newdawn.slick.GameContainer,
+	 *      org.newdawn.slick.Graphics)
+	 */
 	@Override
 	public void render(GameContainer container, Graphics g)
 			throws SlickException {

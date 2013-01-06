@@ -4,31 +4,26 @@ import org.newdawn.slick.tiled.TiledMap;
 
 import com.vesalaakso.rbb.model.Camera;
 import com.vesalaakso.rbb.model.TileMap;
+import com.vesalaakso.rbb.model.TileMapContainer;
 
 /**
  * Handles the drawing of the tile map.
  */
 public abstract class TileMapPainter implements Painter {
 
-	/** The {@link TileMap} we want to draw. */
-	private TileMap map;
+	/**
+	 * The {@link TileMapContainer} which will be queried to get the current map
+	 * to be drawn.
+	 */
+	private TileMapContainer mapContainer;
 
 	/**
 	 * An empty constructor with no access modifier to prevent other than
 	 * the classes in this package instantiating this class.
+	 * @param mapContainer 
 	 */
-	TileMapPainter() {
-	}
-
-	/**
-	 * Sets the {@link TileMap} that will be drawn when {@link #paint} gets
-	 * called.
-	 * 
-	 * @param map
-	 *            the new {@link TileMap} that is to be drawn
-	 */
-	public void setMap(TileMap map) {
-		this.map = map;
+	TileMapPainter(TileMapContainer mapContainer) {
+		this.mapContainer = mapContainer;
 	}
 
 	/**
@@ -37,7 +32,7 @@ public abstract class TileMapPainter implements Painter {
 	 * @return current {@link TileMap} that is to be drawn.
 	 */
 	protected TileMap getMap() {
-		return map;
+		return mapContainer.getMap();
 	}
 
 	/**
@@ -48,6 +43,7 @@ public abstract class TileMapPainter implements Painter {
 	 */
 	protected void drawLayer(int layer) {
 		Camera cam = Camera.get();
+		TileMap map = mapContainer.getMap();
 		TiledMap tmap = map.getTiledMap();
 
 		// Calculate the top left tile that will be drawn first

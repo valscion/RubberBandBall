@@ -2,13 +2,15 @@ package com.vesalaakso.rbb.model;
 
 import org.newdawn.slick.geom.Vector2f;
 
+import com.vesalaakso.rbb.controller.MapChangeListener;
+
 /**
  * The model for the rubber band which is pulled from the player and defines the
  * starting direction and force the ball will be launched.
  * 
  * @author Vesa Laakso
  */
-public class RubberBand {
+public class RubberBand implements MapChangeListener {
 
 	/** The <code>Player</code> from which the rubber band will be pulled */
 	private Player player;
@@ -158,5 +160,17 @@ public class RubberBand {
 	 */
 	public Vector2f getEndPoint() {
 		return currentEndPoint;
+	}
+
+	/**
+	 * Resets the rubber band when map is changed.
+	 * 
+	 * @see MapChangeListener#onMapChange(TileMap, TileMap)
+	 */
+	@Override
+	public void onMapChange(TileMap oldMap, TileMap newMap) {
+		startPoint = null;
+		currentEndPoint = null;
+		isPulled = false;
 	}
 }

@@ -11,9 +11,11 @@ import org.newdawn.fizzy.Polygon;
 import org.newdawn.fizzy.Rectangle;
 import org.newdawn.fizzy.StaticBody;
 import org.newdawn.fizzy.World;
+import org.newdawn.slick.util.Log;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import com.vesalaakso.rbb.controller.MapChangeListener;
 import com.vesalaakso.rbb.controller.PlayerCollisionListener;
 import com.vesalaakso.rbb.controller.Updateable;
 import com.vesalaakso.rbb.model.exceptions.MapException;
@@ -23,7 +25,7 @@ import com.vesalaakso.rbb.model.exceptions.MapException;
  * 
  * @author Vesa Laakso
  */
-public class Physics implements Updateable {
+public class Physics implements Updateable, MapChangeListener {
 
 	/** Default gravity */
 	private static final float DEFAULT_GRAVITY = 9.81f;
@@ -46,17 +48,23 @@ public class Physics implements Updateable {
 	/** The body of the player. */
 	private Body<Circle> playerBody;
 
+	/** The listener listening for collisions of playerBody */
+	private PlayerCollisionListener playerCollisionListener;
+
 	/** Should we simulate friction on every update call */
 	private boolean isSimulatingFriction;
 
 	/**
 	 * Constructs the physics engine and boots it up with default gravity.
 	 * 
+	 * @param player
+	 *            the <code>Player</code> bouncing around in the world.
 	 * @param particleManager
 	 *            the <code>ParticleManager</code> responsible for all the nice
 	 *            and juicy particles
 	 */
-	public Physics(ParticleManager particleManager) {
+	public Physics(Player player, ParticleManager particleManager) {
+		this.player = player;
 		this.particleManager = particleManager;
 		this.world = new World(DEFAULT_GRAVITY);
 	}
@@ -189,19 +197,8 @@ public class Physics implements Updateable {
 		return triangle;
 	}
 
-	/**
-	 * Adds the player to the physics engine.
-	 * 
-	 * @param player
-	 *            the <code>Player</code>
-	 * @throws NullPointerException
-	 *             if the given player is <code>nullq</code>.
-	 */
-	public void addPlayer(Player player) {
-		if (player == null) {
-			throw new NullPointerException("player was null");
-		}
-		this.player = player;
+	/** A helper method to add the player to the world. */
+	private void addPlayer() {
 
 		// Values which control the physics object representing the player.
 		// These are specified here in order to get a better picture of all the
@@ -227,8 +224,11 @@ public class Physics implements Updateable {
 
 		// Add the player to the world
 		world.add(playerBody);
-		world.addBodyListener(playerBody,
-				new PlayerCollisionListener(this, player, particleManager));
+
+		// Initialize the listener and add it to the world
+		playerCollisionListener =
+				new PlayerCollisionListener(this, player, particleManager);
+		world.addBodyListener(playerBody, playerCollisionListener);
 
 		// Also, make the player not yet take part in any collision.
 		playerBody.setActive(false);
@@ -266,8 +266,10 @@ public class Physics implements Updateable {
 	/**
 	 * Launches the player by applying a force to him.
 	 * 
-	 * @param forceX the power of the force in x-axis
-	 * @param forceY the power of the force in y-axis
+	 * @param forceX
+	 *            the power of the force in x-axis
+	 * @param forceY
+	 *            the power of the force in y-axis
 	 */
 	public void launchPlayer(float forceX, float forceY) {
 		playerBody.setActive(true);
@@ -305,5 +307,39 @@ public class Physics implements Updateable {
 			System.out.println("Stopped friction simulation");
 			isSimulatingFriction = false;
 		}
+	}
+
+	/**
+	 * When a map changes, create a new world simulating the physics and reset
+	 * the player.
+	 * 
+	 * @see MapChangeListener#onMapChange(TileMap, TileMap)
+	 */
+	@Override
+	public void onMapChange(TileMap oldMap, TileMap newMap) {
+		// Remove old bodies
+		for (Body<?> mapBody : bodyTileMap.keySet()) {
+			world.remove(mapBody);
+		}
+		if (playerBody != null) {
+			world.remove(playerBody);
+		}
+
+		// Reset state
+		isSimulatingFriction = false;
+
+		// Re-initialize for the new map.
+		try {
+			addCollidablesFromMap(newMap);
+		}
+		catch (MapException e) {
+			Log.error("There was a problem with changing map in Physics", e);
+		}
+
+		// Re-initialize the player.
+		if (playerCollisionListener != null) {
+			world.removeListener(playerCollisionListener);
+		}
+		addPlayer();
 	}
 }

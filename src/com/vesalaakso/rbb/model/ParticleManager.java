@@ -10,6 +10,7 @@ import org.newdawn.slick.particles.ParticleIO;
 import org.newdawn.slick.particles.ParticleSystem;
 import org.newdawn.slick.util.Log;
 
+import com.vesalaakso.rbb.controller.MapChangeListener;
 import com.vesalaakso.rbb.controller.Updateable;
 
 /**
@@ -17,7 +18,7 @@ import com.vesalaakso.rbb.controller.Updateable;
  * 
  * @author Vesa Laakso
  */
-public class ParticleManager implements Updateable {
+public class ParticleManager implements Updateable, MapChangeListener {
 
 	/** Maximum amount of explosions */
 	private static final int MAX_EXPLOSIONS = 40;
@@ -106,6 +107,20 @@ public class ParticleManager implements Updateable {
 			systems.add(explosionSystems.get(i));
 		}
 		return systems;
+	}
+
+	/**
+	 * When map changes, reset all explosions.
+	 * 
+	 * @see MapChangeListener#onMapChange(TileMap, TileMap)
+	 */
+	@Override
+	public void onMapChange(TileMap oldMap, TileMap newMap) {
+		for (int i = 0; i < runningExplosionSystems; i++) {
+			explosionSystems.get(i).reset();
+		}
+		runningExplosionSystems = 0;
+		nextExplosionID = 0;
 	}
 
 }

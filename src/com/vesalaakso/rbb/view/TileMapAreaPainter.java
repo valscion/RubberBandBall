@@ -8,6 +8,7 @@ import org.newdawn.slick.Graphics;
 import com.vesalaakso.rbb.model.Camera;
 import com.vesalaakso.rbb.model.TileMap;
 import com.vesalaakso.rbb.model.TileMapArea;
+import com.vesalaakso.rbb.model.TileMapContainer;
 
 /**
  * A {@link Painter} used to draw the special areas of the map in a pretty way.
@@ -16,8 +17,11 @@ import com.vesalaakso.rbb.model.TileMapArea;
  */
 public class TileMapAreaPainter implements Painter {
 
-	/** The {@link TileMap} we want to draw areas from. */
-	private TileMap map;
+	/**
+	 * The {@link TileMapContainer} which will be queried to get the current map
+	 * to be drawn.
+	 */
+	private TileMapContainer mapContainer;
 
 	/** The color used to draw safe areas */
 	private static Color colorSafeArea = calcSafeAreaColor();
@@ -25,11 +29,12 @@ public class TileMapAreaPainter implements Painter {
 	/**
 	 * Constructs a new painter and associates it with the given map.
 	 * 
-	 * @param map
-	 *            the <code>TileMap</code> to draw areas from
+	 * @param currentMapContainer
+	 *            The {@link TileMapContainer} which will be queried to get the
+	 *            current map to be drawn.
 	 */
-	public TileMapAreaPainter(TileMap map) {
-		this.map = map;
+	public TileMapAreaPainter(TileMapContainer currentMapContainer) {
+		this.mapContainer = currentMapContainer;
 	}
 
 	/** Used to initialize the color for safe areas */
@@ -54,6 +59,8 @@ public class TileMapAreaPainter implements Painter {
 	 */
 	@Override
 	public void paint(Graphics g) {
+		TileMap map = mapContainer.getMap();
+
 		List<TileMapArea> safeAreas = map.getSafeAreas();
 		TileMapArea spawnArea = map.getSpawnArea();
 		TileMapArea finishArea = map.getFinishArea();
@@ -74,9 +81,9 @@ public class TileMapAreaPainter implements Painter {
 	 */
 	private void paintArea(Graphics g, TileMapArea area) {
 		Camera cam = Camera.get();
-		
-		g.fillRect(area.x - cam.getX(), area.y - cam.getY(),
-				area.width, area.height);
+
+		g.fillRect(area.x - cam.getX(), area.y - cam.getY(), area.width,
+				area.height);
 	}
 
 }
