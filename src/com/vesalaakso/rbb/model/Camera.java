@@ -22,12 +22,6 @@ public class Camera {
 	/** Y-coordiante of the camera, in world coordinates. */
 	private float y;
 
-	/** Half of the width of the drawing area this camera controls */
-	private int halfWidth;
-
-	/** Half of the height of the drawing area this camera controls */
-	private int halfHeight;
-
 	/**
 	 * A private constructor for this class is a singleton and has only one
 	 * instance.
@@ -36,60 +30,12 @@ public class Camera {
 	}
 
 	/**
-	 * Initializes the camera. A camera needs the dimensions of the drawing area
-	 * in order to properly calculate its position, so those are the arguments
-	 * one has to pass method. <em>This needs to be called first before
-	 * doing anything else with the camera</em>!
-	 * 
-	 * @param drawAreaWidth
-	 *            the width of the draw area this camera controls
-	 * @param drawAreaHeight
-	 *            the height of the draw area this camera controls
-	 */
-	public static void init(int drawAreaWidth, int drawAreaHeight) {
-		Camera cam = _instance;
-		
-		cam.halfWidth = drawAreaWidth / 2;
-		cam.halfHeight = drawAreaHeight / 2;
-
-		cam.x = -cam.halfWidth;
-		cam.y = -cam.halfHeight;
-	}
-
-	/**
-	 * Returns the only instance of this class. If, however, the camera has not
-	 * yet been initialized once by the {@link #init(int, int)} method, the
-	 * camera will be in a wrong place and some methods might behave oddly. So
-	 * before doing <em>anything</em> else with the Camera, pleeease initialize
-	 * it with the proper method. Thanks, and pardon my stupid architectural
-	 * choice.
+	 * Returns the only instance of this class.
 	 * 
 	 * @return the one and only instance of <code>Camera</code>.
 	 */
 	public static Camera get() {
 		return _instance;
-	}
-
-	/**
-	 * Translates the given vector from screen coordinates to world coordinates.
-	 * 
-	 * @param vector
-	 *            the vector to translate to screen coordinates
-	 */
-	public static void toWorldCoordinates(Vector2f vector) {
-		Camera cam = get();
-		vector.add(cam.getLocation());
-	}
-
-	/**
-	 * Translates the given vector from world coordinates to screen coordinates.
-	 * 
-	 * @param vector
-	 *            the vector to translate to world coordinates
-	 */
-	public static void toScreenCoordinates(Vector2f vector) {
-		Camera cam = get();
-		vector.sub(cam.getLocation());
 	}
 
 	/**
@@ -120,24 +66,6 @@ public class Camera {
 	}
 
 	/**
-	 * Gets the half width of the screen <code>Camera</code> is used for.
-	 * 
-	 * @return half width of the screen
-	 */
-	public int getHalfScreenWidth() {
-		return halfWidth;
-	}
-
-	/**
-	 * Gets the half height of the screen <code>Camera</code> is used for.
-	 * 
-	 * @return half height of the screen
-	 */
-	public int getHalfScreenHeight() {
-		return halfHeight;
-	}
-
-	/**
 	 * Translates the camera according to the given coordinates.
 	 * 
 	 * @param moveX
@@ -159,8 +87,8 @@ public class Camera {
 	 *            y-coordinate in world space to set the camera to
 	 */
 	public void setPosition(float x, float y) {
-		this.x = x - halfWidth;
-		this.y = y - halfHeight;
+		this.x = x;
+		this.y = y;
 	}
 
 }

@@ -47,8 +47,8 @@ public class Background implements Updateable {
 		}
 
 		Camera cam = Camera.get();
-		xPos = (cam.getX() + cam.getHalfScreenWidth()) * -0.1f;
-		yPos = (cam.getY() + cam.getHalfScreenHeight()) * -0.1f;
+		xPos = cam.getX() * -0.1f;
+		yPos = cam.getY() * -0.1f;
 	}
 
 	/**

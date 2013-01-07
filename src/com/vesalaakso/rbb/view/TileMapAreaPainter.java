@@ -5,6 +5,7 @@ import java.util.List;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
+import com.vesalaakso.rbb.RubberBandBall;
 import com.vesalaakso.rbb.model.Camera;
 import com.vesalaakso.rbb.model.TileMap;
 import com.vesalaakso.rbb.model.TileMapContainer;
@@ -82,8 +83,10 @@ public class TileMapAreaPainter implements Painter {
 	private void paintArea(Graphics g, TileMapObject area) {
 		Camera cam = Camera.get();
 
-		g.fillRect(area.x - cam.getX(), area.y - cam.getY(), area.width,
-				area.height);
+		float x = area.x - cam.getX() + RubberBandBall.SCREEN_WIDTH * 0.5f;
+		float y = area.y - cam.getY() + RubberBandBall.SCREEN_HEIGHT * 0.5f;
+
+		g.fillRect(x, y, area.width, area.height);
 	}
 
 }

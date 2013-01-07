@@ -2,6 +2,7 @@ package com.vesalaakso.rbb.view;
 
 import org.newdawn.slick.tiled.TiledMap;
 
+import com.vesalaakso.rbb.RubberBandBall;
 import com.vesalaakso.rbb.model.Camera;
 import com.vesalaakso.rbb.model.TileMap;
 import com.vesalaakso.rbb.model.TileMapContainer;
@@ -46,16 +47,21 @@ public abstract class TileMapPainter implements Painter {
 		TileMap map = mapContainer.getMap();
 		TiledMap tmap = map.getTiledMap();
 
-		// Calculate the top left tile that will be drawn first
-		int camTileX = (int) cam.getX() / TileMap.TILE_SIZE;
-		int camTileY = (int) cam.getY() / TileMap.TILE_SIZE;
+		// Calculate the top left coordinates in screen dimensions after the
+		// camera has moved.
+		float scrX = cam.getX() - RubberBandBall.SCREEN_WIDTH * 0.5f;
+		float scrY = cam.getY() - RubberBandBall.SCREEN_HEIGHT * 0.5f;
 
-		// How many pixels will the camera be offset
-		int camOffsetX = (int) (camTileX * TileMap.TILE_SIZE - cam.getX() + .5);
-		int camOffsetY = (int) (camTileY * TileMap.TILE_SIZE - cam.getY() + .5);
+		// Calculate the top left tile that will be drawn first
+		int firstTileX = (int) scrX / TileMap.TILE_SIZE;
+		int firstTileY = (int) scrY / TileMap.TILE_SIZE;
+
+		// How many pixels will the whole drawing be offset
+		int offsetX = (int) (firstTileX * TileMap.TILE_SIZE - scrX + .5);
+		int offsetY = (int) (firstTileY * TileMap.TILE_SIZE - scrY + .5);
 
 		// Drawing it now.
-		tmap.render(camOffsetX, camOffsetY, camTileX, camTileY,
+		tmap.render(offsetX, offsetY, firstTileX, firstTileY,
 				map.getWidthInTiles() + 3, map.getHeightInTiles() + 3,
 				layer, false);
 	}

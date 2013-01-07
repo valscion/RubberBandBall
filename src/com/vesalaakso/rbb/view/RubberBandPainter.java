@@ -1,8 +1,8 @@
 package com.vesalaakso.rbb.view;
 
+import org.newdawn.fizzy.Vector;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.geom.Vector2f;
 
 import com.vesalaakso.rbb.model.RubberBand;
 
@@ -44,8 +44,8 @@ public class RubberBandPainter implements Painter {
 			// Don't paint the rubber band unless it's being pulled.
 			return;
 		}
-		Vector2f p1 = rubberBand.getStartPoint();
-		Vector2f p2 = rubberBand.getEndPoint();
+		Vector p1 = rubberBand.getStartPoint();
+		Vector p2 = rubberBand.getEndPoint();
 
 		g.setColor(Color.pink);
 

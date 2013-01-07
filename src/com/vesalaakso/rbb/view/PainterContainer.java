@@ -6,6 +6,7 @@ import java.util.List;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
+import com.vesalaakso.rbb.RubberBandBall;
 import com.vesalaakso.rbb.model.Camera;
 
 /**
@@ -57,9 +58,14 @@ public class PainterContainer {
 					g.resetTransform();
 				}
 				else {
-					// We wanted translation.
+					// We wanted translation to world coordinates. Calculate it
+					// by setting the camera at the center of the screen.
 					Camera cam = Camera.get();
-					g.translate(-cam.getX(), -cam.getY());
+
+					float cx = RubberBandBall.SCREEN_WIDTH * .5f - cam.getX();
+					float cy = RubberBandBall.SCREEN_HEIGHT * .5f - cam.getY();
+
+					g.translate(cx, cy);
 				}
 
 				// Flip the flag.

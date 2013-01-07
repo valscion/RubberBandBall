@@ -1,8 +1,10 @@
 package com.vesalaakso.rbb.model;
 
+import org.newdawn.fizzy.Vector;
 import org.newdawn.slick.geom.Vector2f;
 
 import com.vesalaakso.rbb.controller.MapChangeListener;
+import com.vesalaakso.rbb.util.Utils;
 
 /**
  * The model for the rubber band which is pulled from the player and defines the
@@ -22,10 +24,10 @@ public class RubberBand implements MapChangeListener {
 	private boolean isPulled;
 
 	/** Start point in world coordinates. */
-	private Vector2f startPoint;
+	private Vector startPoint;
 
 	/** The current end point in world coordinates. */
-	private Vector2f currentEndPoint;
+	private Vector currentEndPoint;
 
 	/**
 	 * Constructs a new rubber band model and associates it with the given
@@ -56,11 +58,12 @@ public class RubberBand implements MapChangeListener {
 			// Player isn't ready to be pulled, so don't.
 			return false;
 		}
+		// Translate parameters to world coordinates
+		x = Utils.screenToWorldX(x);
+		y = Utils.screenToWorldY(y);
 
-		// Calculate the real start point, with Camera coordinates added to the
-		// vector representing the starting point
+		// Create a start point vector
 		Vector2f point = new Vector2f(x, y);
-		Camera.toWorldCoordinates(point);
 
 		// And the endpoint as a vector, too.
 		Vector2f playerLocation = new Vector2f(player.getX(), player.getY());
@@ -71,8 +74,8 @@ public class RubberBand implements MapChangeListener {
 				* player.getRadius()) {
 			// Close enough.
 			isPulled = true;
-			startPoint = playerLocation;
-			currentEndPoint = new Vector2f(startPoint);
+			startPoint = new Vector(player.getX(), player.getY());
+			currentEndPoint = startPoint;
 			return true;
 		}
 		return false;
@@ -89,15 +92,16 @@ public class RubberBand implements MapChangeListener {
 	public void endPull(float endX, float endY) {
 		// Calculate the real end point, with Camera coordinates added to the
 		// vector representing the starting point
-		Vector2f point = new Vector2f(endX, endY);
-		Camera.toWorldCoordinates(point);
-		currentEndPoint = point;
+		endX = Utils.screenToWorldX(endX);
+		endY = Utils.screenToWorldY(endY);
+		currentEndPoint = new Vector(endX, endY);
 		isPulled = false;
 
 		// Ok, now launch the player to somewhere!
 
 		// Calculate the vector between the start point and the end point.
-		Vector2f diffVector = new Vector2f(startPoint).sub(point);
+		Vector2f diffVector = new Vector2f(startPoint.x - endX,
+				startPoint.y - endY);
 
 		// The calculated force to launch the player in both axis is the same
 		// as the scalar projection of the x- and y-axis vectors and the
@@ -128,11 +132,10 @@ public class RubberBand implements MapChangeListener {
 	 *            the current endpoint y-coordinate in screen coordinates
 	 */
 	public void pull(float x, float y) {
-		// Calculate the real end point, with Camera coordinates added to the
-		// vector representing the starting point
-		Vector2f point = new Vector2f(x, y);
-		Camera.toWorldCoordinates(point);
-		currentEndPoint = point;
+		// Calculate the end point in world coordinates
+		x = Utils.screenToWorldX(x);
+		y = Utils.screenToWorldY(y);
+		currentEndPoint = new Vector(x, y);
 	}
 
 	/**
@@ -149,7 +152,7 @@ public class RubberBand implements MapChangeListener {
 	 * 
 	 * @return current startpoint of the rubber band.
 	 */
-	public Vector2f getStartPoint() {
+	public Vector getStartPoint() {
 		return startPoint;
 	}
 
@@ -158,7 +161,7 @@ public class RubberBand implements MapChangeListener {
 	 * 
 	 * @return current endpoint of the rubber band.
 	 */
-	public Vector2f getEndPoint() {
+	public Vector getEndPoint() {
 		return currentEndPoint;
 	}
 
