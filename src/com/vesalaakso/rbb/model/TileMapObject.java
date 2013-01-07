@@ -1,5 +1,6 @@
 package com.vesalaakso.rbb.model;
 
+import java.util.List;
 import java.util.Properties;
 
 import org.newdawn.slick.SlickException;
@@ -33,7 +34,13 @@ public class TileMapObject {
 	public final int height;
 	/** the properties of this object */
 	public final Properties props;
+	/**
+	 * The TileMapObject above this object, if any (not from collision layer).
+	 */
+	public final TileMapObject objectAbove;
 
+	/** The map this object resides in */
+	private final TileMap map;
 	/** The underlying GroupObject */
 	private final GroupObject groupObject;
 
@@ -41,11 +48,14 @@ public class TileMapObject {
 	 * Constructs a new object based on the given <code>GroupObject</code>.
 	 * 
 	 * @param obj
-	 *            the GroupObject to base this new object on
+	 *            the <code>GroupObject</code> to base this new object on
+	 * @param map
+	 *            the <code>TileMap</code> this <code>TileMapObject</code>
+	 *            resides in
 	 * @throws MapException
 	 *             if the type of this object was set and was unknown.
 	 */
-	public TileMapObject(GroupObject obj) throws MapException {
+	public TileMapObject(GroupObject obj, TileMap map) throws MapException {
 		groupObject = obj;
 
 		index = obj.index;
@@ -67,6 +77,33 @@ public class TileMapObject {
 		width = obj.width;
 		height = obj.height;
 		props = obj.props;
+		this.map = map;
+		objectAbove = findObjectAbove();
+	}
+
+	/**
+	 * A helper to find the object above this <code>TileMapObject</code> in the
+	 * map.
+	 */
+	private TileMapObject findObjectAbove() {
+		if (map == null) {
+			return null;
+		}
+
+		// First look if there's a safe area above us
+		List<TileMapObject> safeAreas = map.getSafeAreas();
+
+		// Then look for trigger areas
+		List<TileMapObject> triggerAreas = map.getTriggerAreas();
+
+		// Then we look if it was the spawn area.
+		TileMapObject spawnArea = map.getSpawnArea();
+		
+		// And finally the finish area, no more.
+		TileMapObject finishArea = map.getFinishArea();
+		
+		// If none was found, it's null time.
+		return null;
 	}
 
 	/**
@@ -94,7 +131,7 @@ public class TileMapObject {
 					name, x, y), e);
 		}
 	}
-	
+
 	/**
 	 * Gets the <code>String</code> representation of this
 	 * <code>TileMapObject</code>.

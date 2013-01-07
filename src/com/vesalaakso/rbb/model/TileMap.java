@@ -131,7 +131,7 @@ public class TileMap {
 				throw new MapException("More than one spawn area set in level "
 						+ level);
 			}
-			spawnArea = new TileMapObject(area);
+			spawnArea = new TileMapObject(area, this);
 		}
 		if (spawnArea == null) {
 			throw new MapException("Level " + level + " had no spawn area!");
@@ -143,7 +143,7 @@ public class TileMap {
 				throw new MapException("More than one finish area set in level "
 						+ level);
 			}
-			finishArea = new TileMapObject(area);
+			finishArea = new TileMapObject(area, this);
 		}
 		if (finishArea == null) {
 			throw new MapException("Level " + level + " had no finish area!");
@@ -151,17 +151,17 @@ public class TileMap {
 		
 		// Store trigger areas
 		for (GroupObject area : areaGroup.getObjectsOfType("trigger")) {
-			triggerAreas.add(new TileMapObject(area));
+			triggerAreas.add(new TileMapObject(area, this));
 		}
 
 		// Store safe areas
 		for (GroupObject area : areaGroup.getObjectsOfType("safe")) {
-			safeAreas.add(new TileMapObject(area));
+			safeAreas.add(new TileMapObject(area, this));
 		}
 
 		// Store collision objects
 		for (GroupObject area : map.getObjectGroup("collisions").getObjects()) {
-			collisionObjects.add(new TileMapObject(area));
+			collisionObjects.add(new TileMapObject(area, this));
 		}
 	}
 
