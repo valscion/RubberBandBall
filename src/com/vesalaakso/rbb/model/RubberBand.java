@@ -105,8 +105,8 @@ public class RubberBand implements MapChangeListener {
 		double radAngleX = Math.toRadians(diffVector.getTheta());
 		double radAngleY = Math.toRadians(diffVector.getTheta() - 90);
 
-		float forceX = (float) (Math.cos(radAngleX) * diffVector.length());
-		float forceY = (float) (Math.cos(radAngleY) * diffVector.length());
+		float forceX = (float) (Math.cos(radAngleX) * diffVector.length()) * 2f;
+		float forceY = (float) (Math.cos(radAngleY) * diffVector.length()) * 2f;
 
 		System.out.println("Launching the player!");
 		System.out.println("    diffVector length: " + diffVector.length());
