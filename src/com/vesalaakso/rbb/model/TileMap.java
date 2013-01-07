@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.tiled.GroupObject;
+import org.newdawn.slick.tiled.ObjectGroup;
 import org.newdawn.slick.tiled.TiledMap;
+import org.newdawn.slick.tiled.TiledMapPlus;
+import org.newdawn.slick.util.Log;
 
 import com.vesalaakso.rbb.model.exceptions.MapException;
 
@@ -21,7 +25,7 @@ public class TileMap {
 	private boolean isInitialized = false;
 
 	/** The {@link org.newdawn.slick.tiled.TiledMap} this instance represents */
-	private TiledMap map;
+	private TiledMapPlus map;
 
 	/** The current level this map represents */
 	private int level;
@@ -39,20 +43,19 @@ public class TileMap {
 	private int metaLayer;
 
 	/** Spawn area. */
-	private TileMapArea spawnArea;
+	private TileMapObject spawnArea;
 
 	/** Safe areas */
-	private List<TileMapArea> safeAreas = new ArrayList<TileMapArea>();
+	private List<TileMapObject> safeAreas = new ArrayList<TileMapObject>();
 
 	/** Trigger areas. */
-	private List<TileMapArea> triggerAreas = new ArrayList<TileMapArea>();
+	private List<TileMapObject> triggerAreas = new ArrayList<TileMapObject>();
 
 	/** Finish area. */
-	private TileMapArea finishArea;
-
-	/** Collidable tiles in this map */
-	private List<CollidableTile> collidableTiles =
-		new ArrayList<CollidableTile>();
+	private TileMapObject finishArea;
+	
+	/** Collision objects in the map. */
+	private List<TileMapObject> collisionObjects = new ArrayList<TileMapObject>();
 
 	/**
 	 * Constructs a new TileMap. You need to call {@link #init}-method before
@@ -74,7 +77,7 @@ public class TileMap {
 	public void init() throws MapException {
 		String path = findMapPath(level);
 		try {
-			map = new TiledMap(path);
+			map = new TiledMapPlus(path);
 		}
 		catch (SlickException e) {
 			throw new MapException("Failed to load map " + level, e);
@@ -96,10 +99,6 @@ public class TileMap {
 		// Loop through every object and store them
 		saveAllObjects();
 
-		// Store everything that is storable in the meta layer, i.e. save the
-		// collidable tiles
-		saveAllSpecialTiles();
-
 		// The map is initialized.
 		isInitialized = true;
 	}
@@ -116,74 +115,61 @@ public class TileMap {
 
 	/** Loops through every object in the map and stores them. */
 	private void saveAllObjects() throws MapException {
-		for (int i = 0, iMax = map.getObjectGroupCount(); i < iMax; i++) {
-			for (int j = 0, jMax = map.getObjectCount(i); j < jMax; j++) {
-				TileMapArea area = new TileMapArea(map, i, j);
-
-				String typeStr = area.type.toUpperCase();
+		// Loop through object areas
+		List<ObjectGroup> objectGroups = map.getObjectGroups();
+		ObjectGroup areaGroup = null;
+		for (ObjectGroup tmpGroup : objectGroups) {
+			if (tmpGroup.name.equals("areas")) {
+				Log.info("Found areas object group");
+				areaGroup = tmpGroup;
+			}
+		}
+		
+		// Print all of the objects in all groups.
+		for (ObjectGroup tmpGroup : objectGroups) {
+			for (GroupObject area : tmpGroup.getObjects()) {
 				try {
-					TileMapAreaType areaType = TileMapAreaType.valueOf(typeStr);
-					switch (areaType) {
-						case SPAWN:
-							if (spawnArea != null) {
-								throw new MapException("Level " + level
-										+ " has more than one spawn area");
-							}
-							spawnArea = area;
-							break;
-						case SAFE:
-							safeAreas.add(area);
-							break;
-						case TRIGGER:
-							triggerAreas.add(area);
-							break;
-						case FINISH:
-							if (finishArea != null) {
-								throw new MapException("Level " + level
-										+ " has more than one finish area");
-							}
-							finishArea = area;
-							break;
-						case RESPONSIVE:
-							// TODO: Add responsive areas
-							break;
-						case TRANSITION:
-							// TODO: Add transition areas
-							break;
-						default:
-							break;
-					}
+					TileMapObject tmp = new TileMapObject(area);
+					System.out.println(tmp);
 				}
-				catch (IllegalArgumentException e) {
-					throw new MapException("Invalid object type in level "
-							+ level, e);
+				catch (MapException e) {
+					System.out.println(e.getMessage());
 				}
 			}
 		}
-	}
 
-	/**
-	 * Loops through every special tile in the meta layer and saves them to the
-	 * appropriate attributes. Right now the only thing saved is the collision
-	 * tiles.
-	 */
-	private void saveAllSpecialTiles() throws MapException {
-		for (int x = 0; x < map.getWidth(); x++) {
-			for (int y = 0; y < map.getHeight(); y++) {
-				int tileID = map.getTileId(x, y, metaLayer);
-				String value =
-					map.getTileProperty(tileID, "collision", "false");
-				if (!value.equals("false")) {
-					try {
-						CollidableTile tile = new CollidableTile(x, y, this);
-						collidableTiles.add(tile);
-					}
-					catch (MapException e) {
-						throw new MapException("Invalid special tile in level "
-								+ level, e);
-					}
-				}
+		// Store start area
+		for (GroupObject area : areaGroup.getObjectsOfType("spawn")) {
+			if (spawnArea != null) {
+				throw new MapException("More than one spawn area set in level "
+						+ level);
 			}
+			spawnArea = new TileMapObject(area);
+		}
+		if (spawnArea == null) {
+			throw new MapException("Level " + level + " had no spawn area!");
+		}
+		
+		// Store finish area
+		for (GroupObject area : areaGroup.getObjectsOfType("finish")) {
+			if (finishArea != null) {
+				throw new MapException("More than one finish area set in level "
+						+ level);
+			}
+			finishArea = new TileMapObject(area);
+		}
+		if (finishArea == null) {
+			throw new MapException("Level " + level + " had no finish area!");
+		}
+		
+		// Store trigger areas
+		for (GroupObject area : areaGroup.getObjectsOfType("trigger")) {
+			triggerAreas.add(new TileMapObject(area));
+		}
+
+		// Store collision objects
+		for (GroupObject area : areaGroup.getObjectsOfType("trigger")) {
+			triggerAreas.add(new TileMapObject(area));
 		}
 	}
 
@@ -248,7 +234,7 @@ public class TileMap {
 	 * 
 	 * @return spawn area
 	 */
-	public TileMapArea getSpawnArea() {
+	public TileMapObject getSpawnArea() {
 		return spawnArea;
 	}
 
@@ -257,7 +243,7 @@ public class TileMap {
 	 * 
 	 * @return safe areas
 	 */
-	public List<TileMapArea> getSafeAreas() {
+	public List<TileMapObject> getSafeAreas() {
 		return safeAreas;
 	}
 
@@ -267,7 +253,7 @@ public class TileMap {
 	 * @return trigger areas
 	 */
 
-	public List<TileMapArea> getTriggerAreas() {
+	public List<TileMapObject> getTriggerAreas() {
 		return triggerAreas;
 	}
 
@@ -276,17 +262,17 @@ public class TileMap {
 	 * 
 	 * @return finish area
 	 */
-	public TileMapArea getFinishArea() {
+	public TileMapObject getFinishArea() {
 		return finishArea;
 	}
 
 	/**
-	 * Returns the collidable tiles in a list that should NOT be modified.
+	 * Returns the collidable objects in a list that should NOT be modified.
 	 * 
-	 * @return collidable tiles in a list
+	 * @return collidable objects in a list
 	 */
-	public List<CollidableTile> getCollidableTiles() {
-		return collidableTiles;
+	public List<TileMapObject> getCollisionObjects() {
+		return collisionObjects;
 	}
 
 	/**

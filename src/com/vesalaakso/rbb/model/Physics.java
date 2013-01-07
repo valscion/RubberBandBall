@@ -11,6 +11,7 @@ import org.newdawn.fizzy.Polygon;
 import org.newdawn.fizzy.Rectangle;
 import org.newdawn.fizzy.StaticBody;
 import org.newdawn.fizzy.World;
+import org.newdawn.slick.tiled.GroupObject;
 import org.newdawn.slick.util.Log;
 
 import com.google.common.collect.BiMap;
@@ -39,8 +40,8 @@ public class Physics implements Updateable, MapChangeListener {
 	/** The <code>World</code> in which The Magic (tm) happens. */
 	private World world;
 
-	/** The bodies associated with the map, linked to the collidable tile. */
-	private BiMap<Body<?>, CollidableTile> bodyTileMap = HashBiMap.create();
+	/** The bodies associated with the map, linked to the collidable object. */
+	private BiMap<Body<?>, TileMapObject> bodyTileMap = HashBiMap.create();
 
 	/** The player whose body will be added to the physics engine. */
 	private Player player;
@@ -108,88 +109,81 @@ public class Physics implements Updateable, MapChangeListener {
 	 *             if the given map contained invalid collidable tiles
 	 */
 	public void addCollidablesFromMap(TileMap map) throws MapException {
-		List<CollidableTile> tiles = map.getCollidableTiles();
+		List<TileMapObject> colObjs = map.getCollisionObjects();
 
-		for (CollidableTile tile : tiles) {
+		for (TileMapObject obj : colObjs) {
 			// The static body we will add later on to the world and
 			// mapBodies list
 			StaticBody<?> body = null;
 
-			TileShape shape = tile.getTileShape();
-
-			if (shape == TileShape.RECTANGLE) {
-				Rectangle rect =
-						new Rectangle(TileMap.TILE_SIZE, TileMap.TILE_SIZE);
-				body = new StaticBody<Rectangle>(rect,
-						tile.getTileX() * TileMap.TILE_SIZE,
-						tile.getTileY() * TileMap.TILE_SIZE);
+			boolean isPolygon = false;
+			boolean isRectangle = false;
+			if (obj.objectType == GroupObject.ObjectType.POLYGON) {
+				isPolygon = true;
 			}
-			else if (shape.isTriangular()) {
-				Polygon triangle =
-						createTrianglePolygon(shape, TileMap.TILE_SIZE);
-				body = new StaticBody<Polygon>(triangle,
-						tile.getTileX() * TileMap.TILE_SIZE,
-						tile.getTileY() * TileMap.TILE_SIZE);
+			else if (obj.objectType == GroupObject.ObjectType.RECTANGLE) {
+				isRectangle = true;
+			}
+
+			if (isRectangle) {
+				Rectangle rect = new Rectangle(obj.width, obj.height);
+				body = new StaticBody<Rectangle>(rect, obj.x * obj.width, 
+						obj.y * obj.height);
+			}
+			else if (isPolygon) {
+				Polygon polygon = createPolygon(obj);
+				body = new StaticBody<Polygon>(polygon, obj.x * obj.width,
+						obj.y * obj.height);
 			}
 			else {
 				String errStr = String.format(
 						"Invalid collidable tile at (%d, %d): %s",
-						tile.getTileX(), tile.getTileY(), shape.toString());
+						obj.x, obj.y, obj.objectType);
 				throw new MapException(errStr);
 			}
 
 			// Now we have our pretty body, let's use it as it should be used.
 			body.setRestitution(0); // No bouncing
 			body.setFriction(1); // Friction is set by the colliding object
-			bodyTileMap.put(body, tile);
+			bodyTileMap.put(body, obj);
 			world.add(body);
 		}
 	}
 
 	/**
-	 * Builds a new triangle-shaped Polygon based on the given parameter.
+	 * Builds a new Polygon based on the given TileMapObject.
 	 * 
-	 * @param shape
-	 *            a <code>TileShape</code> representing a triangle
-	 * @param width
-	 *            width of a single side of the triangle
-	 * @return a new Polygon representing a triangular shape.
+	 * @param obj
+	 *            a <code>TileMapObject</code> representing a polygon
+	 * @return a new Polygon representing the shape.
+	 * 
+	 * @throws MapException
+	 *             if the polygon could not be created
 	 */
-	private Polygon createTrianglePolygon(TileShape shape, float width) {
-		Vec2[] points = null;
+	private Polygon createPolygon(TileMapObject obj) throws MapException {
+		// Get the underlying geometric polygon shape
+		org.newdawn.slick.geom.Polygon polygon = obj.getPolygon();
+		
+		// Get the geometric points, using CW winding rule.
+		float[] geomPoints = polygon.getPoints();
+		
+		// Make sure that we got some points and we got an x- and y-coordinate
+		// for them all.
+		if (geomPoints.length == 0 || geomPoints.length % 2 == 1) {
+			throw new MapException("Weird geometric points for " + obj);
+		}
+		
+		// Store the points in a CCW winding rule in this array of vectors
+		Vec2[] points = new Vec2[geomPoints.length / 2];
+		
+		// Loop-de-la-loop backwards to store those.
+		for (int i = geomPoints.length - 2; i >= 0; i -= 2) {
+			float x = geomPoints[i];
+			float y = geomPoints[i + 1];
 
-		switch (shape) {
-			case TRIANGLE_TOP_LEFT:
-				points = new Vec2[] {
-						new Vec2(0, 0), // Left, Top
-						new Vec2(width, 0), // Right, Top
-						new Vec2(0, width) // Left, Bottom
-				};
-				break;
-			case TRIANGLE_BOTTOM_LEFT:
-				points = new Vec2[] {
-						new Vec2(0, 0), // Left, Top
-						new Vec2(width, width), // Right, Bottom
-						new Vec2(0, width) // Left, Bottom
-				};
-				break;
-			case TRIANGLE_BOTTOM_RIGHT:
-				points = new Vec2[] {
-						new Vec2(0, width), // Left, Bottom
-						new Vec2(width, 0), // Right, Top
-						new Vec2(width, width) // Right, Bottom
-				};
-				break;
-			case TRIANGLE_TOP_RIGHT:
-				points = new Vec2[] {
-						new Vec2(0, 0), // Left, Top
-						new Vec2(width, 0), // Right, Top
-						new Vec2(width, width) // Right, Bottom
-				};
-				break;
-			default:
-				throw new IllegalArgumentException(
-						"The given shape is not triangular. Got: " + shape);
+			int pointIndex = (geomPoints.length - i) / 2;
+
+			points[pointIndex] = new Vec2(x, y);
 		}
 
 		Polygon triangle = new Polygon();
@@ -210,7 +204,7 @@ public class Physics implements Updateable, MapChangeListener {
 
 		// Restitution specifies how much will the circle bounce off when it
 		// hits a wall. 0.9f is the default.
-		float restitution = 0.3f;
+		float restitution = 0.75f;
 
 		// Since friction doesn't do anything when we're creating a circle, we
 		// simulate it ourselves elsewhere. Angular damping specifies the amount
@@ -285,10 +279,9 @@ public class Physics implements Updateable, MapChangeListener {
 	 *            currently.
 	 */
 	public void startSimulatingFriction(Body<?> otherBody) {
-		CollidableTile tile = bodyTileMap.get(otherBody);
-		TileShape tileShape = tile.getTileShape();
+		TileMapObject tile = bodyTileMap.get(otherBody);
 
-		if (tileShape == TileShape.RECTANGLE) {
+		if (tile.objectType == GroupObject.ObjectType.RECTANGLE) {
 			// For now, only simulate friction for rectangles. And only if the
 			// rectangle is below us.
 			if (playerBody.getY() < otherBody.getY()) {

@@ -1,11 +1,11 @@
 package com.vesalaakso.rbb.model;
 
 /**
- * Identifies the different types of tile map areas.
+ * Identifies the different types of tile map objects.
  * 
  * @author Vesa Laakso
  */
-public enum TileMapAreaType {
+public enum TileMapObjectType {
 	/** Area where player can spawn */
 	SPAWN,
 	/** Area that identifies the finish */
@@ -17,5 +17,7 @@ public enum TileMapAreaType {
 	/** Area which is used to do stuff when moving from level to another */
 	TRANSITION,
 	/** Area which responds to a triggered action */
-	RESPONSIVE;
+	RESPONSIVE,
+	/** An area representing a graphics detail */
+	GRAPHIC;
 }

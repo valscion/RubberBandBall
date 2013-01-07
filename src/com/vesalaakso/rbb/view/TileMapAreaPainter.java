@@ -7,8 +7,8 @@ import org.newdawn.slick.Graphics;
 
 import com.vesalaakso.rbb.model.Camera;
 import com.vesalaakso.rbb.model.TileMap;
-import com.vesalaakso.rbb.model.TileMapArea;
 import com.vesalaakso.rbb.model.TileMapContainer;
+import com.vesalaakso.rbb.model.TileMapObject;
 
 /**
  * A {@link Painter} used to draw the special areas of the map in a pretty way.
@@ -61,14 +61,14 @@ public class TileMapAreaPainter implements Painter {
 	public void paint(Graphics g) {
 		TileMap map = mapContainer.getMap();
 
-		List<TileMapArea> safeAreas = map.getSafeAreas();
-		TileMapArea spawnArea = map.getSpawnArea();
-		TileMapArea finishArea = map.getFinishArea();
+		List<TileMapObject> safeAreas = map.getSafeAreas();
+		TileMapObject spawnArea = map.getSpawnArea();
+		TileMapObject finishArea = map.getFinishArea();
 
 		// First things first: Set the color we will draw with.
 		g.setColor(colorSafeArea);
 
-		for (TileMapArea area : safeAreas) {
+		for (TileMapObject area : safeAreas) {
 			paintArea(g, area);
 		}
 		paintArea(g, spawnArea);
@@ -76,10 +76,10 @@ public class TileMapAreaPainter implements Painter {
 	}
 
 	/**
-	 * A helper which draws a single TileMapArea with the current graphics
-	 * context properly set.
+	 * A helper which draws a single <code>TileMapObject</code> with the current
+	 * graphics context properly set.
 	 */
-	private void paintArea(Graphics g, TileMapArea area) {
+	private void paintArea(Graphics g, TileMapObject area) {
 		Camera cam = Camera.get();
 
 		g.fillRect(area.x - cam.getX(), area.y - cam.getY(), area.width,
