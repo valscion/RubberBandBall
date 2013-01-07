@@ -32,6 +32,12 @@ public class Physics implements Updateable, MapChangeListener {
 	private static final float DEFAULT_GRAVITY = 20.0f;
 
 	/**
+	 * Bounce cap, if the speed when the ball bounces is smaller than this
+	 * value, don't let the ball bounce.
+	 */
+	public static final float MIN_BOUNCE_VELOCITY = 2.5f;
+
+	/**
 	 * The ParticleManager which will create nice little effects as events in
 	 * the physics world will happen.
 	 */
@@ -138,9 +144,8 @@ public class Physics implements Updateable, MapChangeListener {
 				body = new StaticBody<Polygon>(polygon, obj.x, obj.y);
 			}
 			else {
-				String errStr =
-					String.format("Invalid collidable tile at (%d, %d): %s",
-							obj.x, obj.y, obj.objectType);
+				String f = "Invalid collidable tile at (%d, %d): %s";
+				String errStr = String.format(f, obj.x, obj.y, obj.objectType);
 				throw new MapException(errStr);
 			}
 
@@ -206,7 +211,7 @@ public class Physics implements Updateable, MapChangeListener {
 
 		// Restitution specifies how much will the circle bounce off when it
 		// hits a wall. 0.9f is the default.
-		float restitution = 0.5f;
+		float restitution = 0.75f;
 
 		// Since friction doesn't do anything when we're creating a circle, we
 		// simulate it ourselves elsewhere. Angular damping specifies the amount
@@ -215,7 +220,7 @@ public class Physics implements Updateable, MapChangeListener {
 
 		Circle shape = new Circle(radius, density, restitution);
 		playerBody =
-			new DynamicBody<Circle>(shape, player.getX(), player.getY());
+				new DynamicBody<Circle>(shape, player.getX(), player.getY());
 		playerBody.setAngularDamping(angularDamping);
 
 		// Add the player to the world
@@ -223,7 +228,7 @@ public class Physics implements Updateable, MapChangeListener {
 
 		// Initialize the listener and add it to the world
 		playerCollisionListener =
-			new PlayerCollisionListener(this, player, particleManager);
+				new PlayerCollisionListener(this, player, particleManager);
 		world.addBodyListener(playerBody, playerCollisionListener);
 
 		// Also, make the player not yet take part in any collision.
@@ -304,6 +309,24 @@ public class Physics implements Updateable, MapChangeListener {
 	 */
 	public void stopSimulatingFriction() {
 		frictionSimulationBody = null;
+	}
+
+	/**
+	 * Sets the y-force of the player to 0, effectively forcing it to start
+	 * dropping down or not letting it bounce.
+	 */
+	public void stopPlayerRising() {
+		System.out.println("Player stopped from bouncing");
+		playerBody.setVelocity(playerBody.getXVelocity(), 0);
+	}
+
+	/**
+	 * Gets the value of how fast the player is going down.
+	 * 
+	 * @return player velocity in y-direction
+	 */
+	public float getPlayerFallingVelocity() {
+		return playerBody.getYVelocity();
 	}
 
 	/**

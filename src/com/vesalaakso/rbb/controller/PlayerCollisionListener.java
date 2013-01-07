@@ -68,6 +68,11 @@ public class PlayerCollisionListener implements WorldListener {
 			// rectangle is below us.
 			if (player.getY() < lastCollisionBody.getY()) {
 				physics.startSimulatingFriction(lastCollisionBody);
+				// Also if the player doesn't have enough velocity, stop it.
+				float fallVel = Math.abs(physics.getPlayerFallingVelocity());
+				if (fallVel < Physics.MIN_BOUNCE_VELOCITY) {
+					physics.stopPlayerRising();
+				}
 			}
 		}
 	}
