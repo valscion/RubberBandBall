@@ -18,6 +18,18 @@ public class PlayerPainter implements Painter {
 	/** The Color used to draw player. */
 	private final Color playerColor;
 
+	/** The Color used to draw the outline of player */
+	private final Color playerOutlineColor;
+
+	/** The Color used to draw the outline of players eyes */
+	private final Color eyeOutlineColor;
+
+	/** The Color used to draw the insides of players eyes */
+	private final Color eyeInsideColor;
+
+	/** The Color used to draw the pupil of players eyes */
+	private final Color eyePupilColor;
+
 	/**
 	 * Constructs a new <code>PlayerPainter</code> and associates it with the
 	 * given {@link Player}.
@@ -28,11 +40,28 @@ public class PlayerPainter implements Painter {
 	public PlayerPainter(Player player) {
 		this.player = player;
 
-		// Build the color for the player from HSB colors
-		java.awt.Color tmpC = java.awt.Color.getHSBColor(0.75f, 0.5f, 0.5f);
+		// Colors built from this.
+		java.awt.Color c;
 
-		this.playerColor =
-				new Color(tmpC.getRed(), tmpC.getGreen(), tmpC.getBlue());
+		// Player inside color
+		c = java.awt.Color.getHSBColor(0.75f, 0.5f, 0.5f);
+		playerColor = new Color(c.getRed(), c.getGreen(), c.getBlue());
+
+		// Player outline color
+		c = java.awt.Color.getHSBColor(0.75f, 0.5f, 0.85f);
+		playerOutlineColor = new Color(c.getRed(), c.getGreen(), c.getBlue());
+
+		// Eye outline color
+		c = java.awt.Color.getHSBColor(0f, 0.0f, 0.05f);
+		eyeOutlineColor = new Color(c.getRed(), c.getGreen(), c.getBlue());
+
+		// Eye inside color
+		c = java.awt.Color.getHSBColor(0f, 0.0f, 0.85f);
+		eyeInsideColor = new Color(c.getRed(), c.getGreen(), c.getBlue());
+
+		// Eye pupil color
+		c = java.awt.Color.getHSBColor(0f, 0.0f, 0.05f);
+		eyePupilColor = new Color(c.getRed(), c.getGreen(), c.getBlue());
 	}
 
 	/**
@@ -47,7 +76,7 @@ public class PlayerPainter implements Painter {
 
 	/**
 	 * @see com.vesalaakso.rbb.view.Painter#paint(org.newdawn.slick.Graphics,
-	 * com.vesalaakso.rbb.model.Camera)
+	 *      com.vesalaakso.rbb.model.Camera)
 	 */
 	@Override
 	public void paint(Graphics g) {
@@ -62,5 +91,50 @@ public class PlayerPainter implements Painter {
 		// Draw a circle representing the player
 		g.setColor(playerColor);
 		g.fillOval(x, y, width, width);
+
+		// Outline of player
+		g.setColor(playerOutlineColor);
+		g.drawOval(x, y, width, width);
+
+		// EYES!
+		drawEyes(g);
+	}
+
+	/** A helper to draw eyes. */
+	private void drawEyes(Graphics g) {
+		// And before drawing, center the translation to player coordinates and
+		// rotate the transformations
+		float rotation = (float) Math.toDegrees(player.getAngle());
+		g.translate(player.getX(), player.getY());
+		g.rotate(0, 0, rotation);
+
+		// EYES!
+		float xOffset = player.getRadius() * .7f;
+		float width = xOffset * .9f;
+		float height = player.getRadius() * .85f;
+		float y = -height * .85f;
+		float pupilWidth = width * .5f;
+		float pupilHeight = pupilWidth * 1.15f;
+		float pupilXOffset = xOffset - (width + pupilWidth) * .25f;
+		float pupilY = y + (height + pupilHeight) * .25f;
+
+		// Inside first
+		g.setColor(eyeInsideColor);
+		g.fillOval(-xOffset, y, width, height);
+		g.fillOval(xOffset - width, y, width, height);
+
+		// Then pupils
+		g.setColor(eyePupilColor);
+		g.fillOval(-pupilXOffset, pupilY, pupilWidth, pupilHeight);
+		g.fillOval(pupilXOffset - pupilWidth, pupilY, pupilWidth, pupilHeight);
+
+		// Then outline
+		g.setColor(eyeOutlineColor);
+		g.drawOval(-xOffset, y, width, height);
+		g.drawOval(xOffset - width, y, width, height);
+
+		// Reset transformations
+		g.rotate(0, 0, -rotation);
+		g.translate(-player.getX(), -player.getY());
 	}
 }
