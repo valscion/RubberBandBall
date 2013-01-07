@@ -29,7 +29,7 @@ import com.vesalaakso.rbb.model.exceptions.MapException;
 public class Physics implements Updateable, MapChangeListener {
 
 	/** Default gravity */
-	private static final float DEFAULT_GRAVITY = 9.81f;
+	private static final float DEFAULT_GRAVITY = 20.0f;
 
 	/**
 	 * The ParticleManager which will create nice little effects as events in
@@ -75,7 +75,7 @@ public class Physics implements Updateable, MapChangeListener {
 	 */
 	@Override
 	public void update(int delta) {
-		world.update(1 / 60f);
+		world.update(1 / 40f);
 		if (player != null) {
 			player.setPosition(playerBody.getX(), playerBody.getY());
 
@@ -202,7 +202,7 @@ public class Physics implements Updateable, MapChangeListener {
 
 		// Restitution specifies how much will the circle bounce off when it
 		// hits a wall. 0.9f is the default.
-		float restitution = 0.75f;
+		float restitution = 0.5f;
 
 		// Since friction doesn't do anything when we're creating a circle, we
 		// simulate it ourselves elsewhere. Angular damping specifies the amount
