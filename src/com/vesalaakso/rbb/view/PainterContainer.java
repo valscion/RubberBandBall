@@ -47,6 +47,9 @@ public class PainterContainer {
 	 *            to screen.
 	 */
 	public void paintAll(Graphics g) {
+		// Anti-aliasing for all!
+		g.setAntiAlias(true);
+
 		for (Painter p : this.painters) {
 			if (p.isDrawnToWorldCoordinates() != isWorldTranslationOn) {
 				if (isWorldTranslationOn) {
