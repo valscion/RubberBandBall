@@ -161,7 +161,10 @@ public class TileMap {
 
 		// Store collision objects
 		for (GroupObject area : map.getObjectGroup("collisions").getObjects()) {
-			collisionObjects.add(new TileMapObject(area, this));
+			TileMapObject newObj = new TileMapObject(area, this);
+			collisionObjects.add(newObj);
+			
+			newObj.findObjectAbove();
 		}
 	}
 

@@ -34,10 +34,6 @@ public class TileMapObject {
 	public final int height;
 	/** the properties of this object */
 	public final Properties props;
-	/**
-	 * The TileMapObject above this object, if any (not from collision layer).
-	 */
-	public final TileMapObject objectAbove;
 
 	/** The map this object resides in */
 	private final TileMap map;
@@ -78,32 +74,73 @@ public class TileMapObject {
 		height = obj.height;
 		props = obj.props;
 		this.map = map;
-		objectAbove = findObjectAbove();
 	}
 
 	/**
-	 * A helper to find the object above this <code>TileMapObject</code> in the
-	 * map.
+	 * Finds the object above this <code>TileMapObject</code> in the map. This
+	 * doesn't search for collision objects and this can't be used to search for
+	 * objects above a polygon.
+	 * 
+	 * @return the object above this one or <code>null</code> if none was found.
 	 */
-	private TileMapObject findObjectAbove() {
-		if (map == null) {
+	public TileMapObject findObjectAbove() {
+		if (map == null || this.objectType == GroupObject.ObjectType.POLYGON) {
 			return null;
 		}
 
 		// First look if there's a safe area above us
 		List<TileMapObject> safeAreas = map.getSafeAreas();
+		for (TileMapObject area : safeAreas) {
+			if (this.isBelow(area)) {
+				return area;
+			}
+		}
 
 		// Then look for trigger areas
 		List<TileMapObject> triggerAreas = map.getTriggerAreas();
+		for (TileMapObject area : triggerAreas) {
+			if (this.isBelow(area)) {
+				return area;
+			}
+		}
 
 		// Then we look if it was the spawn area.
 		TileMapObject spawnArea = map.getSpawnArea();
-		
+		if (this.isBelow(spawnArea)) {
+			return spawnArea;
+		}
+
 		// And finally the finish area, no more.
 		TileMapObject finishArea = map.getFinishArea();
-		
+		if (this.isBelow(finishArea)) {
+			return finishArea;
+		}
+
 		// If none was found, it's null time.
 		return null;
+	}
+
+	/** Used to check whether the given object was directly above this one */
+	private boolean isBelow(TileMapObject other) {
+		int yDiff = this.y - other.y - other.height;
+		if (yDiff == 0) {
+			int left1 = this.x;
+			int left2 = other.x;
+			int right1 = this.x + this.width - 1;
+			int right2 = other.x + other.width - 1;
+			
+			// Check if other goes over from right
+			if (right1 < left2) {
+				return false;
+			}
+			// Check if other goes over from left
+			if (left1 > right2) {
+				return false;
+			}
+			System.out.printf("%s is above (%d, %d)%n", other.name, x, y);
+		}
+		// Only directly above the tiles can there be one to find
+		return false;
 	}
 
 	/**
@@ -116,9 +153,10 @@ public class TileMapObject {
 	 */
 	public Polygon getPolygon() throws MapException {
 		if (objectType != GroupObject.ObjectType.POLYGON) {
-			String str = String.format(
-					"The object \"%s\" at (%d, %d) was not a polygon!",
-					name, x, y);
+			String str =
+				String.format(
+						"The object \"%s\" at (%d, %d) was not a polygon!",
+						name, x, y);
 			throw new MapException(str);
 		}
 
@@ -138,17 +176,11 @@ public class TileMapObject {
 	 */
 	@Override
 	public String toString() {
-		String str = "TileMapObject={"
-				+ "index:" + index
-				+ ",name:" + name
-				+ ",type:" + type
-				+ ",objectType:" + objectType
-				+ ",x:" + x
-				+ ",y:" + y
-				+ ",width:" + width
-				+ ",height:" + height
-				+ ",props:" + props
-				+ "}";
+		String str =
+			"TileMapObject={" + "index:" + index + ",name:" + name + ",type:"
+					+ type + ",objectType:" + objectType + ",x:" + x + ",y:"
+					+ y + ",width:" + width + ",height:" + height + ",props:"
+					+ props + "}";
 		return str;
 	}
 }
