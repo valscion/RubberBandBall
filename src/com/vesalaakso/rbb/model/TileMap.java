@@ -124,20 +124,6 @@ public class TileMap {
 				areaGroup = tmpGroup;
 			}
 		}
-		
-		// Print all of the objects in all groups.
-		for (ObjectGroup tmpGroup : objectGroups) {
-			Log.info("Map has area with name \"" + tmpGroup.name + "\"");
-			for (GroupObject area : tmpGroup.getObjects()) {
-				try {
-					TileMapObject tmp = new TileMapObject(area);
-					System.out.println(tmp);
-				}
-				catch (MapException e) {
-					System.out.println(groupObjectToString(area));
-				}
-			}
-		}
 
 		// Store start area
 		for (GroupObject area : areaGroup.getObjectsOfType("spawn")) {
@@ -172,24 +158,6 @@ public class TileMap {
 		for (GroupObject area : areaGroup.getObjectsOfType("trigger")) {
 			triggerAreas.add(new TileMapObject(area));
 		}
-	}
-
-	/**
-	 * A helper method which returns a string representation of a GroupObject
-	 * */
-	private String groupObjectToString(GroupObject obj) {
-		String str = "GroupObject={"
-				+ "index:" + obj.index
-				+ ",name:" + obj.name
-				+ ",type:" + obj.type
-				+ ",objectType:" + obj.getObjectType()
-				+ ",x:" + obj.x
-				+ ",y:" + obj.y
-				+ ",width:" + obj.width
-				+ ",height:" + obj.height
-				+ ",props:" + obj.props
-				+ "}";
-		return str;
 	}
 
 	/**
