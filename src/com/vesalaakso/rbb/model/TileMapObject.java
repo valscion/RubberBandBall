@@ -43,18 +43,23 @@ public class TileMapObject {
 	 * @param obj
 	 *            the GroupObject to base this new object on
 	 * @throws MapException
-	 *             if the type of this object was unknown.
+	 *             if the type of this object was set and was unknown.
 	 */
 	public TileMapObject(GroupObject obj) throws MapException {
 		groupObject = obj;
 
 		index = obj.index;
 		name = obj.name;
-		try {
-			type = TileMapObjectType.valueOf(obj.type.toUpperCase());
+		if (obj.type != null && !obj.type.isEmpty()) {
+			try {
+				type = TileMapObjectType.valueOf(obj.type.toUpperCase());
+			}
+			catch (IllegalArgumentException e) {
+				throw new MapException("Unknown object type: " + obj.type, e);
+			}
 		}
-		catch (IllegalArgumentException e) {
-			throw new MapException("Unknown object type: " + obj.type, e);
+		else {
+			type = TileMapObjectType.EMPTY;
 		}
 		objectType = obj.getObjectType();
 		x = obj.x;

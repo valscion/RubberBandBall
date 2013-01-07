@@ -132,8 +132,7 @@ public class Physics implements Updateable, MapChangeListener {
 			}
 			else if (isPolygon) {
 				Polygon polygon = createPolygon(obj);
-				body = new StaticBody<Polygon>(polygon, obj.x * obj.width,
-						obj.y * obj.height);
+				body = new StaticBody<Polygon>(polygon, obj.x, obj.y);
 			}
 			else {
 				String errStr = String.format(
@@ -181,7 +180,7 @@ public class Physics implements Updateable, MapChangeListener {
 			float x = geomPoints[i];
 			float y = geomPoints[i + 1];
 
-			int pointIndex = (geomPoints.length - i) / 2;
+			int pointIndex = (geomPoints.length - i - 2) / 2;
 
 			points[pointIndex] = new Vec2(x, y);
 		}

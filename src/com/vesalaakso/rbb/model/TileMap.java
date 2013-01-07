@@ -155,8 +155,8 @@ public class TileMap {
 		}
 
 		// Store collision objects
-		for (GroupObject area : areaGroup.getObjectsOfType("trigger")) {
-			triggerAreas.add(new TileMapObject(area));
+		for (GroupObject area : map.getObjectGroup("collisions").getObjects()) {
+			collisionObjects.add(new TileMapObject(area));
 		}
 	}
 

@@ -6,6 +6,8 @@ package com.vesalaakso.rbb.model;
  * @author Vesa Laakso
  */
 public enum TileMapObjectType {
+	/** No type set */
+	EMPTY,
 	/** Area where player can spawn */
 	SPAWN,
 	/** Area that identifies the finish */
