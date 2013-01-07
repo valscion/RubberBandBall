@@ -51,7 +51,7 @@ public class TileMapObject {
 		index = obj.index;
 		name = obj.name;
 		try {
-			type = TileMapObjectType.valueOf(obj.name.toUpperCase());
+			type = TileMapObjectType.valueOf(obj.type.toUpperCase());
 		}
 		catch (IllegalArgumentException e) {
 			throw new MapException("Unknown object type: " + obj.type, e);
