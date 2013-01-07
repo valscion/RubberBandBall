@@ -1,7 +1,10 @@
 package com.vesalaakso.rbb.controller;
 
+import org.newdawn.fizzy.Vector;
+
 import com.vesalaakso.rbb.model.Camera;
 import com.vesalaakso.rbb.model.Player;
+import com.vesalaakso.rbb.util.Utils;
 
 /**
  * This class handles the controlling of {@link Camera}.
@@ -75,7 +78,11 @@ public class CameraController extends KeyAdapter implements Updateable {
 		}
 		else {
 			// Glue the camera to the player if player is not ready for launch.
-			cam.setPosition(player.getX(), player.getY());
+			Vector oldP = new Vector(cam.getX() + cam.getHalfScreenWidth(), cam.getY() + cam.getHalfScreenHeight());
+			Vector targetP = new Vector(player.getX(), player.getY());
+			Vector curved = Utils.curvePoints(oldP, targetP);
+
+			cam.setPosition(curved.x, curved.y);
 		}
 	}
 
