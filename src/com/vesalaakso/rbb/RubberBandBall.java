@@ -18,7 +18,6 @@ import com.vesalaakso.rbb.controller.MenuKeyController;
 import com.vesalaakso.rbb.controller.RubberBandController;
 import com.vesalaakso.rbb.controller.Updateable;
 import com.vesalaakso.rbb.model.Background;
-import com.vesalaakso.rbb.model.Camera;
 import com.vesalaakso.rbb.model.ParticleManager;
 import com.vesalaakso.rbb.model.Physics;
 import com.vesalaakso.rbb.model.Player;
@@ -27,6 +26,7 @@ import com.vesalaakso.rbb.model.TileMap;
 import com.vesalaakso.rbb.model.TileMapContainer;
 import com.vesalaakso.rbb.model.exceptions.MapException;
 import com.vesalaakso.rbb.view.BackgroundPainter;
+import com.vesalaakso.rbb.view.DebugPrintPainter;
 import com.vesalaakso.rbb.view.PainterContainer;
 import com.vesalaakso.rbb.view.ParticleSystemPainter;
 import com.vesalaakso.rbb.view.PhysicsPainter;
@@ -40,6 +40,12 @@ import com.vesalaakso.rbb.view.TileMapOverLayerPainter;
  * The game. You lost it.
  */
 public class RubberBandBall extends BasicGame {
+
+	/** The width of the display to create */
+	public static final int SCREEN_WIDTH = 800;
+
+	/** The height of the display to create */
+	public static final int SCREEN_HEIGHT = 600;
 
 	/**
 	 * The current map is always stored in this <code>TileMapContainer</code>.
@@ -102,6 +108,7 @@ public class RubberBandBall extends BasicGame {
 		painterContainer.addPainter(new RubberBandPainter(rubberBand));
 		painterContainer.addPainter(new ParticleSystemPainter(particleManager));
 		painterContainer.addPainter(new PhysicsPainter(physics));
+		painterContainer.addPainter(new DebugPrintPainter(physics, player));
 	}
 
 	/** A helper method which adds all the controllers to the game. */
@@ -149,9 +156,6 @@ public class RubberBandBall extends BasicGame {
 	 */
 	@Override
 	public void init(GameContainer container) throws SlickException {
-		// First things first. Initialize the camera properly.
-		Camera.init(container.getWidth(), container.getHeight());
-
 		// Remove the default input handlers, as input handling is done via
 		// InputMaster class and not this.
 		container.getInput().removeAllListeners();
@@ -248,7 +252,7 @@ public class RubberBandBall extends BasicGame {
 		try {
 			AppGameContainer app = new AppGameContainer(new RubberBandBall());
 
-			app.setDisplayMode(800, 600, false);
+			app.setDisplayMode(SCREEN_WIDTH, SCREEN_HEIGHT, false);
 			// app.setTargetFrameRate(60);
 			app.setVSync(true);
 			app.start();
