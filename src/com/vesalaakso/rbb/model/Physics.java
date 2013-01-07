@@ -78,6 +78,7 @@ public class Physics implements Updateable, MapChangeListener {
 		world.update(1 / 40f);
 		if (player != null) {
 			player.setPosition(playerBody.getX(), playerBody.getY());
+			player.setAngle(playerBody.getRotation());
 
 			if (!player.isReadyForLaunch() && playerBody.isSleeping()) {
 				// We've arrived somewhere. Control to the player, ahoy!
@@ -161,19 +162,19 @@ public class Physics implements Updateable, MapChangeListener {
 	private Polygon createPolygon(TileMapObject obj) throws MapException {
 		// Get the underlying geometric polygon shape
 		org.newdawn.slick.geom.Polygon polygon = obj.getPolygon();
-		
+
 		// Get the geometric points, using CW winding rule.
 		float[] geomPoints = polygon.getPoints();
-		
+
 		// Make sure that we got some points and we got an x- and y-coordinate
 		// for them all.
 		if (geomPoints.length == 0 || geomPoints.length % 2 == 1) {
 			throw new MapException("Weird geometric points for " + obj);
 		}
-		
+
 		// Store the points in a CCW winding rule in this array of vectors
 		Vec2[] points = new Vec2[geomPoints.length / 2];
-		
+
 		// Loop-de-la-loop backwards to store those.
 		for (int i = geomPoints.length - 2; i >= 0; i -= 2) {
 			float x = geomPoints[i];
@@ -283,7 +284,6 @@ public class Physics implements Updateable, MapChangeListener {
 			// For now, only simulate friction for rectangles. And only if the
 			// rectangle is below us.
 			if (playerBody.getY() < otherBody.getY()) {
-				System.out.println("Starting friction simulation");
 				isSimulatingFriction = true;
 			}
 		}
@@ -295,7 +295,6 @@ public class Physics implements Updateable, MapChangeListener {
 	 */
 	public void stopSimulatingFriction() {
 		if (isSimulatingFriction) {
-			System.out.println("Stopped friction simulation");
 			isSimulatingFriction = false;
 		}
 	}

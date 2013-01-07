@@ -22,6 +22,9 @@ public class Player implements MapChangeListener {
 	/** Radius of the ball representing the player. */
 	private float radius = 16f;
 
+	/** Angle of the player, in radians */
+	private float angle;
+
 	/** Is player ready to be launched or not */
 	private boolean isReadyForLaunch;
 
@@ -75,6 +78,15 @@ public class Player implements MapChangeListener {
 	}
 
 	/**
+	 * Gets the angle of the player, in radians
+	 * 
+	 * @return angle of the player, in radians
+	 */
+	public float getAngle() {
+		return angle;
+	}
+
+	/**
 	 * Sets the position for the player.
 	 * 
 	 * @param x
@@ -85,6 +97,15 @@ public class Player implements MapChangeListener {
 	public void setPosition(float x, float y) {
 		xWorld = x;
 		yWorld = y;
+	}
+
+	/**
+	 * Sets the angle of the player, in radians.
+	 * 
+	 * @param angle the new angle
+	 */
+	public void setAngle(float angle) {
+		this.angle = angle;
 	}
 
 	/**
