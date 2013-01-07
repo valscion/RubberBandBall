@@ -147,61 +147,8 @@ public class GroupObject {
 	 *             Indicates a failure to parse the XML group
 	 */
 	public GroupObject(Element element, TiledMapPlus map) throws SlickException {
+		this(element);
 		this.map = map;
-		if (element.getAttribute("gid") != "") {
-			gid = Integer.parseInt(element.getAttribute("gid"));
-			this.objectType = ObjectType.IMAGE;
-		}
-		if (objectType == ObjectType.IMAGE) {
-			if (element.getAttribute("width") != "") {
-				width = Integer.parseInt(element.getAttribute("width"));
-			}
-			if (element.getAttribute("height") != "") {
-				height = Integer.parseInt(element.getAttribute("height"));
-			}
-			if (element.getAttribute("name") != "") {
-				name = element.getAttribute("name");
-			}
-			if (element.getAttribute("type") != "") {
-				type = element.getAttribute("type");
-			}
-		} else if (objectType == ObjectType.RECTANGLE) {
-			width = Integer.parseInt(element.getAttribute("width"));
-			height = Integer.parseInt(element.getAttribute("height"));
-			name = element.getAttribute("name");
-			type = element.getAttribute("type");
-		} else if (objectType == ObjectType.POLYGON) {
-			name = element.getAttribute("name");
-			Element polyLine = (Element) element.getElementsByTagName(
-					"polyline").item(0);
-			String pointsUnformatted = polyLine.getAttribute("points");
-			String[] pointsFormatted = pointsUnformatted.split(" ");
-			for (String pointS : pointsFormatted) {
-				String[] pointArray = pointS.split(",");
-				float pointX = Float.parseFloat(pointArray[0]);
-				float pointY = Float.parseFloat(pointArray[1]);
-				points.addPoint(pointX, pointY);
-			}
-		}
-		x = Integer.parseInt(element.getAttribute("x"));
-		y = Integer.parseInt(element.getAttribute("y"));
-
-		// now read the layer properties
-		Element propsElement = (Element) element.getElementsByTagName(
-				"properties").item(0);
-		if (propsElement != null) {
-			NodeList properties = propsElement.getElementsByTagName("property");
-			if (properties != null) {
-				props = new Properties();
-				for (int p = 0; p < properties.getLength(); p++) {
-					Element propElement = (Element) properties.item(p);
-
-					String name = propElement.getAttribute("name");
-					String value = propElement.getAttribute("value");
-					props.setProperty(name, value);
-				}
-			}
-		}
 	}
 
 	/**
