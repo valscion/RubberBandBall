@@ -154,6 +154,11 @@ public class TileMap {
 			triggerAreas.add(new TileMapObject(area));
 		}
 
+		// Store safe areas
+		for (GroupObject area : areaGroup.getObjectsOfType("safe")) {
+			safeAreas.add(new TileMapObject(area));
+		}
+
 		// Store collision objects
 		for (GroupObject area : map.getObjectGroup("collisions").getObjects()) {
 			collisionObjects.add(new TileMapObject(area));
