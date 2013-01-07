@@ -127,8 +127,7 @@ public class Physics implements Updateable, MapChangeListener {
 
 			if (isRectangle) {
 				Rectangle rect = new Rectangle(obj.width, obj.height);
-				body = new StaticBody<Rectangle>(rect, obj.x * obj.width, 
-						obj.y * obj.height);
+				body = new StaticBody<Rectangle>(rect, obj.x, obj.y);
 			}
 			else if (isPolygon) {
 				Polygon polygon = createPolygon(obj);
