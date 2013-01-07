@@ -3,10 +3,12 @@ package com.vesalaakso.rbb.controller;
 import org.newdawn.fizzy.Body;
 import org.newdawn.fizzy.CollisionEvent;
 import org.newdawn.fizzy.WorldListener;
+import org.newdawn.slick.tiled.GroupObject;
 
 import com.vesalaakso.rbb.model.ParticleManager;
 import com.vesalaakso.rbb.model.Physics;
 import com.vesalaakso.rbb.model.Player;
+import com.vesalaakso.rbb.model.TileMapObject;
 
 /**
  * Listens for collisions where the colliding object is the player.
@@ -59,7 +61,15 @@ public class PlayerCollisionListener implements WorldListener {
 		particleManager.addExplosionEmitter(player.getX(), player.getY());
 
 		lastCollisionBody = getCollisionBody(event);
-		physics.startSimulatingFriction(lastCollisionBody);
+		TileMapObject tile = physics.getTileMapObject(lastCollisionBody);
+
+		if (tile.objectType == GroupObject.ObjectType.RECTANGLE) {
+			// For now, only simulate friction for rectangles. And only if the
+			// rectangle is below us.
+			if (player.getY() < lastCollisionBody.getY()) {
+				physics.startSimulatingFriction(lastCollisionBody);
+			}
+		}
 	}
 
 	/**

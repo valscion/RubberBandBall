@@ -2,6 +2,7 @@ package com.vesalaakso.rbb.model;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.jbox2d.common.Vec2;
 import org.newdawn.fizzy.Body;
@@ -14,8 +15,7 @@ import org.newdawn.fizzy.World;
 import org.newdawn.slick.tiled.GroupObject;
 import org.newdawn.slick.util.Log;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
+import com.google.common.collect.Maps;
 import com.vesalaakso.rbb.controller.MapChangeListener;
 import com.vesalaakso.rbb.controller.PlayerCollisionListener;
 import com.vesalaakso.rbb.controller.Updateable;
@@ -41,7 +41,7 @@ public class Physics implements Updateable, MapChangeListener {
 	private World world;
 
 	/** The bodies associated with the map, linked to the collidable object. */
-	private BiMap<Body<?>, TileMapObject> bodyTileMap = HashBiMap.create();
+	private Map<Body<?>, TileMapObject> bodyTileMap = Maps.newHashMap();
 
 	/** The player whose body will be added to the physics engine. */
 	private Player player;
@@ -52,8 +52,11 @@ public class Physics implements Updateable, MapChangeListener {
 	/** The listener listening for collisions of playerBody */
 	private PlayerCollisionListener playerCollisionListener;
 
-	/** Should we simulate friction on every update call */
-	private boolean isSimulatingFriction;
+	/**
+	 * A body to simulate rolling friction against or null if no simulation
+	 * should happen.
+	 */
+	private Body<?> frictionSimulationBody;
 
 	/**
 	 * Constructs the physics engine and boots it up with default gravity.
@@ -84,7 +87,7 @@ public class Physics implements Updateable, MapChangeListener {
 				// We've arrived somewhere. Control to the player, ahoy!
 				player.onStop();
 			}
-			else if (isSimulatingFriction && !playerBody.isSleeping()) {
+			else if (frictionSimulationBody != null && !playerBody.isSleeping()) {
 				// Simulate friction against the body.
 				float angVel = playerBody.getAngularVelocity();
 				int dir = playerBody.getXVelocity() > 0 ? -1 : 1;
@@ -135,9 +138,9 @@ public class Physics implements Updateable, MapChangeListener {
 				body = new StaticBody<Polygon>(polygon, obj.x, obj.y);
 			}
 			else {
-				String errStr = String.format(
-						"Invalid collidable tile at (%d, %d): %s",
-						obj.x, obj.y, obj.objectType);
+				String errStr =
+					String.format("Invalid collidable tile at (%d, %d): %s",
+							obj.x, obj.y, obj.objectType);
 				throw new MapException(errStr);
 			}
 
@@ -212,7 +215,7 @@ public class Physics implements Updateable, MapChangeListener {
 
 		Circle shape = new Circle(radius, density, restitution);
 		playerBody =
-				new DynamicBody<Circle>(shape, player.getX(), player.getY());
+			new DynamicBody<Circle>(shape, player.getX(), player.getY());
 		playerBody.setAngularDamping(angularDamping);
 
 		// Add the player to the world
@@ -220,7 +223,7 @@ public class Physics implements Updateable, MapChangeListener {
 
 		// Initialize the listener and add it to the world
 		playerCollisionListener =
-				new PlayerCollisionListener(this, player, particleManager);
+			new PlayerCollisionListener(this, player, particleManager);
 		world.addBodyListener(playerBody, playerCollisionListener);
 
 		// Also, make the player not yet take part in any collision.
@@ -257,6 +260,20 @@ public class Physics implements Updateable, MapChangeListener {
 	}
 
 	/**
+	 * Gets the <code>TileMapObject</code> mapped to a <code>Body</code>.
+	 * 
+	 * @param body
+	 *            the <code>Body</code> to search for a
+	 *            <code>TileMapObject</code> for.
+	 * 
+	 * @return a <code>TileMapObject</code> mapped to the given
+	 *         <code>Body</code> or <code>null</code>, if none was found.
+	 */
+	public TileMapObject getTileMapObject(Body<?> body) {
+		return bodyTileMap.get(body);
+	}
+
+	/**
 	 * Launches the player by applying a force to him.
 	 * 
 	 * @param forceX
@@ -267,26 +284,18 @@ public class Physics implements Updateable, MapChangeListener {
 	public void launchPlayer(float forceX, float forceY) {
 		playerBody.setActive(true);
 		playerBody.setVelocity(forceX, forceY);
-		isSimulatingFriction = false;
+		frictionSimulationBody = null;
 	}
 
 	/**
-	 * Tries to simulate a rolling friction for the player body.
+	 * Starts simulating rolling friction for the player.
 	 * 
 	 * @param otherBody
 	 *            the <code>Body</code> in to which the player collides
 	 *            currently.
 	 */
 	public void startSimulatingFriction(Body<?> otherBody) {
-		TileMapObject tile = bodyTileMap.get(otherBody);
-
-		if (tile.objectType == GroupObject.ObjectType.RECTANGLE) {
-			// For now, only simulate friction for rectangles. And only if the
-			// rectangle is below us.
-			if (playerBody.getY() < otherBody.getY()) {
-				isSimulatingFriction = true;
-			}
-		}
+		frictionSimulationBody = otherBody;
 	}
 
 	/**
@@ -294,9 +303,7 @@ public class Physics implements Updateable, MapChangeListener {
 	 * colliding to the previous simulated body.
 	 */
 	public void stopSimulatingFriction() {
-		if (isSimulatingFriction) {
-			isSimulatingFriction = false;
-		}
+		frictionSimulationBody = null;
 	}
 
 	/**
@@ -317,7 +324,7 @@ public class Physics implements Updateable, MapChangeListener {
 		}
 
 		// Reset state
-		isSimulatingFriction = false;
+		frictionSimulationBody = null;
 
 		// Re-initialize for the new map.
 		try {
