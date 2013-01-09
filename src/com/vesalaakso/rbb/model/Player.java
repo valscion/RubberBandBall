@@ -28,6 +28,9 @@ public class Player implements MapChangeListener {
 	/** Is player ready to be launched or not */
 	private boolean isReadyForLaunch;
 
+	/** The happiness of the player, measured in range -1.0 ... 1.0 */
+	private float happiness;
+
 	/**
 	 * Constructs the <code>Player</code>. The new Player is pretty much useless
 	 * and dangerous before it has a map set, so it should not be used before
@@ -140,6 +143,32 @@ public class Player implements MapChangeListener {
 	public void onMapChange(TileMap oldMap, TileMap newMap) {
 		map = newMap;
 		reset();
+	}
+
+	/**
+	 * Gets the current happiness of the player.
+	 * 
+	 * @return happiness of the player
+	 */
+	public float getHappiness() {
+		return happiness;
+	}
+
+	/**
+	 * Changes the happiness of the player to the given value. Automatically
+	 * maps the value to -1.0f ... 1.0f as those are the limits.
+	 * 
+	 * @param newHappiness the happiness to set player to
+	 */
+	public void changeHappiness(float newHappiness) {
+		if (newHappiness < -1.0f) {
+			newHappiness = -1.0f;
+		}
+		else if (newHappiness > 1.0f) {
+			newHappiness = 1.0f;
+		}
+		happiness = newHappiness;
+		
 	}
 
 }

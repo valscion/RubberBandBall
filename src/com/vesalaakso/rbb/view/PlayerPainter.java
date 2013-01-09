@@ -80,33 +80,36 @@ public class PlayerPainter implements Painter {
 	 */
 	@Override
 	public void paint(Graphics g) {
-		// Calculate top left coords based on the center coordinates of the
-		// player.
-		float x = player.getX() - player.getRadius();
-		float y = player.getY() - player.getRadius();
+		// Before drawing, center the drawing to player coordinates and apply
+		// player rotation, too
+		float rotation = (float) Math.toDegrees(player.getAngle());
+		g.translate(player.getX(), player.getY());
+		g.rotate(0, 0, rotation);
 
-		// And the width as well
-		float width = player.getRadius() * 2;
+		// Get the radius of the player to this variable r for easy reading.
+		float r = player.getRadius();
 
 		// Draw a circle representing the player
 		g.setColor(playerColor);
-		g.fillOval(x, y, width, width);
+		g.fillOval(-r, -r, r * 2, r * 2);
 
 		// Outline of player
 		g.setColor(playerOutlineColor);
-		g.drawOval(x, y, width, width);
+		g.drawOval(-r, -r, r * 2, r * 2);
 
 		// EYES!
 		drawEyes(g);
+
+		// And mouth!
+		drawMouth(g);
+
+		// Reset transformations
+		g.rotate(0, 0, -rotation);
+		g.translate(-player.getX(), -player.getY());
 	}
 
 	/** A helper to draw eyes. */
 	private void drawEyes(Graphics g) {
-		// And before drawing, center the translation to player coordinates and
-		// rotate the transformations
-		float rotation = (float) Math.toDegrees(player.getAngle());
-		g.translate(player.getX(), player.getY());
-		g.rotate(0, 0, rotation);
 
 		// EYES!
 		float xOffset = player.getRadius() * .7f;
@@ -132,9 +135,49 @@ public class PlayerPainter implements Painter {
 		g.setColor(eyeOutlineColor);
 		g.drawOval(-xOffset, y, width, height);
 		g.drawOval(xOffset - width, y, width, height);
+	}
 
-		// Reset transformations
-		g.rotate(0, 0, -rotation);
-		g.translate(-player.getX(), -player.getY());
+	/** A helper to draw mouth */
+	private void drawMouth(Graphics g) {
+		// Easy reading.
+		float r = player.getRadius();
+
+		// Happiness, a value from -1 to 1.
+		float happiness = player.getHappiness();
+
+		// Calculate the width and height of the arc based on the happiness
+		float width = r;
+		float height = r * 0.75f * happiness;
+
+		// Height must be at least 1.5 to draw something.
+		if (height > -1.5f && height < 1.5f) {
+			if (height < 0) {
+				height = -1.5f;
+			}
+			else {
+				height = 1.5f;
+			}
+		}
+
+		// Center of a full oval
+		float cx = width / 2;
+		float cy = (height - width) / 2;
+
+		// Don't let it snap when close to 0
+		if (height < 0) {
+			cy -= 1.0f;
+		}
+
+		// When the mouth is smiley enough, its borders move up / down, too.
+		if (height > r * .125f) {
+			cy += (height / (r * .75f)) * r * .25f;
+		}
+		else if (height < -r * .125f) {
+			cy += (height / (r * .75f)) * r * .125f;
+		}
+
+		g.translate(-cx, -cy);
+		g.fillArc(0, 0, width, height, 0, 180);
+		g.translate(cx, cy);
 	}
 }

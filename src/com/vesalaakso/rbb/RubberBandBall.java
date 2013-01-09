@@ -12,6 +12,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.util.Log;
 
 import com.vesalaakso.rbb.controller.CameraController;
+import com.vesalaakso.rbb.controller.DebugKeyController;
 import com.vesalaakso.rbb.controller.InputMaster;
 import com.vesalaakso.rbb.controller.MapChanger;
 import com.vesalaakso.rbb.controller.MenuKeyController;
@@ -117,6 +118,7 @@ public class RubberBandBall extends BasicGame {
 		inputMaster.addKeyListener(new CameraController(player));
 		inputMaster.addKeyListener(new MenuKeyController(this));
 		inputMaster.addMouseListener(new RubberBandController(rubberBand));
+		inputMaster.addKeyListener(new DebugKeyController(player));
 	}
 
 	/**

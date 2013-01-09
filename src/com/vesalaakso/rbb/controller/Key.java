@@ -19,7 +19,11 @@ public enum Key {
 	/** Camera movement in positive y-direction, default key: S */
 	CAMERA_MOVE_DOWN(Input.KEY_S),
 	/** Goes back in a menu or opens pause menu, default key: ESCAPE */
-	GO_BACK(Input.KEY_ESCAPE);
+	GO_BACK(Input.KEY_ESCAPE),
+	/** XXX Debug, adds player happiness. */
+	DBG_PLAYER_HAPPINESS_ADD(Input.KEY_ADD),
+	/** XXX Debug, substracts player happiness. */
+	DBG_PLAYER_HAPPINESS_SUB(Input.KEY_MINUS);
 
 	/** The Input key constant mapped to the enum */
 	public final int id;
