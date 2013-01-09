@@ -33,12 +33,7 @@ public class CameraController extends KeyAdapter implements Updateable {
 	}
 
 	@Override
-	public void keyPressed(int keyId, char c) {
-		Key key = Key.findWithId(keyId);
-		if (key == null) {
-			return;
-		}
-
+	public void keyPressed(Key key, char c) {
 		switch (key) {
 			case CAMERA_MOVE_LEFT: cameraMoveX = -1.0f; break;
 			case CAMERA_MOVE_RIGHT: cameraMoveX = 1.0f; break;
@@ -49,12 +44,7 @@ public class CameraController extends KeyAdapter implements Updateable {
 	}
 
 	@Override
-	public void keyReleased(int keyId, char c) {
-		Key key = Key.findWithId(keyId);
-		if (key == null) {
-			return;
-		}
-
+	public void keyReleased(Key key, char c) {
 		switch (key) {
 			case CAMERA_MOVE_LEFT: // Falls below
 			case CAMERA_MOVE_RIGHT: cameraMoveX = 0; break;
