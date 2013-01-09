@@ -213,6 +213,11 @@ public class Physics implements Updateable, MapChangeListener {
 		// hits a wall. 0.9f is the default.
 		float restitution = 0.75f;
 
+		// Player should stop eventually, even if there is no gravity. The
+		// damping value specifies how much will the player lose speed even when
+		// in mid-air. Defaults to 0
+		float damping = 0.1f;
+
 		// Since friction doesn't do anything when we're creating a circle, we
 		// simulate it ourselves elsewhere. Angular damping specifies the amount
 		// of spinning force the circle will lose over time at every update.
@@ -221,6 +226,8 @@ public class Physics implements Updateable, MapChangeListener {
 		Circle shape = new Circle(radius, density, restitution);
 		playerBody =
 				new DynamicBody<Circle>(shape, player.getX(), player.getY());
+
+		playerBody.setLinearDamping(damping);
 		playerBody.setAngularDamping(angularDamping);
 
 		// Add the player to the world
