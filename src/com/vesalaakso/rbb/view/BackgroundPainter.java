@@ -3,6 +3,7 @@ package com.vesalaakso.rbb.view;
 import org.newdawn.slick.Graphics;
 
 import com.vesalaakso.rbb.model.Background;
+import com.vesalaakso.rbb.model.Camera;
 
 /**
  * Draws the bg space
@@ -42,7 +43,14 @@ public class BackgroundPainter implements Painter {
 	 */
 	@Override
 	public void paint(Graphics g) {
+		// Nope, we don't want scaling to affect this drawing.
+		float scale = Camera.get().getScaling();
+		g.scale(1 / scale, 1 / scale);
+
 		g.drawImage(bg.getImage(), bg.getX(), bg.getY());
+
+		// Reset scaling
+		g.scale(scale, scale);
 	}
 
 }

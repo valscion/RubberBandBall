@@ -21,6 +21,9 @@ public class PainterContainer {
 	/** Everything that is to be painted. */
 	private List<Painter> painters = new LinkedList<Painter>();
 
+	/** Everything that is to be painted in debug mode */
+	private List<Painter> debugPainters = new LinkedList<Painter>();
+
 	/**
 	 * If the drawing has been translated to world coordinates, this will be
 	 * <code>true</code>.
@@ -41,31 +44,70 @@ public class PainterContainer {
 	}
 
 	/**
+	 * Adds a painter to be drawn only when the current game is in debug mode.
+	 * All debug painters are drawn after the real ones.
+	 * 
+	 * @param painter
+	 *            the painter to draw in debug mode
+	 */
+	public void addDebugPainter(Painter painter) {
+		this.debugPainters.add(painter);
+	}
+
+	/**
 	 * Draws every painter in the order they were added.
 	 * 
 	 * @param g
 	 *            <code>Graphics</code>-object which will be used to draw stuff
 	 *            to screen.
+	 * @param game
+	 *            the game to draw
 	 */
-	public void paintAll(Graphics g) {
+	public void paintAll(Graphics g, RubberBandBall game) {
 		// Anti-aliasing for all!
 		g.setAntiAlias(true);
 
-		for (Painter p : this.painters) {
+		// Camera, to a prettier variable.
+		Camera cam = Camera.get();
+		
+		// Game scale is set by camera.
+		float scaling = cam.getScaling();
+		g.scale(scaling, scaling);
+		g.setLineWidth(scaling);
+
+		// All of the painters to be drawn. If we're not in debug mode,
+		// allPainters is the same as regular painters. If we are in debug mode,
+		// then allPainters is the combination of this.painters and
+		// this.debugPainters.
+		List<Painter> allPainters;
+		if (game.isDebugModeToggled()) {
+			allPainters = new LinkedList<Painter>();
+			allPainters.addAll(painters);
+			allPainters.addAll(debugPainters);
+		}
+		else {
+			allPainters = painters;
+		}
+
+		for (Painter p : allPainters) {
 			if (p.isDrawnToWorldCoordinates() != isWorldTranslationOn) {
+				// We wanted translation to world coordinates or back to screen
+				// coordinates. That translation is always based on the fact
+				// that camera is always at the center of the screen. We can
+				// translate by looking for the screen (0, 0) coordinates in
+				// world space and then translating to or out of that coordinate
+				// space.
+
+				float transX = RubberBandBall.SCREEN_WIDTH * .5f - cam.getX();
+				float transY = RubberBandBall.SCREEN_HEIGHT * .5f - cam.getY();
+
 				if (isWorldTranslationOn) {
 					// We wanted to go back to regular drawing mode.
-					g.resetTransform();
+					g.translate(-transX, -transY);
 				}
 				else {
-					// We wanted translation to world coordinates. Calculate it
-					// by setting the camera at the center of the screen.
-					Camera cam = Camera.get();
-
-					float cx = RubberBandBall.SCREEN_WIDTH * .5f - cam.getX();
-					float cy = RubberBandBall.SCREEN_HEIGHT * .5f - cam.getY();
-
-					g.translate(cx, cy);
+					// Translate to world coordinates
+					g.translate(transX, transY);
 				}
 
 				// Flip the flag.
@@ -83,6 +125,9 @@ public class PainterContainer {
 				g.setColor(origColor);
 			}
 		}
+
+		// Reset all transformations to normal
+		g.resetTransform();
 	}
 
 }

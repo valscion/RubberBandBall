@@ -51,8 +51,11 @@ public class Utils {
 		// Need to calc half of the width of the screen for this
 		float screenHalfWidth = RubberBandBall.SCREEN_WIDTH * 0.5f;
 
+		// Camera.
+		Camera cam = Camera.get();
+
 		// Calculate the screen coordinate
-		float x = Camera.get().getX() + screenX - screenHalfWidth;
+		float x = cam.getX() + (screenX / cam.getScaling()) - screenHalfWidth;
 
 		return x;
 	}
@@ -69,8 +72,11 @@ public class Utils {
 		// Need to calc half of the height of the screen for this
 		float screenHalfHeight = RubberBandBall.SCREEN_HEIGHT * 0.5f;
 
+		// Camera.
+		Camera cam = Camera.get();
+
 		// Calculate the screen coordinate
-		float y = Camera.get().getY() + screenY - screenHalfHeight;
+		float y = cam.getY() + (screenY / cam.getScaling()) - screenHalfHeight;
 
 		return y;
 	}

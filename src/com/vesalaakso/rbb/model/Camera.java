@@ -22,6 +22,9 @@ public class Camera {
 	/** Y-coordiante of the camera, in world coordinates. */
 	private float y;
 
+	/** The scale factor used to scale the whole game. */
+	private float scaling = 1.0f;
+
 	/**
 	 * A private constructor for this class is a singleton and has only one
 	 * instance.
@@ -89,6 +92,28 @@ public class Camera {
 	public void setPosition(float x, float y) {
 		this.x = x;
 		this.y = y;
+	}
+
+	/**
+	 * Sets the scaling factor to scale the whole game. Minimum possible is 1.
+	 * 
+	 * @param scale
+	 *            the new scaling factor of the whole game.
+	 */
+	public void setScaling(float scale) {
+		if (scale < 1) {
+			scale = 1;
+		}
+		this.scaling = scale;
+	}
+
+	/**
+	 * Gets the scale factor to scale the whole game.
+	 * 
+	 * @return scaling factor
+	 */
+	public float getScaling() {
+		return scaling;
 	}
 
 }

@@ -12,7 +12,8 @@ import com.vesalaakso.rbb.model.Player;
 import com.vesalaakso.rbb.util.Utils;
 
 /**
- * A Painter to draw all sorts of useful debug prints.
+ * A Painter to draw all sorts of useful debug prints. This painter must be the
+ * last painter to draw or else the transformations will get all screwed up.
  * 
  * @author Vesa Laakso
  */
@@ -52,6 +53,10 @@ public class DebugPrintPainter implements Painter {
 	 */
 	@Override
 	public void paint(Graphics g) {
+		// Force no transformations. This painter must be the last painter
+		// because of this as transformations will get screwed over.
+		g.resetTransform();
+
 		// Player body
 		Body<Circle> body = physics.getPlayerBody();
 		// Camera

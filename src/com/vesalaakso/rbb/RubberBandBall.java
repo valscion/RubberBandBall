@@ -94,6 +94,9 @@ public class RubberBandBall extends BasicGame {
 	/** If the game should stop at next update()-call, this flag knows. */
 	private boolean stopAtNextUpdate;
 
+	/** Is the game in debug mode? */
+	private boolean debugMode = true;
+
 	/** Constructs a new game. */
 	public RubberBandBall() {
 		super("Rubber band ball");
@@ -108,8 +111,8 @@ public class RubberBandBall extends BasicGame {
 		painterContainer.addPainter(new TileMapOverLayerPainter(mapContainer));
 		painterContainer.addPainter(new RubberBandPainter(rubberBand));
 		painterContainer.addPainter(new ParticleSystemPainter(particleManager));
-		painterContainer.addPainter(new PhysicsPainter(physics));
-		painterContainer.addPainter(new DebugPrintPainter(physics, player));
+		painterContainer.addDebugPainter(new PhysicsPainter(physics));
+		painterContainer.addDebugPainter(new DebugPrintPainter(physics, player));
 	}
 
 	/** A helper method which adds all the controllers to the game. */
@@ -148,6 +151,20 @@ public class RubberBandBall extends BasicGame {
 	 */
 	public void stop() {
 		stopAtNextUpdate = true;
+	}
+
+	/** Toggles debug mode */
+	public void toggleDebug() {
+		debugMode = !debugMode;
+	}
+
+	/**
+	 * Gets the debug status of the game.
+	 * 
+	 * @return <code>true</code> if debug mode is on
+	 */
+	public boolean isDebugModeToggled() {
+		return debugMode;
 	}
 
 	/**
@@ -241,7 +258,7 @@ public class RubberBandBall extends BasicGame {
 	@Override
 	public void render(GameContainer container, Graphics g)
 			throws SlickException {
-		painterContainer.paintAll(g);
+		painterContainer.paintAll(g, this);
 	}
 
 	/**
