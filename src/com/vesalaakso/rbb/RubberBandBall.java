@@ -29,7 +29,6 @@ import com.vesalaakso.rbb.model.exceptions.MapException;
 import com.vesalaakso.rbb.view.BackgroundPainter;
 import com.vesalaakso.rbb.view.DebugPrintPainter;
 import com.vesalaakso.rbb.view.PainterContainer;
-import com.vesalaakso.rbb.view.ParticleSystemPainter;
 import com.vesalaakso.rbb.view.PhysicsPainter;
 import com.vesalaakso.rbb.view.PlayerPainter;
 import com.vesalaakso.rbb.view.RubberBandPainter;
@@ -110,7 +109,6 @@ public class RubberBandBall extends BasicGame {
 		painterContainer.addPainter(new PlayerPainter(player));
 		painterContainer.addPainter(new TileMapOverLayerPainter(mapContainer));
 		painterContainer.addPainter(new RubberBandPainter(rubberBand));
-		painterContainer.addPainter(new ParticleSystemPainter(particleManager));
 		painterContainer.addDebugPainter(new PhysicsPainter(physics));
 		painterContainer.addDebugPainter(new DebugPrintPainter(physics, player));
 	}
