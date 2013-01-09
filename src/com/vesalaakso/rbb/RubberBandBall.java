@@ -121,7 +121,7 @@ public class RubberBandBall extends BasicGame {
 		inputMaster.addKeyListener(new CameraController(player));
 		inputMaster.addKeyListener(new MenuKeyController(this));
 		inputMaster.addMouseListener(new RubberBandController(rubberBand));
-		inputMaster.addKeyListener(new DebugKeyController(player));
+		inputMaster.addKeyListener(new DebugKeyController(this, player));
 	}
 
 	/**

@@ -10,16 +10,18 @@ import org.newdawn.slick.Input;
  * 
  */
 public enum Key {
-	/** Camera movement in negative x-direction, default key: A */
-	CAMERA_MOVE_LEFT(Input.KEY_A),
-	/** Camera movement in positive x-direction, default key: D */
-	CAMERA_MOVE_RIGHT(Input.KEY_D),
-	/** Camera movement in negative y-direction, default key: W */
-	CAMERA_MOVE_UP(Input.KEY_W),
-	/** Camera movement in positive y-direction, default key: S */
-	CAMERA_MOVE_DOWN(Input.KEY_S),
+	/** Camera movement in negative x-direction, default key: LEFT */
+	CAMERA_MOVE_LEFT(Input.KEY_LEFT),
+	/** Camera movement in positive x-direction, default key: RIGHT */
+	CAMERA_MOVE_RIGHT(Input.KEY_RIGHT),
+	/** Camera movement in negative y-direction, default key: UP */
+	CAMERA_MOVE_UP(Input.KEY_UP),
+	/** Camera movement in positive y-direction, default key: DOWN */
+	CAMERA_MOVE_DOWN(Input.KEY_DOWN),
 	/** Goes back in a menu or opens pause menu, default key: ESCAPE */
 	GO_BACK(Input.KEY_ESCAPE),
+	/** Toggles debug mode, default key: D */
+	TOGGLE_DEBUG(Input.KEY_D),
 	/** Debug, adds player happiness. */
 	DBG_PLAYER_HAPPINESS_ADD(Input.KEY_Z),
 	/** Debug, substracts player happiness. */

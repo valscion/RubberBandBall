@@ -1,14 +1,19 @@
 package com.vesalaakso.rbb.controller;
 
+import com.vesalaakso.rbb.RubberBandBall;
 import com.vesalaakso.rbb.model.Camera;
 import com.vesalaakso.rbb.model.Player;
 
 /**
- * Used to allow various keys to aid in debugging the game.
+ * Used to allow various keys to aid in debugging the game and to toggle the
+ * debug state.
  * 
  * @author Vesa Laakso
  */
 public class DebugKeyController extends KeyAdapter implements Updateable {
+
+	/** Game for toggling debug state */
+	private RubberBandBall game;
 
 	/** <code>Player</code> to debug. */
 	private Player player;
@@ -22,16 +27,25 @@ public class DebugKeyController extends KeyAdapter implements Updateable {
 	/**
 	 * Constructs a new controller and allows it to debug the given instances.
 	 * 
+	 * @param game
+	 *            we want to be able to toggle the debug state and check it.
 	 * @param player
 	 *            we want to debug player, yes.
 	 */
-	public DebugKeyController(Player player) {
+	public DebugKeyController(RubberBandBall game, Player player) {
+		this.game = game;
 		this.player = player;
 	}
 
 	@Override
 	public void keyPressed(Key key, char c) {
 		switch (key) {
+			case TOGGLE_DEBUG:
+				game.toggleDebug();
+				// Reset EVERYTHING!
+				playerChangeHappiness = 0;
+				cameraChangeScale = 0;
+				break;
 			case DBG_PLAYER_HAPPINESS_ADD:
 				playerChangeHappiness = 1.0f;
 				break;
@@ -63,6 +77,11 @@ public class DebugKeyController extends KeyAdapter implements Updateable {
 
 	@Override
 	public void update(int delta) {
+		if (!game.isDebugModeToggled()) {
+			// Only do debug stuff when in debug mode.
+			return;
+		}
+
 		float factor = delta / 1000.0f;
 		player.changeHappiness(player.getHappiness() + playerChangeHappiness
 				* factor);
