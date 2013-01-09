@@ -26,12 +26,6 @@ public class PainterContainer {
 	private List<Painter> debugPainters = new LinkedList<Painter>();
 
 	/**
-	 * If the drawing has been translated to world coordinates, this will be
-	 * <code>true</code>.
-	 */
-	private boolean isWorldTranslationOn = false;
-
-	/**
 	 * Adds a new <code>Painter</code> to the end of the painters list. The
 	 * order of which painters are added will also be the order of which they
 	 * will be drawn - the first <code>Painter</code> will be drawn under every
@@ -70,7 +64,7 @@ public class PainterContainer {
 
 		// Camera, to a prettier variable.
 		Camera cam = Camera.get();
-		
+
 		// Game scale is set by camera.
 		float scaling = cam.getScaling();
 		g.scale(scaling, scaling);
@@ -89,6 +83,10 @@ public class PainterContainer {
 		else {
 			allPainters = painters;
 		}
+
+		// Flag which controls whether world translation has been enabled or
+		// not.
+		boolean isWorldTranslationOn = false;
 
 		for (Painter p : allPainters) {
 			if (p.isDrawnToWorldCoordinates() != isWorldTranslationOn) {
