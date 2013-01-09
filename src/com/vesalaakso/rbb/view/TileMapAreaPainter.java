@@ -5,8 +5,6 @@ import java.util.List;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
-import com.vesalaakso.rbb.RubberBandBall;
-import com.vesalaakso.rbb.model.Camera;
 import com.vesalaakso.rbb.model.TileMap;
 import com.vesalaakso.rbb.model.TileMapContainer;
 import com.vesalaakso.rbb.model.TileMapObject;
@@ -47,12 +45,11 @@ public class TileMapAreaPainter implements Painter {
 	/**
 	 * @see com.vesalaakso.rbb.view.Painter#isDrawnToWorldCoordinates()
 	 * 
-	 * @return <code>false</code>, as special areas are drawn precisely and the
-	 *         drawing coordinates are calculated by hand.
+	 * @return <code>true</code>, as special areas are in world coordinates.
 	 */
 	@Override
 	public boolean isDrawnToWorldCoordinates() {
-		return false;
+		return true;
 	}
 
 	/**
@@ -81,12 +78,7 @@ public class TileMapAreaPainter implements Painter {
 	 * graphics context properly set.
 	 */
 	private void paintArea(Graphics g, TileMapObject area) {
-		Camera cam = Camera.get();
-
-		float x = area.x - cam.getX() + RubberBandBall.SCREEN_WIDTH * 0.5f;
-		float y = area.y - cam.getY() + RubberBandBall.SCREEN_HEIGHT * 0.5f;
-
-		g.fillRect(x, y, area.width, area.height);
+		g.fillRect(area.x, area.y, area.width, area.height);
 	}
 
 }

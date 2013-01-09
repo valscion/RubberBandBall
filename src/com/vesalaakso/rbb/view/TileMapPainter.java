@@ -2,10 +2,9 @@ package com.vesalaakso.rbb.view;
 
 import org.newdawn.slick.tiled.TiledMap;
 
-import com.vesalaakso.rbb.RubberBandBall;
-import com.vesalaakso.rbb.model.Camera;
 import com.vesalaakso.rbb.model.TileMap;
 import com.vesalaakso.rbb.model.TileMapContainer;
+import com.vesalaakso.rbb.util.Utils;
 
 /**
  * Handles the drawing of the tile map.
@@ -43,14 +42,13 @@ public abstract class TileMapPainter implements Painter {
 	 *            which layer should be drawn
 	 */
 	protected void drawLayer(int layer) {
-		Camera cam = Camera.get();
 		TileMap map = mapContainer.getMap();
 		TiledMap tmap = map.getTiledMap();
 
 		// Calculate the top left coordinates in screen dimensions after the
-		// camera has moved.
-		float scrX = cam.getX() - RubberBandBall.SCREEN_WIDTH * 0.5f;
-		float scrY = cam.getY() - RubberBandBall.SCREEN_HEIGHT * 0.5f;
+		// camera has moved and scaled.
+		float scrX = Utils.screenToWorldX(0);
+		float scrY = Utils.screenToWorldY(0);
 
 		// Calculate the top left tile that will be drawn first
 		int firstTileX = (int) scrX / TileMap.TILE_SIZE;

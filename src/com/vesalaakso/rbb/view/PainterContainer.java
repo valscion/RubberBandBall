@@ -8,6 +8,7 @@ import org.newdawn.slick.Graphics;
 
 import com.vesalaakso.rbb.RubberBandBall;
 import com.vesalaakso.rbb.model.Camera;
+import com.vesalaakso.rbb.util.Utils;
 
 /**
  * Every instance of classes that implement {@link Painter} interface are stored
@@ -98,16 +99,16 @@ public class PainterContainer {
 				// world space and then translating to or out of that coordinate
 				// space.
 
-				float transX = RubberBandBall.SCREEN_WIDTH * .5f - cam.getX();
-				float transY = RubberBandBall.SCREEN_HEIGHT * .5f - cam.getY();
+				float transX = Utils.screenToWorldX(0);
+				float transY = Utils.screenToWorldY(0);
 
 				if (isWorldTranslationOn) {
 					// We wanted to go back to regular drawing mode.
-					g.translate(-transX, -transY);
+					g.translate(transX, transY);
 				}
 				else {
 					// Translate to world coordinates
-					g.translate(transX, transY);
+					g.translate(-transX, -transY);
 				}
 
 				// Flip the flag.

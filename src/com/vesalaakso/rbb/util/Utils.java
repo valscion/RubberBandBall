@@ -58,7 +58,7 @@ public class Utils {
 		Camera cam = Camera.get();
 
 		// Calculate the screen coordinate
-		float x = cam.getX() + (screenX / cam.getScaling()) - screenHalfWidth;
+		float x = cam.getX() + (screenX - screenHalfWidth) / cam.getScaling();
 
 		return x;
 	}
@@ -79,7 +79,7 @@ public class Utils {
 		Camera cam = Camera.get();
 
 		// Calculate the screen coordinate
-		float y = cam.getY() + (screenY / cam.getScaling()) - screenHalfHeight;
+		float y = cam.getY() + (screenY - screenHalfHeight) / cam.getScaling();
 
 		return y;
 	}
