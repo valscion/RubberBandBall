@@ -70,7 +70,7 @@ public class CameraController extends KeyAdapter implements Updateable {
 			// Glue the camera to the player if player is not ready for launch.
 			Vector oldP = new Vector(cam.getX(), cam.getY());
 			Vector targetP = new Vector(player.getX(), player.getY());
-			Vector curved = Utils.curvePoints(oldP, targetP);
+			Vector curved = Utils.curvePoints(oldP, targetP, 20);
 
 			cam.setPosition(curved.x, curved.y);
 		}

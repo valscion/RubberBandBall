@@ -24,16 +24,19 @@ public class Utils {
 	 *            the coordinates where we start moving
 	 * @param target
 	 *            the coordinates where we want to end up in the long run
+	 * @param n
+	 *            the slowdown factor, must be >= 1
 	 * @return smoothed vector between the vectors <code>old</code> and
 	 *         <code>target</code>.
 	 */
-	public static Vector curvePoints(Vector old, Vector target) {
-		// The slowdown factor
-		final int N = 20;
+	public static Vector curvePoints(Vector old, Vector target, int n) {
+		if (n < 1) {
+			n = 1;
+		}
 
 		// Calculate the new coordinations using weighted average function
-		float x = ((old.x * (N - 1)) + target.x) / N;
-		float y = ((old.y * (N - 1)) + target.y) / N;
+		float x = ((old.x * (n - 1)) + target.x) / n;
+		float y = ((old.y * (n - 1)) + target.y) / n;
 
 		// Return the curved endpoint
 		return new Vector(x, y);
