@@ -5,6 +5,7 @@ import org.newdawn.fizzy.CollisionEvent;
 import org.newdawn.fizzy.WorldListener;
 import org.newdawn.slick.tiled.GroupObject;
 
+import com.vesalaakso.rbb.RubberBandBall;
 import com.vesalaakso.rbb.model.ParticleManager;
 import com.vesalaakso.rbb.model.Physics;
 import com.vesalaakso.rbb.model.Player;
@@ -31,6 +32,29 @@ public class PlayerCollisionListener implements WorldListener {
 	 * separated from
 	 */
 	private Body<?> lastCollisionBody;
+
+	/**
+	 * Try to fix the fact that somehow the player can get stuck bouncing
+	 * forever. This attribute contains the timestamp of when the last bounce
+	 * happened to the same body.
+	 */
+	private long lastBounceFromSameBody;
+
+	/**
+	 * Still trying to fix the infinite bouncing problem. This attribute
+	 * contains the count of how many times the player has bounced in a small
+	 * time from the same body.
+	 */
+	private int bounceCountFromSameBody;
+
+	/**
+	 * This constant defines how many bounces there can be at maximum in a small
+	 * time before the player is forcefully stopped from bouncing.
+	 */
+	private final static int MAX_BOUNCE_COUNT_FROM_SAME_BODY = 8;
+
+	/** This constant defines the delta to check bounce fixing against */
+	private final static long BOUNCE_BUG_MIN_TIME_DIFF = 150;
 
 	/**
 	 * Constructs a new <code>PlayerCollisionListener</code> and lets it know
@@ -64,13 +88,11 @@ public class PlayerCollisionListener implements WorldListener {
 		TileMapObject tile = physics.getTileMapObject(lastCollisionBody);
 
 		if (tile.objectType == GroupObject.ObjectType.RECTANGLE) {
-			// For now, only simulate friction for rectangles. And only if the
-			// rectangle is below us.
+			// Simulate friction for objects that are below us.
 			if (player.getY() < lastCollisionBody.getY()) {
 				physics.startSimulatingFriction(lastCollisionBody);
-				// Also if the player doesn't have enough velocity, stop it.
-				float fallVel = Math.abs(physics.getPlayerFallingVelocity());
-				if (fallVel < Physics.MIN_BOUNCE_VELOCITY) {
+				// Also if the player has bounced waaay too many times, stop it.
+				if (bounceCountFromSameBody >= MAX_BOUNCE_COUNT_FROM_SAME_BODY) {
 					physics.stopPlayerRising();
 				}
 			}
@@ -83,9 +105,26 @@ public class PlayerCollisionListener implements WorldListener {
 	@Override
 	public void separated(CollisionEvent event) {
 		Body<?> otherBody = getCollisionBody(event);
-		
+
 		if (otherBody == lastCollisionBody) {
+			// Stop friction simulation as player is no longer on ground.
 			physics.stopSimulatingFriction();
+			// Try to fix the infinite bouncing problem.
+			long timeNow = RubberBandBall.getContainer().getTime();
+			if (lastBounceFromSameBody == 0
+					|| lastBounceFromSameBody + BOUNCE_BUG_MIN_TIME_DIFF > timeNow) {
+				System.out.println("Tock, " + bounceCountFromSameBody);
+				lastBounceFromSameBody = timeNow;
+				bounceCountFromSameBody++;
+			}
+			else {
+				lastBounceFromSameBody = 0;
+				bounceCountFromSameBody = 0;
+			}
+		}
+		else {
+			lastBounceFromSameBody = 0;
+			bounceCountFromSameBody = 0;
 		}
 	}
 
@@ -101,7 +140,7 @@ public class PlayerCollisionListener implements WorldListener {
 	 */
 	private Body<?> getCollisionBody(CollisionEvent event) {
 		Body<?> player = physics.getPlayerBody();
-		
+
 		Body<?> ret = event.getBodyA();
 		if (ret == player) {
 			ret = event.getBodyB();

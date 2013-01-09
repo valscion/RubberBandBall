@@ -96,6 +96,9 @@ public class RubberBandBall extends BasicGame {
 	/** Is the game in debug mode? */
 	private boolean debugMode = true;
 
+	/** The GameContainer last update loop ran in. */
+	private static GameContainer container;
+
 	/** Constructs a new game. */
 	public RubberBandBall() {
 		super("Rubber band ball");
@@ -110,7 +113,8 @@ public class RubberBandBall extends BasicGame {
 		painterContainer.addPainter(new TileMapOverLayerPainter(mapContainer));
 		painterContainer.addPainter(new RubberBandPainter(rubberBand));
 		painterContainer.addDebugPainter(new PhysicsPainter(physics));
-		painterContainer.addDebugPainter(new DebugPrintPainter(physics, player));
+		painterContainer
+				.addDebugPainter(new DebugPrintPainter(physics, player));
 	}
 
 	/** A helper method which adds all the controllers to the game. */
@@ -163,6 +167,19 @@ public class RubberBandBall extends BasicGame {
 	 */
 	public boolean isDebugModeToggled() {
 		return debugMode;
+	}
+
+	/**
+	 * Gets the <code>GameContainer</code> which was last set when
+	 * <code>update()</code> was called. This is useful mainly for fixing the
+	 * f***ing physics bugging. Awful architecture. I hate it but time is
+	 * running out.
+	 * 
+	 * @return the <code>GameContainer</code> which was set when {@link #update}
+	 *         was last called.
+	 */
+	public static GameContainer getContainer() {
+		return container;
 	}
 
 	/**
@@ -223,6 +240,8 @@ public class RubberBandBall extends BasicGame {
 	@Override
 	public void update(GameContainer container, int delta)
 			throws SlickException {
+		RubberBandBall.container = container;
+
 		// The game was not meant to last forever, my friend.
 		if (stopAtNextUpdate) {
 			// container.exit();

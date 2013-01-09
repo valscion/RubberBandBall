@@ -323,7 +323,7 @@ public class Physics implements Updateable, MapChangeListener {
 	 * dropping down or not letting it bounce.
 	 */
 	public void stopPlayerRising() {
-		System.out.println("Player stopped from bouncing");
+		Log.info("Forcefully stopped player from bouncing.");
 		playerBody.setVelocity(playerBody.getXVelocity(), 0);
 	}
 
