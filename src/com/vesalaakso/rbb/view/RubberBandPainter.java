@@ -50,7 +50,7 @@ public class RubberBandPainter implements Painter {
 		g.setColor(Color.pink);
 
 		float oldLineWidth = g.getLineWidth();
-		g.setLineWidth(4.5f);
+		g.setLineWidth(oldLineWidth * 4.5f);
 
 		g.drawLine(p1.x, p1.y, p2.x, p2.y);
 
