@@ -98,9 +98,12 @@ public class Utils {
 	 * Clamps the value to the given range. If the min and max values are given
 	 * in an incorrect way this method is useless.
 	 * 
-	 * @param value the value to clamp
-	 * @param min the minimum amount for the value
-	 * @param max the maximum amount for the value
+	 * @param value
+	 *            the value to clamp
+	 * @param min
+	 *            the minimum amount for the value
+	 * @param max
+	 *            the maximum amount for the value
 	 * 
 	 * @return the clamped value
 	 */
@@ -112,5 +115,43 @@ public class Utils {
 			return max;
 		}
 		return value;
+	}
+
+	/**
+	 * Calculates is the given coordinates are inside the given rectangle.
+	 * 
+	 * @param px
+	 *            point x-coordinate
+	 * @param py
+	 *            point y-coordinate
+	 * @param rectX
+	 *            rectangle top left x-coordinate
+	 * @param rectY
+	 *            rectangle top left y-coordinate
+	 * @param rectWidth
+	 *            rectangle width
+	 * @param rectHeight
+	 *            rectangle height
+	 * 
+	 * @return <code>true</code> if the point was inside the rectangle.
+	 */
+	public static boolean isPointInsideRect(float px, float py, float rectX,
+		float rectY, float rectWidth, float rectHeight) {
+
+		float left = rectX;
+		float right = rectX + rectWidth;
+		float top = rectY;
+		float bottom = rectY + rectHeight;
+
+		if (px < left)
+			return false;
+		if (px > right)
+			return false;
+		if (py < top)
+			return false;
+		if (py > bottom)
+			return false;
+
+		return true;
 	}
 }

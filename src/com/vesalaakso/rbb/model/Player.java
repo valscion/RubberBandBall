@@ -1,6 +1,7 @@
 package com.vesalaakso.rbb.model;
 
 import com.vesalaakso.rbb.controller.Resetable;
+import com.vesalaakso.rbb.util.Utils;
 
 /**
  * Represents the ball player moves.
@@ -176,21 +177,8 @@ public class Player implements Resetable {
 	 * @return <code>true</code> if the player is inside the specified rectangle
 	 */
 	public boolean isInsideArea(float x, float y, float width, float height) {
-		float left = x;
-		float right = x + width;
-		float top = y;
-		float bottom = y + height;
-
-		if (xWorld < left)
-			return false;
-		if (xWorld > right)
-			return false;
-		if (yWorld < top)
-			return false;
-		if (yWorld > bottom)
-			return false;
-
-		return true;
+		return Utils.isPointInsideRect(this.xWorld, this.yWorld, x, y, width,
+				height);
 	}
 
 	/**

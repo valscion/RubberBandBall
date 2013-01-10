@@ -40,14 +40,24 @@ public class PlayerPositioner extends MouseAdapter {
 	 *            mouse x-coordinate
 	 * @param mouseY
 	 *            mouse y-coordinate
+	 * @return was the coordinates inside spawn area and player positioned there
+	 *         or not
 	 */
-	private void updatePosition(int mouseX, int mouseY) {
+	private boolean updatePosition(int mouseX, int mouseY) {
 		if (player.isStartPositioned()) {
-			return;
+			return false;
 		}
 		float x = Utils.screenToWorldX(mouseX);
 		float y = Utils.screenToWorldY(mouseY);
-		player.setPosition(x, y);
+
+		TileMapObject spawn = mapContainer.getMap().getSpawnArea();
+
+		if (Utils.isPointInsideRect(x, y, spawn.x, spawn.y, spawn.width,
+				spawn.height)) {
+			player.setPosition(x, y);
+			return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -65,12 +75,7 @@ public class PlayerPositioner extends MouseAdapter {
 		if (player.isStartPositioned()) {
 			return;
 		}
-		updatePosition(x, y);
-
-		// Set the player in place if we're currently hovering over spawn
-		TileMapObject spawn = mapContainer.getMap().getSpawnArea();
-
-		if (player.isInsideArea(spawn.x, spawn.y, spawn.width, spawn.height)) {
+		if (updatePosition(x, y)) {
 			player.setStartPositioned();
 		}
 	}
