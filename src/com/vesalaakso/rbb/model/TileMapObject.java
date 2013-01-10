@@ -175,11 +175,17 @@ public class TileMapObject {
 	 */
 	@Override
 	public String toString() {
-		String str =
-			"TileMapObject={" + "index:" + index + ",name:" + name + ",type:"
-					+ type + ",objectType:" + objectType + ",x:" + x + ",y:"
-					+ y + ",width:" + width + ",height:" + height + ",props:"
-					+ props + "}";
+		String str = "TileMapObject={"
+				+ "index:" + index
+				+ ",name:" + name
+				+ ",type:" + type
+				+ ",objectType:" + objectType
+				+ ",x:" + x
+				+ ",y:" + y
+				+ ",width:" + width
+				+ ",height:" + height
+				+ ",props:" + props
+				+ "}";
 		return str;
 	}
 }
