@@ -52,8 +52,8 @@ public class PlayerPositioner extends MouseAdapter {
 
 		TileMapObject spawn = mapContainer.getMap().getSpawnArea();
 
-		if (Utils.isPointInsideRect(x, y, spawn.x, spawn.y, spawn.width,
-				spawn.height)) {
+		if (Utils.isCircleInsideRect(x, y, player.getRadius(), spawn.x,
+				spawn.y, spawn.width, spawn.height)) {
 			player.setPosition(x, y);
 			return true;
 		}

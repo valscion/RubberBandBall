@@ -154,4 +154,43 @@ public class Utils {
 
 		return true;
 	}
+
+	/**
+	 * Calculates is the given circle inside the given rectangle.
+	 * 
+	 * @param cx
+	 *            circle center x-coordinate
+	 * @param cy
+	 *            circle center y-coordinate
+	 * @param r
+	 *            circle radius
+	 * @param rectX
+	 *            rectangle top left x-coordinate
+	 * @param rectY
+	 *            rectangle top left y-coordinate
+	 * @param rectWidth
+	 *            rectangle width
+	 * @param rectHeight
+	 *            rectangle height
+	 * 
+	 * @return <code>true</code> if the circle was inside the rectangle.
+	 */
+	public static boolean isCircleInsideRect(float cx, float cy, float r,
+		float rectX, float rectY, float rectWidth, float rectHeight) {
+
+		float left = rectX + r;
+		float right = rectX + rectWidth - r;
+		float top = rectY + r;
+		float bottom = rectY + rectHeight - r;
+
+		if (cx < left)
+			return false;
+		if (cx > right)
+			return false;
+		if (cy < top)
+			return false;
+		if (cy > bottom)
+			return false;
+		return true;
+	}
 }
