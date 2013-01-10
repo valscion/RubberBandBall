@@ -58,6 +58,10 @@ public class Player implements Resetable {
 		// Reset happiness
 		happiness = 0;
 
+		// Reset launch and position flags
+		isReadyForLaunch = false;
+		isStartPositioned = false;
+
 		// Reset angle
 		angle = 0;
 	}
