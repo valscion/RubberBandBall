@@ -162,7 +162,7 @@ public class Player implements MapChangeListener {
 	 * @param newHappiness
 	 *            the happiness to set player to
 	 */
-	public void changeHappiness(float newHappiness) {
+	public void setHappiness(float newHappiness) {
 		if (newHappiness < -1.0f) {
 			newHappiness = -1.0f;
 		}

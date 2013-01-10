@@ -86,7 +86,7 @@ public class DebugKeyController extends KeyAdapter implements Updateable {
 		}
 
 		float factor = delta / 1000.0f;
-		player.changeHappiness(player.getHappiness() + playerChangeHappiness
+		player.setHappiness(player.getHappiness() + playerChangeHappiness
 				* factor);
 
 		float oldScale = Camera.get().getScaling();

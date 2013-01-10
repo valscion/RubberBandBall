@@ -19,7 +19,7 @@ import com.vesalaakso.rbb.controller.DebugKeyController;
 import com.vesalaakso.rbb.controller.InputMaster;
 import com.vesalaakso.rbb.controller.MapChanger;
 import com.vesalaakso.rbb.controller.MenuKeyController;
-import com.vesalaakso.rbb.controller.PlayerMapListener;
+import com.vesalaakso.rbb.controller.PlayerMoveListener;
 import com.vesalaakso.rbb.controller.RubberBandController;
 import com.vesalaakso.rbb.controller.Updateable;
 import com.vesalaakso.rbb.model.Background;
@@ -156,7 +156,7 @@ public class GameState extends BasicGameState {
 	private void addUpdateables() {
 		updateables.add(inputMaster);
 		updateables.add(physics);
-		updateables.add(new PlayerMapListener(mapContainer, player));
+		updateables.add(new PlayerMoveListener(mapContainer, player, physics));
 		updateables.add(background);
 		updateables.add(particleManager);
 	}
