@@ -137,7 +137,6 @@ public class TileMapObject {
 			if (left1 > right2) {
 				return false;
 			}
-			System.out.printf("%s is above (%d, %d)%n", other.name, x, y);
 		}
 		// Only directly above the tiles can there be one to find
 		return false;
