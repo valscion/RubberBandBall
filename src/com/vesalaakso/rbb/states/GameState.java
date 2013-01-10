@@ -19,6 +19,7 @@ import com.vesalaakso.rbb.controller.DebugKeyController;
 import com.vesalaakso.rbb.controller.InputMaster;
 import com.vesalaakso.rbb.controller.MapChanger;
 import com.vesalaakso.rbb.controller.MenuKeyController;
+import com.vesalaakso.rbb.controller.PlayerMapListener;
 import com.vesalaakso.rbb.controller.RubberBandController;
 import com.vesalaakso.rbb.controller.Updateable;
 import com.vesalaakso.rbb.model.Background;
@@ -125,7 +126,10 @@ public class GameState extends BasicGameState {
 				.addDebugPainter(new DebugPrintPainter(physics, player));
 	}
 
-	/** A helper method which adds all the controllers to the game. */
+	/**
+	 * A helper method which adds all the controllers and updateables to the
+	 * game.
+	 */
 	private void addControllers(Input input) {
 		inputMaster = new InputMaster(input);
 		inputMaster.addKeyListener(new CameraController(player));
@@ -152,6 +156,7 @@ public class GameState extends BasicGameState {
 	private void addUpdateables() {
 		updateables.add(inputMaster);
 		updateables.add(physics);
+		updateables.add(new PlayerMapListener(mapContainer, player));
 		updateables.add(background);
 		updateables.add(particleManager);
 	}

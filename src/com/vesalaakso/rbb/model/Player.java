@@ -2,7 +2,6 @@ package com.vesalaakso.rbb.model;
 
 import com.vesalaakso.rbb.controller.MapChangeListener;
 
-
 /**
  * Represents the ball player moves.
  * 
@@ -105,7 +104,8 @@ public class Player implements MapChangeListener {
 	/**
 	 * Sets the angle of the player, in radians.
 	 * 
-	 * @param angle the new angle
+	 * @param angle
+	 *            the new angle
 	 */
 	public void setAngle(float angle) {
 		this.angle = angle;
@@ -137,6 +137,7 @@ public class Player implements MapChangeListener {
 
 	/**
 	 * Resets the state of the player when the map is changed.
+	 * 
 	 * @see MapChangeListener#onMapChange(TileMap, TileMap)
 	 */
 	@Override
@@ -158,7 +159,8 @@ public class Player implements MapChangeListener {
 	 * Changes the happiness of the player to the given value. Automatically
 	 * maps the value to -1.0f ... 1.0f as those are the limits.
 	 * 
-	 * @param newHappiness the happiness to set player to
+	 * @param newHappiness
+	 *            the happiness to set player to
 	 */
 	public void changeHappiness(float newHappiness) {
 		if (newHappiness < -1.0f) {
@@ -168,7 +170,34 @@ public class Player implements MapChangeListener {
 			newHappiness = 1.0f;
 		}
 		happiness = newHappiness;
-		
+	}
+
+	/**
+	 * Helper to check if the player is inside the given rectangle. Uses world
+	 * coordinates.
+	 * 
+	 * @param x
+	 *            top left x-coordinate of the rectangle
+	 * @param y
+	 *            top left y-coordinate of the rectangle
+	 * @param width
+	 *            rectangle width
+	 * @param height
+	 *            rectangle height
+	 * @return <code>true</code> if the player is inside the specified rectangle
+	 */
+	public boolean isInsideArea(float x, float y, float width, float height) {
+		float left = x;
+		float right = x + width;
+		float top = y;
+		float bottom = y + height;
+
+		if (xWorld < left) return false;
+		if (xWorld > right) return false;
+		if (yWorld < top) return false;
+		if (yWorld > bottom) return false;
+
+		return true;
 	}
 
 }
