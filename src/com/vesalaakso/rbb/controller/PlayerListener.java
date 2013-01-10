@@ -10,6 +10,7 @@ import com.vesalaakso.rbb.model.Player;
 import com.vesalaakso.rbb.model.TileMap;
 import com.vesalaakso.rbb.model.TileMapContainer;
 import com.vesalaakso.rbb.model.TileMapObject;
+import com.vesalaakso.rbb.states.GameState;
 
 /**
  * A class which checks where the player moves and if the player happens to
@@ -28,6 +29,9 @@ public class PlayerListener implements Updateable, MapChangeListener {
 	/** Physics to consult player speed from. */
 	private Physics physics;
 
+	/** The game to modify when something triggerable happens */
+	private GameState game;
+
 	/**
 	 * Constructs a new listener for player movements and associates it with the
 	 * given map and player.
@@ -38,12 +42,15 @@ public class PlayerListener implements Updateable, MapChangeListener {
 	 *            the player to listen for moving
 	 * @param physics
 	 *            physics to consult player speed from
+	 * @param game
+	 *            the game to modify when something to trigger happens
 	 */
 	public PlayerListener(TileMapContainer mapContainer, Player player,
-			Physics physics) {
+			Physics physics, GameState game) {
 		this.mapContainer = mapContainer;
 		this.player = player;
 		this.physics = physics;
+		this.game = game;
 	}
 
 	/**
@@ -52,14 +59,25 @@ public class PlayerListener implements Updateable, MapChangeListener {
 	@Override
 	public void update(int delta) {
 		TileMap map = mapContainer.getMap();
+		Body<Circle> playerBody = physics.getPlayerBody();
 
 		boolean happinessChanged = false;
+		boolean inSafeArea = false;
 		List<TileMapObject> safeAreas = map.getSafeAreas();
 
 		for (TileMapObject area : safeAreas) {
 			if (player.isInsideArea(area.x, area.y, area.width, area.height)) {
 				player.setHappiness(1);
 				happinessChanged = true;
+				inSafeArea = true;
+			}
+		}
+
+		// If player has stopped and is not in safe area, game over.
+		if (playerBody.isActive() && playerBody.isSleeping()) {
+			if (!inSafeArea) {
+				// :(
+				game.gameOver("Player has ended up in an unsafe environment.");
 			}
 		}
 
@@ -69,10 +87,9 @@ public class PlayerListener implements Updateable, MapChangeListener {
 			player.setHappiness(0);
 			happinessChanged = true;
 		}
-		
+
 		// If happiness hasn't been changed, change it by consulting player
 		// speed.
-		Body<Circle> playerBody = physics.getPlayerBody();
 		if (!happinessChanged) {
 			float angVel = Math.abs(playerBody.getAngularVelocity());
 			if (angVel > 2) {

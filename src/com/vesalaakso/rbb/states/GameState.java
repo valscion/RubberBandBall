@@ -222,7 +222,7 @@ public class GameState extends BasicGameState {
 		rubberBand = new RubberBand(player, physics);
 		
 		// The player listener. Oh yes.
-		playerListener = new PlayerListener(mapContainer, player, physics);
+		playerListener = new PlayerListener(mapContainer, player, physics, this);
 
 		// Add the painters next
 		addPainters();
@@ -319,6 +319,17 @@ public class GameState extends BasicGameState {
 	@Override
 	public int getID() {
 		return State.GAME.ordinal();
+	}
+
+	/**
+	 * Called when the game should end
+	 * 
+	 * @param reason the reason why game ended
+	 */
+	public void gameOver(String reason) {
+		// TODO: something
+		System.out.println("GAME OVER -- " + reason);
+		this.stop();
 	}
 
 }
