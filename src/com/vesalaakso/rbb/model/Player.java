@@ -10,6 +10,9 @@ import com.vesalaakso.rbb.util.Utils;
  */
 public class Player implements Resetable {
 
+	/** The map container to query the map <code>Player</code> belongs to. */
+	private TileMapContainer mapContainer;
+
 	/** Center x-coordinate of the player. */
 	private float xWorld;
 
@@ -32,9 +35,14 @@ public class Player implements Resetable {
 	private float happiness;
 
 	/**
-	 * Constructs the <code>Player</code>.
+	 * Constructs the <code>Player</code> and sets it up with the given
+	 * <b>TileMapContainer</b> to query the current map when needed.
+	 * 
+	 * @param mapContainer
+	 *            the map container to query the current map from
 	 */
-	public Player() {
+	public Player(TileMapContainer mapContainer) {
+		this.mapContainer = mapContainer;
 	}
 
 	/**
@@ -42,9 +50,10 @@ public class Player implements Resetable {
 	 */
 	@Override
 	public void reset() {
-		// Make player not ready for launch and unpositioned.
-		isReadyForLaunch = false;
-		isStartPositioned = false;
+		// Set the player to the center of the spawn area
+		TileMapObject spawn = mapContainer.getMap().getSpawnArea();
+		xWorld = spawn.x + spawn.width * .5f;
+		yWorld = spawn.y + spawn.height * .5f;
 
 		// Reset happiness
 		happiness = 0;
