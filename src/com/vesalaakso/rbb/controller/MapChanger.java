@@ -19,6 +19,12 @@ public class MapChanger {
 	private List<MapChangeListener> listeners =
 		new LinkedList<MapChangeListener>();
 
+	/** If map is changing, this is the old map to change from. */
+	private TileMap oldMap;
+
+	/** If map is changing, this is the new map to change to. */
+	private TileMap newMap;
+
 	/**
 	 * Initializes the MapChanger. Remember to add listeners with the
 	 * {@link #addListener} method or this instance is pretty much useless.
@@ -39,7 +45,7 @@ public class MapChanger {
 	}
 
 	/**
-	 * The big red button which changes the level.
+	 * The big red button which starts the map changing routine.
 	 * 
 	 * @param oldMap
 	 *            the map to change from
@@ -50,6 +56,17 @@ public class MapChanger {
 	 */
 	public void changeMap(TileMap oldMap, TileMap newMap) throws MapException {
 		Log.info("Changing map!");
+		this.oldMap = oldMap;
+		this.newMap = newMap;
+	}
+
+	/**
+	 * Once this method finishes, the game is ready to be entered to the new
+	 * level.
+	 * 
+	 * @throws MapException if the change could not be made.
+	 */
+	public void runChange() throws MapException {
 		if (!newMap.isInitialized()) {
 			newMap.init();
 		}

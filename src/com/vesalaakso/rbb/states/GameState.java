@@ -98,6 +98,20 @@ public class GameState extends BasicGameState {
 	/** Change to this map on the next update() call. */
 	private int changeToLevel = -1;
 
+	/** The state which handles map changing routines. */
+	private MapChangeState mapChangeState;
+
+	/**
+	 * Construct the GameState and tells it which state is responsible for map
+	 * changing routines.
+	 * 
+	 * @param mapChangeState
+	 *            the state which handles map changing routines.
+	 */
+	public GameState(MapChangeState mapChangeState) {
+		this.mapChangeState = mapChangeState;
+	}
+
 	/** A helper method which adds all the painters in the correct order. */
 	private void addPainters() {
 		painterContainer.addPainter(new BackgroundPainter(background));
@@ -152,7 +166,8 @@ public class GameState extends BasicGameState {
 	/**
 	 * Changes the level on the next update() call to the one given.
 	 * 
-	 * @param level the level index to change to.
+	 * @param level
+	 *            the level index to change to.
 	 */
 	public void changeLevel(int level) {
 		this.changeToLevel = level;
@@ -210,6 +225,7 @@ public class GameState extends BasicGameState {
 		// initialize the game.
 		try {
 			mapChanger.changeMap(null, new TileMap(3));
+			mapChanger.runChange();
 		}
 		catch (MapException e) {
 			// So we couldn't load even the first map... that's sad.
@@ -248,9 +264,12 @@ public class GameState extends BasicGameState {
 			game.enterState(State.MAIN_MENU.ordinal(), leave, enter);
 		}
 		if (changeToLevel > 0) {
+			Transition leave = new FadeOutTransition();
 			try {
 				TileMap newLevel = new TileMap(changeToLevel);
 				mapChanger.changeMap(mapContainer.getMap(), newLevel);
+				mapChangeState.setupChange(mapChanger, this);
+				game.enterState(mapChangeState.getID(), leave, null);
 			}
 			catch (MapException e) {
 				Log.error("Failed to change the map.");
@@ -263,6 +282,26 @@ public class GameState extends BasicGameState {
 		for (Updateable u : updateables) {
 			u.update(delta);
 		}
+	}
+
+	/**
+	 * @see org.newdawn.slick.state.GameState#enter(GameContainer,
+	 *      StateBasedGame)
+	 */
+	@Override
+	public void enter(GameContainer container, StateBasedGame game)
+			throws SlickException {
+		System.out.println("entered, time " + System.currentTimeMillis());
+	}
+
+	/**
+	 * @see org.newdawn.slick.state.GameState#leave(GameContainer,
+	 *      StateBasedGame)
+	 */
+	@Override
+	public void leave(GameContainer container, StateBasedGame game)
+			throws SlickException {
+		System.out.println("left, time " + System.currentTimeMillis());
 	}
 
 	@Override

@@ -29,7 +29,9 @@ public enum Key {
 	/** Debug, scales the camera up. */
 	DBG_SCALE_CAMERA_UP(Input.KEY_ADD),
 	/** Debug, scales the camera down. */
-	DBG_SCALE_CAMERA_DOWN(Input.KEY_SUBTRACT);
+	DBG_SCALE_CAMERA_DOWN(Input.KEY_SUBTRACT),
+	/** Debug, changes the level. */
+	DBG_CHANGE_LEVEL(Input.KEY_M);
 
 	/** The Input key constant mapped to the enum */
 	public final int id;
