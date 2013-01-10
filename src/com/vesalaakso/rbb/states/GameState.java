@@ -184,6 +184,7 @@ public class GameState extends BasicGameState {
 
 		stopAtNextUpdate = false;
 		changeToLevel = -1;
+		inputMaster.unpause();
 
 		for (Resetable r : resetables) {
 			r.reset();
@@ -279,6 +280,9 @@ public class GameState extends BasicGameState {
 
 		// And then the controllers
 		addControllers(container.getInput());
+
+		// Pause the controls at first.
+		inputMaster.pause();
 
 		// Some stuff need to be reset before first render.
 		addResetables();

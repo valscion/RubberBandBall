@@ -1,11 +1,12 @@
 package com.vesalaakso.rbb.controller;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import org.newdawn.slick.Input;
 import org.newdawn.slick.KeyListener;
 import org.newdawn.slick.MouseListener;
+
+import com.google.common.collect.Lists;
 
 /**
  * Handles the coordination of different input based controllers.
@@ -17,15 +18,17 @@ public class InputMaster implements Updateable {
 	/** The input that generates events */
 	private Input input;
 
-	/** Controllers which listen for keyboard input. */
-	//private List<KeyListener> keyListeners = new LinkedList<KeyListener>();
-
-	/** Controllers which listen for mouse input. */
-	//private List<MouseListener> mouseListeners =
-	//	new LinkedList<MouseListener>();
-	
 	/** List of controllers which would like to act upon every frame. */
-	private List<Updateable> updateables = new LinkedList<Updateable>();
+	private List<Updateable> updateables = Lists.newLinkedList();
+
+	/** Added mouse listeners. */
+	private List<MouseListener> mouseListeners = Lists.newLinkedList();
+
+	/** Added key listeners. */
+	private List<KeyListener> keyListeners = Lists.newLinkedList();
+
+	/** Is the input master paused or not */
+	private boolean paused;
 
 	/**
 	 * Constructs an InputMaster and associates it with the given
@@ -47,6 +50,7 @@ public class InputMaster implements Updateable {
 	 */
 	public void addKeyListener(KeyListener controller) {
 		input.addKeyListener(controller);
+		keyListeners.add(controller);
 		if (controller instanceof Updateable) {
 			updateables.add((Updateable) controller);
 		}
@@ -61,8 +65,37 @@ public class InputMaster implements Updateable {
 	 */
 	public void addMouseListener(MouseListener controller) {
 		input.addMouseListener(controller);
+		mouseListeners.add(controller);
 		if (controller instanceof Updateable) {
 			updateables.add((Updateable) controller);
+		}
+	}
+
+	/** Pauses the added inputs from firing */
+	public void pause() {
+		if (paused) {
+			return;
+		}
+		paused = true;
+		for (MouseListener listener : mouseListeners) {
+			input.removeMouseListener(listener);
+		}
+		for (KeyListener listener : keyListeners) {
+			input.removeKeyListener(listener);
+		}
+	}
+
+	/** Resumes the added inputs to fire again */
+	public void unpause() {
+		if (!paused) {
+			return;
+		}
+		paused = false;
+		for (MouseListener listener : mouseListeners) {
+			input.addMouseListener(listener);
+		}
+		for (KeyListener listener : keyListeners) {
+			input.addKeyListener(listener);
 		}
 	}
 
