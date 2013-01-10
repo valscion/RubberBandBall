@@ -6,8 +6,8 @@ import java.util.List;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
-import com.vesalaakso.rbb.RubberBandBall;
 import com.vesalaakso.rbb.model.Camera;
+import com.vesalaakso.rbb.states.GameState;
 import com.vesalaakso.rbb.util.Utils;
 
 /**
@@ -58,7 +58,7 @@ public class PainterContainer {
 	 * @param game
 	 *            the game to draw
 	 */
-	public void paintAll(Graphics g, RubberBandBall game) {
+	public void paintAll(Graphics g, GameState game) {
 		// Anti-aliasing for all!
 		g.setAntiAlias(true);
 

@@ -2,7 +2,7 @@ package com.vesalaakso.rbb.controller;
 
 import org.newdawn.slick.KeyListener;
 
-import com.vesalaakso.rbb.RubberBandBall;
+import com.vesalaakso.rbb.states.GameState;
 
 /**
  * Responds to the keyboard events used to move around in the menus and stop the
@@ -13,7 +13,7 @@ import com.vesalaakso.rbb.RubberBandBall;
 public class MenuKeyController extends KeyAdapter implements KeyListener {
 
 	/** Game to quit when the game is exited. */
-	private RubberBandBall game;
+	private GameState game;
 	
 	/**
 	 * Constructs a new controller for controlling the menus and exiting the
@@ -21,7 +21,7 @@ public class MenuKeyController extends KeyAdapter implements KeyListener {
 	 * 
 	 * @param game the game to control
 	 */
-	public MenuKeyController(RubberBandBall game) {
+	public MenuKeyController(GameState game) {
 		this.game = game;
 	}
 

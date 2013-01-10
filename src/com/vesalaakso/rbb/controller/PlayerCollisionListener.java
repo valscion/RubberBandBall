@@ -5,11 +5,11 @@ import org.newdawn.fizzy.CollisionEvent;
 import org.newdawn.fizzy.WorldListener;
 import org.newdawn.slick.tiled.GroupObject;
 
-import com.vesalaakso.rbb.RubberBandBall;
 import com.vesalaakso.rbb.model.ParticleManager;
 import com.vesalaakso.rbb.model.Physics;
 import com.vesalaakso.rbb.model.Player;
 import com.vesalaakso.rbb.model.TileMapObject;
+import com.vesalaakso.rbb.util.Utils;
 
 /**
  * Listens for collisions where the colliding object is the player.
@@ -110,7 +110,7 @@ public class PlayerCollisionListener implements WorldListener {
 			// Stop friction simulation as player is no longer on ground.
 			physics.stopSimulatingFriction();
 			// Try to fix the infinite bouncing problem.
-			long timeNow = RubberBandBall.getContainer().getTime();
+			long timeNow = Utils.getTime();
 			if (lastBounceFromSameBody == 0
 					|| lastBounceFromSameBody + BOUNCE_BUG_MIN_TIME_DIFF > timeNow) {
 				lastBounceFromSameBody = timeNow;

@@ -1,8 +1,8 @@
 package com.vesalaakso.rbb.controller;
 
-import com.vesalaakso.rbb.RubberBandBall;
 import com.vesalaakso.rbb.model.Camera;
 import com.vesalaakso.rbb.model.Player;
+import com.vesalaakso.rbb.states.GameState;
 
 /**
  * Used to allow various keys to aid in debugging the game and to toggle the
@@ -13,7 +13,7 @@ import com.vesalaakso.rbb.model.Player;
 public class DebugKeyController extends KeyAdapter implements Updateable {
 
 	/** Game for toggling debug state */
-	private RubberBandBall game;
+	private GameState game;
 
 	/** <code>Player</code> to debug. */
 	private Player player;
@@ -32,7 +32,7 @@ public class DebugKeyController extends KeyAdapter implements Updateable {
 	 * @param player
 	 *            we want to debug player, yes.
 	 */
-	public DebugKeyController(RubberBandBall game, Player player) {
+	public DebugKeyController(GameState game, Player player) {
 		this.game = game;
 		this.player = player;
 	}

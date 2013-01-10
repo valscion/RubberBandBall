@@ -1,45 +1,16 @@
 package com.vesalaakso.rbb;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import org.newdawn.slick.AppGameContainer;
-import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.util.Log;
+import org.newdawn.slick.state.StateBasedGame;
 
-import com.vesalaakso.rbb.controller.CameraController;
-import com.vesalaakso.rbb.controller.DebugKeyController;
-import com.vesalaakso.rbb.controller.InputMaster;
-import com.vesalaakso.rbb.controller.MapChanger;
-import com.vesalaakso.rbb.controller.MenuKeyController;
-import com.vesalaakso.rbb.controller.RubberBandController;
-import com.vesalaakso.rbb.controller.Updateable;
-import com.vesalaakso.rbb.model.Background;
-import com.vesalaakso.rbb.model.ParticleManager;
-import com.vesalaakso.rbb.model.Physics;
-import com.vesalaakso.rbb.model.Player;
-import com.vesalaakso.rbb.model.RubberBand;
-import com.vesalaakso.rbb.model.TileMap;
-import com.vesalaakso.rbb.model.TileMapContainer;
-import com.vesalaakso.rbb.model.exceptions.MapException;
-import com.vesalaakso.rbb.view.BackgroundPainter;
-import com.vesalaakso.rbb.view.DebugPrintPainter;
-import com.vesalaakso.rbb.view.PainterContainer;
-import com.vesalaakso.rbb.view.PhysicsPainter;
-import com.vesalaakso.rbb.view.PlayerPainter;
-import com.vesalaakso.rbb.view.RubberBandPainter;
-import com.vesalaakso.rbb.view.TileMapAreaPainter;
-import com.vesalaakso.rbb.view.TileMapBackLayerPainter;
-import com.vesalaakso.rbb.view.TileMapOverLayerPainter;
+import com.vesalaakso.rbb.states.GameState;
 
 /**
  * The game. You lost it.
  */
-public class RubberBandBall extends BasicGame {
+public class RubberBandBall extends StateBasedGame {
 
 	/** The width of the display to create */
 	public static final int SCREEN_WIDTH = 800;
@@ -47,235 +18,9 @@ public class RubberBandBall extends BasicGame {
 	/** The height of the display to create */
 	public static final int SCREEN_HEIGHT = 600;
 
-	/**
-	 * The current map is always stored in this <code>TileMapContainer</code>.
-	 * The underlying <code>TileMap</code> object may change but this object
-	 * stays.
-	 */
-	private final TileMapContainer mapContainer = new TileMapContainer();
-
-	/**
-	 * The <code>MapChanger</code> responsible for changing the map and
-	 * notifying everything that needs to be notified.
-	 */
-	private MapChanger mapChanger = new MapChanger();
-
-	/**
-	 * A <code>PainterContainer</code> which stores everything that can be
-	 * painted.
-	 */
-	private PainterContainer painterContainer = new PainterContainer();
-
-	/**
-	 * All the stuff which need to be updated in update()-method are stored
-	 * here.
-	 */
-	private List<Updateable> updateables = new LinkedList<Updateable>();
-
-	/** InputMaster to handle the coordination of various input controllers. */
-	private InputMaster inputMaster;
-
-	/** What would a game be without a player? */
-	private Player player;
-
-	/** The player is controlled by this rubber band! */
-	private RubberBand rubberBand;
-
-	/** Ooh, particles, yes please! */
-	private ParticleManager particleManager = new ParticleManager();
-
-	/** Of course we need physics, here it is! */
-	private Physics physics;
-
-	/** And some eye candy. */
-	private Background background;
-
-	/** If the game should stop at next update()-call, this flag knows. */
-	private boolean stopAtNextUpdate;
-
-	/** Is the game in debug mode? */
-	private boolean debugMode = true;
-
-	/** The GameContainer last update loop ran in. */
-	private static GameContainer container;
-
 	/** Constructs a new game. */
 	public RubberBandBall() {
 		super("Rubber band ball");
-	}
-
-	/** A helper method which adds all the painters in the correct order. */
-	private void addPainters() {
-		painterContainer.addPainter(new BackgroundPainter(background));
-		painterContainer.addPainter(new TileMapAreaPainter(mapContainer));
-		painterContainer.addPainter(new TileMapBackLayerPainter(mapContainer));
-		painterContainer.addPainter(new PlayerPainter(player));
-		painterContainer.addPainter(new TileMapOverLayerPainter(mapContainer));
-		painterContainer.addPainter(new RubberBandPainter(rubberBand));
-		painterContainer.addDebugPainter(new PhysicsPainter(physics));
-		painterContainer
-				.addDebugPainter(new DebugPrintPainter(physics, player));
-	}
-
-	/** A helper method which adds all the controllers to the game. */
-	private void addControllers(Input input) {
-		inputMaster = new InputMaster(input);
-		inputMaster.addKeyListener(new CameraController(player));
-		inputMaster.addKeyListener(new MenuKeyController(this));
-		inputMaster.addMouseListener(new RubberBandController(rubberBand));
-		inputMaster.addKeyListener(new DebugKeyController(this, player));
-	}
-
-	/**
-	 * A helper method for hooking everything that should be hooked to map
-	 * changes.
-	 */
-	private void addMapChangerHooks() {
-		// The first hook must be for the mapContainer!
-		mapChanger.addListener(mapContainer);
-
-		mapChanger.addListener(player);
-		mapChanger.addListener(rubberBand);
-		mapChanger.addListener(physics);
-		mapChanger.addListener(particleManager);
-	}
-
-	/** A helper method which adds all updateables. */
-	private void addUpdateables() {
-		updateables.add(inputMaster);
-		updateables.add(physics);
-		updateables.add(background);
-		updateables.add(particleManager);
-	}
-
-	/**
-	 * Makes the game quit on the next update-loop.
-	 */
-	public void stop() {
-		stopAtNextUpdate = true;
-	}
-
-	/** Toggles debug mode */
-	public void toggleDebug() {
-		debugMode = !debugMode;
-	}
-
-	/**
-	 * Gets the debug status of the game.
-	 * 
-	 * @return <code>true</code> if debug mode is on
-	 */
-	public boolean isDebugModeToggled() {
-		return debugMode;
-	}
-
-	/**
-	 * Gets the <code>GameContainer</code> which was last set when
-	 * <code>update()</code> was called. This is useful mainly for fixing the
-	 * f***ing physics bugging. Awful architecture. I hate it but time is
-	 * running out.
-	 * 
-	 * @return the <code>GameContainer</code> which was set when {@link #update}
-	 *         was last called.
-	 */
-	public static GameContainer getContainer() {
-		return container;
-	}
-
-	/**
-	 * From slick: Initialise the game. This can be used to load static
-	 * resources. It's called before the game loop starts
-	 * 
-	 * @see org.newdawn.slick.BasicGame#init(org.newdawn.slick.GameContainer)
-	 */
-	@Override
-	public void init(GameContainer container) throws SlickException {
-		// Remove the default input handlers, as input handling is done via
-		// InputMaster class and not this.
-		container.getInput().removeAllListeners();
-
-		// Load the background image
-		background = new Background();
-
-		// Construct the object representing the player
-		player = new Player();
-
-		// Physics world, too
-		physics = new Physics(player, particleManager);
-
-		// Add the rubber band to the game
-		rubberBand = new RubberBand(player, physics);
-
-		// Add the painters next
-		addPainters();
-
-		// And then the controllers
-		addControllers(container.getInput());
-
-		// When map changes, something needs to be modified. Set it so.
-		addMapChangerHooks();
-
-		// Now create the first map and use the hooks we just initialized to
-		// initialize the game.
-		try {
-			mapChanger.changeMap(null, new TileMap(3));
-		}
-		catch (MapException e) {
-			// So we couldn't load even the first map... that's sad.
-			Log.error("Failed to change to the first map.");
-			throw new SlickException("Failed to change to the first map.", e);
-		}
-
-		// Finally add all objects which hook to the update()-method.
-		addUpdateables();
-	}
-
-	/**
-	 * From slick: Update the game logic here. No rendering should take place in
-	 * this method though it won't do any harm.
-	 * 
-	 * @see org.newdawn.slick.BasicGame#update(org.newdawn.slick.GameContainer,
-	 *      int)
-	 */
-	@Override
-	public void update(GameContainer container, int delta)
-			throws SlickException {
-		RubberBandBall.container = container;
-
-		// The game was not meant to last forever, my friend.
-		if (stopAtNextUpdate) {
-			// container.exit();
-			// Ha-ha! Fooled you! Change level instead :)
-			try {
-				mapChanger.changeMap(mapContainer.getMap(), new TileMap(3));
-			}
-			catch (MapException e) {
-				Log.error("Failed to change the map.");
-				throw new SlickException("Failed to change the map.", e);
-			}
-			stopAtNextUpdate = false;
-		}
-
-		// Update everything that wants to be updated.
-		for (Updateable u : updateables) {
-			u.update(delta);
-		}
-	}
-
-	/**
-	 * From slick: Render the game's screen here.
-	 * 
-	 * @param g
-	 *            The graphics context that can be used to render. However,
-	 *            normal rendering routines can also be used.
-	 * 
-	 * @see org.newdawn.slick.Game#render(org.newdawn.slick.GameContainer,
-	 *      org.newdawn.slick.Graphics)
-	 */
-	@Override
-	public void render(GameContainer container, Graphics g)
-			throws SlickException {
-		painterContainer.paintAll(g, this);
 	}
 
 	/**
@@ -297,6 +42,11 @@ public class RubberBandBall extends BasicGame {
 			// So we didn't even manage to start the freaking game now, did we.
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void initStatesList(GameContainer container) throws SlickException {
+		addState(new GameState());
 	}
 
 }

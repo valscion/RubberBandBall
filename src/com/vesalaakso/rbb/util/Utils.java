@@ -1,5 +1,6 @@
 package com.vesalaakso.rbb.util;
 
+import org.lwjgl.Sys;
 import org.newdawn.fizzy.Vector;
 
 import com.vesalaakso.rbb.RubberBandBall;
@@ -82,6 +83,15 @@ public class Utils {
 		float y = cam.getY() + (screenY - screenHalfHeight) / cam.getScaling();
 
 		return y;
+	}
+
+	/**
+	 * Get the accurate system time
+	 * 
+	 * @return The system time in milliseconds
+	 */
+	public static long getTime() {
+		return (Sys.getTime() * 1000) / Sys.getTimerResolution();
 	}
 
 }
