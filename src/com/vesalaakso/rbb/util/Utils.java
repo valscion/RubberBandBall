@@ -94,4 +94,23 @@ public class Utils {
 		return (Sys.getTime() * 1000) / Sys.getTimerResolution();
 	}
 
+	/**
+	 * Clamps the value to the given range. If the min and max values are given
+	 * in an incorrect way this method is useless.
+	 * 
+	 * @param value the value to clamp
+	 * @param min the minimum amount for the value
+	 * @param max the maximum amount for the value
+	 * 
+	 * @return the clamped value
+	 */
+	public static int clamp(int value, int min, int max) {
+		if (value < min) {
+			return min;
+		}
+		if (value > max) {
+			return max;
+		}
+		return value;
+	}
 }

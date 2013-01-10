@@ -145,7 +145,7 @@ public class GameState extends BasicGameState {
 	 */
 	private void addControllers(Input input) {
 		inputMaster = new InputMaster(input);
-		inputMaster.addKeyListener(new CameraController(player));
+		inputMaster.addMouseListener(new CameraController(player));
 		inputMaster.addKeyListener(new MenuKeyController(this));
 		inputMaster.addMouseListener(new RubberBandController(rubberBand));
 		inputMaster.addKeyListener(new DebugKeyController(this, player));
