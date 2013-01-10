@@ -295,9 +295,6 @@ public class GameState extends BasicGameState {
 			Transition leave = new FadeOutTransition();
 			Transition enter = new FadeInTransition();
 			stopAtNextUpdate = false;
-			renderInitializedBeforeEnter = false;
-			// Tell map change listeners that there is no map to come.
-			mapChanger.changeMap(-1);
 			game.enterState(State.MAIN_MENU.ordinal(), leave, enter);
 		}
 		if (changeToLevel > 0) {

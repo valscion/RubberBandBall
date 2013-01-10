@@ -397,21 +397,17 @@ public class Physics implements Updateable, MapChangeListener {
 		frictionSimulationBody = null;
 
 		// Re-initialize for the new map.
-		if (newMap != null) {
-			try {
-				initializeMap(newMap);
-			}
-			catch (MapException e) {
-				Log.error("There was a problem with changing map in Physics", e);
-			}
+		try {
+			initializeMap(newMap);
+		}
+		catch (MapException e) {
+			Log.error("There was a problem with changing map in Physics", e);
 		}
 
 		// Re-initialize the player.
 		if (playerCollisionListener != null) {
 			world.removeListener(playerCollisionListener);
 		}
-		if (newMap != null) {
-			addPlayer();
-		}
+		addPlayer();
 	}
 }

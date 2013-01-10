@@ -58,9 +58,6 @@ public class TileMapAreaPainter implements Painter {
 	@Override
 	public void paint(Graphics g) {
 		TileMap map = mapContainer.getMap();
-		if (map == null) {
-			return;
-		}
 
 		List<TileMapObject> safeAreas = map.getSafeAreas();
 		TileMapObject spawnArea = map.getSpawnArea();

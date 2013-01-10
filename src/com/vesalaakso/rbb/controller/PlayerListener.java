@@ -59,9 +59,6 @@ public class PlayerListener implements Updateable {
 	@Override
 	public void update(int delta) {
 		TileMap map = mapContainer.getMap();
-		if (map == null) {
-			return;
-		}
 		Body<Circle> playerBody = physics.getPlayerBody();
 
 		boolean happinessChanged = false;
