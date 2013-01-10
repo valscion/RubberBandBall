@@ -7,5 +7,7 @@ package com.vesalaakso.rbb.states;
  */
 public enum State {
 	/** The state handling all the main game logic */
-	GAME;
+	GAME,
+	/** The state for main menu */
+	MAIN_MENU;
 }

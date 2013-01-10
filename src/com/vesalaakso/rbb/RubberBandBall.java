@@ -6,6 +6,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 import com.vesalaakso.rbb.states.GameState;
+import com.vesalaakso.rbb.states.MainMenuState;
 
 /**
  * The game. You lost it.
@@ -46,6 +47,7 @@ public class RubberBandBall extends StateBasedGame {
 
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException {
+		addState(new MainMenuState());
 		addState(new GameState());
 	}
 
