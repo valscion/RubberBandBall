@@ -19,7 +19,7 @@ import com.vesalaakso.rbb.controller.DebugKeyController;
 import com.vesalaakso.rbb.controller.InputMaster;
 import com.vesalaakso.rbb.controller.MapChanger;
 import com.vesalaakso.rbb.controller.MenuKeyController;
-import com.vesalaakso.rbb.controller.PlayerMoveListener;
+import com.vesalaakso.rbb.controller.PlayerListener;
 import com.vesalaakso.rbb.controller.RubberBandController;
 import com.vesalaakso.rbb.controller.Updateable;
 import com.vesalaakso.rbb.model.Background;
@@ -101,6 +101,9 @@ public class GameState extends BasicGameState {
 
 	/** The state which handles map changing routines. */
 	private MapChangeState mapChangeState;
+	
+	/** We need something to do something when player does something. */
+	private PlayerListener playerListener;
 
 	/**
 	 * Construct the GameState and tells it which state is responsible for map
@@ -149,6 +152,7 @@ public class GameState extends BasicGameState {
 		mapChanger.addListener(player);
 		mapChanger.addListener(rubberBand);
 		mapChanger.addListener(physics);
+		mapChanger.addListener(playerListener);
 		mapChanger.addListener(particleManager);
 	}
 
@@ -156,7 +160,7 @@ public class GameState extends BasicGameState {
 	private void addUpdateables() {
 		updateables.add(inputMaster);
 		updateables.add(physics);
-		updateables.add(new PlayerMoveListener(mapContainer, player, physics));
+		updateables.add(playerListener);
 		updateables.add(background);
 		updateables.add(particleManager);
 	}
@@ -216,6 +220,9 @@ public class GameState extends BasicGameState {
 
 		// Add the rubber band to the game
 		rubberBand = new RubberBand(player, physics);
+		
+		// The player listener. Oh yes.
+		playerListener = new PlayerListener(mapContainer, player, physics);
 
 		// Add the painters next
 		addPainters();

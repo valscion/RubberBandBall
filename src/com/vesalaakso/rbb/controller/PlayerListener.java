@@ -17,7 +17,7 @@ import com.vesalaakso.rbb.model.TileMapObject;
  * 
  * @author Vesa Laakso
  */
-public class PlayerMoveListener implements Updateable {
+public class PlayerListener implements Updateable, MapChangeListener {
 
 	/** The map container to read map from which to read areas from. */
 	private TileMapContainer mapContainer;
@@ -39,7 +39,7 @@ public class PlayerMoveListener implements Updateable {
 	 * @param physics
 	 *            physics to consult player speed from
 	 */
-	public PlayerMoveListener(TileMapContainer mapContainer, Player player,
+	public PlayerListener(TileMapContainer mapContainer, Player player,
 			Physics physics) {
 		this.mapContainer = mapContainer;
 		this.player = player;
@@ -63,17 +63,24 @@ public class PlayerMoveListener implements Updateable {
 			}
 		}
 
+		// If happiness hasn't changed because of being inside safe area, set
+		// it to zero if the player is ready to be launched.
+		if (!happinessChanged && player.isReadyForLaunch()) {
+			player.setHappiness(0);
+			happinessChanged = true;
+		}
+		
 		// If happiness hasn't been changed, change it by consulting player
 		// speed.
 		Body<Circle> playerBody = physics.getPlayerBody();
 		if (!happinessChanged) {
 			float angVel = Math.abs(playerBody.getAngularVelocity());
-			if (angVel > 5) {
-				player.setHappiness(-angVel / 25);
+			if (angVel > 2) {
+				player.setHappiness(-angVel / 10);
 				happinessChanged = true;
 			}
 		}
-		
+
 		// If still the happiness hasn't changed, it is based on the speed of
 		// the player and can be positive, too.
 		if (!happinessChanged) {
@@ -81,6 +88,17 @@ public class PlayerMoveListener implements Updateable {
 			speed = Math.abs(speed);
 			player.setHappiness((speed * 5 - 50) / 100);
 		}
+	}
+
+	/**
+	 * Reset the player happiness on map change.
+	 * 
+	 * @see MapChangeListener#onMapChange(com.vesalaakso.rbb.model.TileMap,
+	 *      com.vesalaakso.rbb.model.TileMap)
+	 */
+	@Override
+	public void onMapChange(TileMap oldMap, TileMap newMap) {
+		player.setHappiness(0);
 	}
 
 }
