@@ -73,11 +73,17 @@ public class PlayerListener implements Updateable {
 			}
 		}
 
-		// If player has stopped and is not in safe area, game over.
+		// If player has stopped and is not in safe area, possibly change to
+		// next level or start over.
 		if (playerBody.isActive() && playerBody.isSleeping()) {
 			if (!inSafeArea) {
-				// :(
-				game.gameOver("Player has ended up in an unsafe environment.");
+				TileMapObject fin = map.getFinishArea();
+				if (player.isInsideArea(fin.x, fin.y, fin.width, fin.height)) {
+					game.changeToNextLevel();
+				}
+				else {
+					game.resetLevel();
+				}
 			}
 		}
 

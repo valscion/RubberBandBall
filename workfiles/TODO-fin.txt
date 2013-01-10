@@ -2,7 +2,7 @@ TODO:
 
 - Suoja-alueet erinäköisiksi ja toimimaan - DONE
 - Sama alkualueelle ja loppualueelle - DONE
-- Tasojen välillä siirtyminen
+- Tasojen välillä siirtyminen - DONE
 - Pausevalikko
 - Alkuvalikko - DONE
 - Ohjeet
