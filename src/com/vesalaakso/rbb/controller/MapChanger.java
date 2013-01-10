@@ -1,13 +1,12 @@
 package com.vesalaakso.rbb.controller;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import org.newdawn.slick.util.Log;
 
 import com.google.common.collect.Maps;
 import com.vesalaakso.rbb.model.TileMap;
+import com.vesalaakso.rbb.model.TileMapContainer;
 import com.vesalaakso.rbb.model.exceptions.MapException;
 
 /**
@@ -17,36 +16,24 @@ import com.vesalaakso.rbb.model.exceptions.MapException;
  */
 public class MapChanger {
 
-	/** Everything that wants to be notified of map changes. */
-	private List<MapChangeListener> listeners =
-		new LinkedList<MapChangeListener>();
-
-	/** If map is changing, this is the old map to change from. */
-	private TileMap oldMap;
-
 	/** If map is changing, this is the new map to change to. */
 	private TileMap newMap;
 
 	/** Already initialized maps mapped to their index */
 	private Map<Integer, TileMap> initializedMapsMap = Maps.newHashMap();
 
-	/**
-	 * Initializes the MapChanger. Remember to add listeners with the
-	 * {@link #addListener} method or this instance is pretty much useless.
-	 * 
-	 */
-	public MapChanger() {
-	}
+	/** The map container to update */
+	private TileMapContainer mapContainer;
 
 	/**
-	 * Adds a listener which listens for map changes.
+	 * Initializes the MapChanger and associates it with the given
+	 * TileMapContainer, which in turn gets reset when map is changed.
 	 * 
-	 * @param listener
-	 *            a <code>MapChangeListener</code> to be notified when the map
-	 *            is changed.
+	 * @param mapContainer
+	 *            the <code>TileMapContainer</code> to change map from
 	 */
-	public void addListener(MapChangeListener listener) {
-		listeners.add(listener);
+	public MapChanger(TileMapContainer mapContainer) {
+		this.mapContainer = mapContainer;
 	}
 
 	/**
@@ -57,10 +44,7 @@ public class MapChanger {
 	 */
 	public void changeMap(int newMap) {
 		Log.info("Changing map!");
-		
-		// Old map is the last new map
-		this.oldMap = this.newMap;
-		
+
 		// Get the new map
 		if (initializedMapsMap.containsKey(newMap)) {
 			this.newMap = initializedMapsMap.get(newMap);
@@ -83,9 +67,7 @@ public class MapChanger {
 			initializedMapsMap.put(newMap.getLevel(), newMap);
 		}
 
-		for (MapChangeListener listener : listeners) {
-			listener.onMapChange(oldMap, newMap);
-		}
+		mapContainer.setMap(newMap);
 	}
 
 }

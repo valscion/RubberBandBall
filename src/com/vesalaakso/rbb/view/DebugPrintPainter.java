@@ -61,7 +61,7 @@ public class DebugPrintPainter implements Painter {
 		Body<Circle> body = physics.getPlayerBody();
 		// Camera
 		Camera cam = Camera.get();
-		
+
 		// Mouse y flipped because of LWJGL and slick difference.
 		int mouseY = RubberBandBall.SCREEN_HEIGHT - Mouse.getY();
 		int mouseX = Mouse.getX();

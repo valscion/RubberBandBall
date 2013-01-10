@@ -1,14 +1,11 @@
 package com.vesalaakso.rbb.model;
 
-import com.vesalaakso.rbb.controller.MapChangeListener;
-
 /**
- * Simple class which has a method to query the current <code>TileMap</code>. It
- * also listens for map changes to update the current map it links to.
+ * Simple class which has a method to query the current <code>TileMap</code>.
  * 
  * @author Vesa Laakso
  */
-public class TileMapContainer implements MapChangeListener {
+public class TileMapContainer {
 
 	/** The current <code>TileMap</code>. */
 	private TileMap map;
@@ -22,8 +19,13 @@ public class TileMapContainer implements MapChangeListener {
 		return map;
 	}
 
-	@Override
-	public void onMapChange(TileMap oldMap, TileMap newMap) {
-		map = newMap;
+	/**
+	 * Sets the current map to the map given. Should only be called when the map
+	 * changes!
+	 * 
+	 * @param map the new map
+	 */
+	public void setMap(TileMap map) {
+		this.map = map;
 	}
 }

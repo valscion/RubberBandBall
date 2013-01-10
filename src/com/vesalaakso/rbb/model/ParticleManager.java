@@ -10,7 +10,7 @@ import org.newdawn.slick.particles.ParticleIO;
 import org.newdawn.slick.particles.ParticleSystem;
 import org.newdawn.slick.util.Log;
 
-import com.vesalaakso.rbb.controller.MapChangeListener;
+import com.vesalaakso.rbb.controller.Resetable;
 import com.vesalaakso.rbb.controller.Updateable;
 
 /**
@@ -18,7 +18,7 @@ import com.vesalaakso.rbb.controller.Updateable;
  * 
  * @author Vesa Laakso
  */
-public class ParticleManager implements Updateable, MapChangeListener {
+public class ParticleManager implements Updateable, Resetable {
 
 	/** Maximum amount of explosions */
 	private static final int MAX_EXPLOSIONS = 40;
@@ -26,10 +26,10 @@ public class ParticleManager implements Updateable, MapChangeListener {
 	/** 20 explosions running at max, stored here. */
 	private List<ParticleSystem> explosionSystems =
 			new ArrayList<ParticleSystem>(MAX_EXPLOSIONS);
-	
+
 	/** Amount of running explosion systems */
 	private int runningExplosionSystems = 0;
-	
+
 	/** The ID for the next explosionSystem to initialize. */
 	private int nextExplosionID = 0;
 
@@ -78,11 +78,11 @@ public class ParticleManager implements Updateable, MapChangeListener {
 	public void addExplosionEmitter(float worldX, float worldY) {
 		// Get the explosion system to set active
 		ParticleSystem system = explosionSystems.get(nextExplosionID);
-		
+
 		// Set the systems position and reset it
 		system.setPosition(worldX, worldY);
 		system.reset();
-		
+
 		// We have a new running system.
 		if (runningExplosionSystems < MAX_EXPLOSIONS) {
 			runningExplosionSystems++;
@@ -109,13 +109,9 @@ public class ParticleManager implements Updateable, MapChangeListener {
 		return systems;
 	}
 
-	/**
-	 * When map changes, reset all explosions.
-	 * 
-	 * @see MapChangeListener#onMapChange(TileMap, TileMap)
-	 */
+	/** Method to reset the systemz */
 	@Override
-	public void onMapChange(TileMap oldMap, TileMap newMap) {
+	public void reset() {
 		for (int i = 0; i < runningExplosionSystems; i++) {
 			explosionSystems.get(i).reset();
 		}

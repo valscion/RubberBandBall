@@ -3,7 +3,7 @@ package com.vesalaakso.rbb.model;
 import org.newdawn.fizzy.Vector;
 import org.newdawn.slick.geom.Vector2f;
 
-import com.vesalaakso.rbb.controller.MapChangeListener;
+import com.vesalaakso.rbb.controller.Resetable;
 import com.vesalaakso.rbb.util.Utils;
 
 /**
@@ -12,7 +12,7 @@ import com.vesalaakso.rbb.util.Utils;
  * 
  * @author Vesa Laakso
  */
-public class RubberBand implements MapChangeListener {
+public class RubberBand implements Resetable {
 
 	/** The <code>Player</code> from which the rubber band will be pulled */
 	private Player player;
@@ -165,13 +165,9 @@ public class RubberBand implements MapChangeListener {
 		return currentEndPoint;
 	}
 
-	/**
-	 * Resets the rubber band when map is changed.
-	 * 
-	 * @see MapChangeListener#onMapChange(TileMap, TileMap)
-	 */
+	/** Reset the rubber band status. */
 	@Override
-	public void onMapChange(TileMap oldMap, TileMap newMap) {
+	public void reset() {
 		startPoint = null;
 		currentEndPoint = null;
 		isPulled = false;

@@ -16,8 +16,8 @@ import org.newdawn.slick.tiled.GroupObject;
 import org.newdawn.slick.util.Log;
 
 import com.google.common.collect.Maps;
-import com.vesalaakso.rbb.controller.MapChangeListener;
 import com.vesalaakso.rbb.controller.PlayerCollisionListener;
+import com.vesalaakso.rbb.controller.Resetable;
 import com.vesalaakso.rbb.controller.Updateable;
 import com.vesalaakso.rbb.model.exceptions.MapException;
 
@@ -26,7 +26,7 @@ import com.vesalaakso.rbb.model.exceptions.MapException;
  * 
  * @author Vesa Laakso
  */
-public class Physics implements Updateable, MapChangeListener {
+public class Physics implements Updateable, Resetable {
 
 	/** Default gravity */
 	private static final float DEFAULT_GRAVITY = 20.0f;
@@ -64,6 +64,9 @@ public class Physics implements Updateable, MapChangeListener {
 	 */
 	private Body<?> frictionSimulationBody;
 
+	/** <code>TileMapContainer</code> to query the map from */
+	private TileMapContainer mapContainer;
+
 	/**
 	 * Constructs the physics engine and boots it up with default gravity.
 	 * 
@@ -72,11 +75,16 @@ public class Physics implements Updateable, MapChangeListener {
 	 * @param particleManager
 	 *            the <code>ParticleManager</code> responsible for all the nice
 	 *            and juicy particles
+	 * @param mapContainer
+	 *            the <code>TileMapContainer</code> to query the current map
+	 *            from
 	 */
-	public Physics(Player player, ParticleManager particleManager) {
+	public Physics(Player player, ParticleManager particleManager,
+			TileMapContainer mapContainer) {
 		this.player = player;
 		this.particleManager = particleManager;
 		this.world = new World(DEFAULT_GRAVITY);
+		this.mapContainer = mapContainer;
 	}
 
 	/**
@@ -113,12 +121,12 @@ public class Physics implements Updateable, MapChangeListener {
 	/**
 	 * Initializes the physics world based on the given map.
 	 * 
-	 * @param map
-	 *            the <code>TileMap</code> to get collidable tiles from
 	 * @throws MapException
-	 *             if the given map contained invalid collidable tiles
+	 *             if the current map contained invalid collidable tiles
 	 */
-	public void initializeMap(TileMap map) throws MapException {
+	public void initializeMap() throws MapException {
+		TileMap map = mapContainer.getMap();
+
 		// Add all collisions
 		List<TileMapObject> colObjs = map.getCollisionObjects();
 
@@ -379,17 +387,16 @@ public class Physics implements Updateable, MapChangeListener {
 	/**
 	 * When a map changes, create a new world simulating the physics and reset
 	 * the player.
-	 * 
-	 * @see MapChangeListener#onMapChange(TileMap, TileMap)
 	 */
 	@Override
-	public void onMapChange(TileMap oldMap, TileMap newMap) {
+	public void reset() {
 		// Remove old bodies
 		for (Body<?> mapBody : bodyTileMap.keySet()) {
 			world.remove(mapBody);
 		}
 		bodyTileMap.clear();
 		if (playerBody != null) {
+			playerBody.setActive(false);
 			world.remove(playerBody);
 		}
 
@@ -398,7 +405,7 @@ public class Physics implements Updateable, MapChangeListener {
 
 		// Re-initialize for the new map.
 		try {
-			initializeMap(newMap);
+			initializeMap();
 		}
 		catch (MapException e) {
 			Log.error("There was a problem with changing map in Physics", e);

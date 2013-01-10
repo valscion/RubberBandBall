@@ -1,16 +1,16 @@
 package com.vesalaakso.rbb.model;
 
-import com.vesalaakso.rbb.controller.MapChangeListener;
+import com.vesalaakso.rbb.controller.Resetable;
 
 /**
  * Represents the ball player moves.
  * 
  * @author Vesa Laakso
  */
-public class Player implements MapChangeListener {
+public class Player implements Resetable {
 
-	/** The map <code>Player</code> belongs to. */
-	private TileMap map;
+	/** The map container to query the map <code>Player</code> belongs to. */
+	private TileMapContainer mapContainer;
 
 	/** Center x-coordinate of the player. */
 	private float xWorld;
@@ -31,17 +31,23 @@ public class Player implements MapChangeListener {
 	private float happiness;
 
 	/**
-	 * Constructs the <code>Player</code>. The new Player is pretty much useless
-	 * and dangerous before it has a map set, so it should not be used before
-	 * the {@link #onMapChange(TileMap, TileMap)} method is called.
+	 * Constructs the <code>Player</code> and sets it up with the given
+	 * <b>TileMapContainer</b> to query the current map when needed.
+	 * 
+	 * @param mapContainer
+	 *            the map container to query the current map from
 	 */
-	public Player() {
+	public Player(TileMapContainer mapContainer) {
+		this.mapContainer = mapContainer;
 	}
 
-	/** A helper method to reset the position and status of the player. */
-	private void reset() {
+	/**
+	 * Reset the position and status of the player.
+	 */
+	@Override
+	public void reset() {
 		// Set the player to the center of the spawn area
-		TileMapObject spawn = map.getSpawnArea();
+		TileMapObject spawn = mapContainer.getMap().getSpawnArea();
 		xWorld = spawn.x + spawn.width * .5f;
 		yWorld = spawn.y + spawn.height * .5f;
 
@@ -140,17 +146,6 @@ public class Player implements MapChangeListener {
 	}
 
 	/**
-	 * Resets the state of the player when the map is changed.
-	 * 
-	 * @see MapChangeListener#onMapChange(TileMap, TileMap)
-	 */
-	@Override
-	public void onMapChange(TileMap oldMap, TileMap newMap) {
-		map = newMap;
-		reset();
-	}
-
-	/**
 	 * Gets the current happiness of the player.
 	 * 
 	 * @return happiness of the player
@@ -196,10 +191,14 @@ public class Player implements MapChangeListener {
 		float top = y;
 		float bottom = y + height;
 
-		if (xWorld < left) return false;
-		if (xWorld > right) return false;
-		if (yWorld < top) return false;
-		if (yWorld > bottom) return false;
+		if (xWorld < left)
+			return false;
+		if (xWorld > right)
+			return false;
+		if (yWorld < top)
+			return false;
+		if (yWorld > bottom)
+			return false;
 
 		return true;
 	}

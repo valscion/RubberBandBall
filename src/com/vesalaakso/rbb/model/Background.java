@@ -4,6 +4,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.util.Log;
 import org.newdawn.slick.SlickException;
 
+import com.vesalaakso.rbb.controller.Resetable;
 import com.vesalaakso.rbb.controller.Updateable;
 
 /**
@@ -11,7 +12,7 @@ import com.vesalaakso.rbb.controller.Updateable;
  * 
  * @author Vesa Laakso
  */
-public class Background implements Updateable {
+public class Background implements Updateable, Resetable {
 
 	/** The image to be drawn. */
 	private Image bgImage;
@@ -76,6 +77,11 @@ public class Background implements Updateable {
 	 */
 	public float getY() {
 		return yPos;
+	}
+
+	@Override
+	public void reset() {
+		update(0);
 	}
 
 }

@@ -20,6 +20,7 @@ import com.vesalaakso.rbb.controller.InputMaster;
 import com.vesalaakso.rbb.controller.MapChanger;
 import com.vesalaakso.rbb.controller.MenuKeyController;
 import com.vesalaakso.rbb.controller.PlayerListener;
+import com.vesalaakso.rbb.controller.Resetable;
 import com.vesalaakso.rbb.controller.RubberBandController;
 import com.vesalaakso.rbb.controller.Updateable;
 import com.vesalaakso.rbb.model.Background;
@@ -57,7 +58,7 @@ public class GameState extends BasicGameState {
 	 * The <code>MapChanger</code> responsible for changing the map and
 	 * notifying everything that needs to be notified.
 	 */
-	private MapChanger mapChanger = new MapChanger();
+	private MapChanger mapChanger = new MapChanger(mapContainer);
 
 	/**
 	 * A <code>PainterContainer</code> which stores everything that can be
@@ -70,6 +71,9 @@ public class GameState extends BasicGameState {
 	 * here.
 	 */
 	private List<Updateable> updateables = new LinkedList<Updateable>();
+
+	/** All the stuff which need to be reset when state is changed */
+	private List<Resetable> resetables = new LinkedList<Resetable>();
 
 	/** InputMaster to handle the coordination of various input controllers. */
 	private InputMaster inputMaster;
@@ -144,17 +148,15 @@ public class GameState extends BasicGameState {
 	}
 
 	/**
-	 * A helper method for hooking everything that should be hooked to map
-	 * changes.
+	 * A helper method for listing up everything that needs to be reset before
+	 * first render.
 	 */
-	private void addMapChangerHooks() {
-		// The first hook must be for the mapContainer!
-		mapChanger.addListener(mapContainer);
-
-		mapChanger.addListener(player);
-		mapChanger.addListener(rubberBand);
-		mapChanger.addListener(physics);
-		mapChanger.addListener(particleManager);
+	private void addResetables() {
+		resetables.add(player);
+		resetables.add(rubberBand);
+		resetables.add(physics);
+		resetables.add(particleManager);
+		resetables.add(background);
 	}
 
 	/** A helper method which adds all updateables. */
@@ -175,9 +177,13 @@ public class GameState extends BasicGameState {
 			// No need to do anything.
 			return;
 		}
+		
+		stopAtNextUpdate = false;
+		changeToLevel = -1;
 
-		// Manually call update for background to reset its position
-		background.update(0);
+		for (Resetable r : resetables) {
+			r.reset();
+		}
 
 		// This has been done now.
 		renderInitializedBeforeEnter = true;
@@ -231,10 +237,10 @@ public class GameState extends BasicGameState {
 		background = new Background();
 
 		// Construct the object representing the player
-		player = new Player();
+		player = new Player(mapContainer);
 
 		// Physics world, too
-		physics = new Physics(player, particleManager);
+		physics = new Physics(player, particleManager, mapContainer);
 
 		// Add the rubber band to the game
 		rubberBand = new RubberBand(player, physics);
@@ -249,23 +255,21 @@ public class GameState extends BasicGameState {
 		// And then the controllers
 		addControllers(container.getInput());
 
-		// When map changes, something needs to be modified. Set it so.
-		addMapChangerHooks();
-
-		// Now create the first map and use the hooks we just initialized to
-		// initialize the game.
-		try {
-			mapChanger.changeMap(3);
-			mapChanger.runChange();
-		}
-		catch (MapException e) {
-			// So we couldn't load even the first map... that's sad.
-			Log.error("Failed to change to the first map.");
-			throw new SlickException("Failed to change to the first map.", e);
-		}
+		// Some stuff need to be reset before first render.
+		addResetables();
 
 		// Finally add all objects which hook to the update()-method.
 		addUpdateables();
+		
+		// Then reset the map.
+		mapChanger.changeMap(1);
+		try {
+			mapChanger.runChange();
+		}
+		catch (MapException e) {
+			e.printStackTrace();
+			container.exit();
+		}
 	}
 
 	/**
@@ -294,7 +298,6 @@ public class GameState extends BasicGameState {
 		if (stopAtNextUpdate) {
 			Transition leave = new FadeOutTransition();
 			Transition enter = new FadeInTransition();
-			stopAtNextUpdate = false;
 			game.enterState(State.MAIN_MENU.ordinal(), leave, enter);
 		}
 		if (changeToLevel > 0) {
@@ -302,7 +305,7 @@ public class GameState extends BasicGameState {
 			mapChanger.changeMap(changeToLevel);
 			mapChangeState.setupChange(mapChanger, this);
 			game.enterState(mapChangeState.getID(), leave, null);
-			changeToLevel = -1;
+			return;
 		}
 
 		// Update everything that wants to be updated.
