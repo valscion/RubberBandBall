@@ -352,16 +352,6 @@ public class GameState extends BasicGameState {
 	}
 
 	/**
-	 * @see org.newdawn.slick.state.GameState#enter(GameContainer,
-	 *      StateBasedGame)
-	 */
-	@Override
-	public void enter(GameContainer container, StateBasedGame game)
-			throws SlickException {
-		System.out.println("entered, time " + System.currentTimeMillis());
-	}
-
-	/**
 	 * @see org.newdawn.slick.state.GameState#leave(GameContainer,
 	 *      StateBasedGame)
 	 */
