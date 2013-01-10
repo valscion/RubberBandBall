@@ -267,8 +267,9 @@ public class GameState extends BasicGameState {
 			mapChanger.runChange();
 		}
 		catch (MapException e) {
-			e.printStackTrace();
-			container.exit();
+			// So we couldn't load even the first map... that's sad.
+			Log.error("Failed to change to the first map.");
+			throw new SlickException("Failed to change to the first map.", e);
 		}
 	}
 
