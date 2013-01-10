@@ -111,14 +111,15 @@ public class Physics implements Updateable, MapChangeListener {
 	}
 
 	/**
-	 * Adds collision shapes from the given map to the world.
+	 * Initializes the physics world based on the given map.
 	 * 
 	 * @param map
 	 *            the <code>TileMap</code> to get collidable tiles from
 	 * @throws MapException
 	 *             if the given map contained invalid collidable tiles
 	 */
-	public void addCollidablesFromMap(TileMap map) throws MapException {
+	public void initializeMap(TileMap map) throws MapException {
+		// Add all collisions
 		List<TileMapObject> colObjs = map.getCollisionObjects();
 
 		for (TileMapObject obj : colObjs) {
@@ -155,6 +156,32 @@ public class Physics implements Updateable, MapChangeListener {
 			bodyTileMap.put(body, obj);
 			world.add(body);
 		}
+
+		// Setup world gravity based on map properties values.
+		String strGravX = map.getTiledMap().getMapProperty("gravity_x", "");
+		String strGravY = map.getTiledMap().getMapProperty("gravity_y", "");
+
+		float gravX = 0.0f;
+		float gravY = DEFAULT_GRAVITY;
+
+		if (!strGravX.isEmpty()) {
+			try {
+				gravX = Float.parseFloat(strGravX);
+			}
+			catch (NumberFormatException e) {
+				Log.warn("Failed to parse gravity_x from map properties");
+			}
+		}
+		if (!strGravY.isEmpty()) {
+			try {
+				gravY = Float.parseFloat(strGravY);
+			}
+			catch (NumberFormatException e) {
+				Log.warn("Failed to parse gravity_y from map properties");
+			}
+		}
+
+		world.setGravity(gravX, gravY);
 	}
 
 	/**
@@ -358,7 +385,7 @@ public class Physics implements Updateable, MapChangeListener {
 
 		// Re-initialize for the new map.
 		try {
-			addCollidablesFromMap(newMap);
+			initializeMap(newMap);
 		}
 		catch (MapException e) {
 			Log.error("There was a problem with changing map in Physics", e);

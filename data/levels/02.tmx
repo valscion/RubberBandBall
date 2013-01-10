@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="32" height="33" tilewidth="32" tileheight="32">
+ <properties>
+  <property name="gravity_x" value="0"/>
+  <property name="gravity_y" value="20.0"/>
+ </properties>
  <tileset firstgid="1" source="Tiles.tsx"/>
  <layer name="back" width="32" height="33">
   <data encoding="base64" compression="zlib">
