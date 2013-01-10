@@ -50,9 +50,6 @@ public class Player implements Resetable {
 
 		// Reset angle
 		angle = 0;
-
-		// Set the camera to the players coordinates, too.
-		Camera.get().setPosition(xWorld, yWorld);
 	}
 
 	/**

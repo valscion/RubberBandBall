@@ -26,11 +26,13 @@ import com.vesalaakso.rbb.controller.Resetable;
 import com.vesalaakso.rbb.controller.RubberBandController;
 import com.vesalaakso.rbb.controller.Updateable;
 import com.vesalaakso.rbb.model.Background;
+import com.vesalaakso.rbb.model.Camera;
 import com.vesalaakso.rbb.model.ParticleManager;
 import com.vesalaakso.rbb.model.Physics;
 import com.vesalaakso.rbb.model.Player;
 import com.vesalaakso.rbb.model.RubberBand;
 import com.vesalaakso.rbb.model.TileMapContainer;
+import com.vesalaakso.rbb.model.TileMapObject;
 import com.vesalaakso.rbb.model.exceptions.MapException;
 import com.vesalaakso.rbb.view.BackgroundPainter;
 import com.vesalaakso.rbb.view.DebugPrintPainter;
@@ -185,6 +187,11 @@ public class GameState extends BasicGameState {
 		stopAtNextUpdate = false;
 		changeToLevel = -1;
 		inputMaster.unpause();
+
+		// Reset camera at the middle of the spawn area
+		TileMapObject spawn = mapContainer.getMap().getSpawnArea();
+		Camera cam = Camera.get();
+		cam.setPosition(spawn.x + spawn.width / 2, spawn.y + spawn.height / 2);
 
 		for (Resetable r : resetables) {
 			r.reset();
