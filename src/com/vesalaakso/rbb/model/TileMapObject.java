@@ -128,7 +128,7 @@ public class TileMapObject {
 			int left2 = other.x;
 			int right1 = this.x + this.width - 1;
 			int right2 = other.x + other.width - 1;
-			
+
 			// Check if other goes over from right
 			if (right1 < left2) {
 				return false;
