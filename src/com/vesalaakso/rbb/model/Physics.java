@@ -93,27 +93,33 @@ public class Physics implements Updateable, Resetable {
 	@Override
 	public void update(int delta) {
 		world.update(1 / 40f);
-		if (player != null) {
-			player.setPosition(playerBody.getX(), playerBody.getY());
-			player.setAngle(playerBody.getRotation());
+		if (player == null || !player.isStartPositioned()) {
+			// We've got nothing to do here
+			return;
+		}
+		if (player.isStartPositioned() && playerBody == null) {
+			// Player has not yet been added.
+			addPlayer();
+		}
+		player.setPosition(playerBody.getX(), playerBody.getY());
+		player.setAngle(playerBody.getRotation());
 
-			if (!player.isReadyForLaunch() && playerBody.isSleeping()) {
-				// We've arrived somewhere. Control to the player, ahoy!
-				player.onStop();
+		if (!player.isReadyForLaunch() && playerBody.isSleeping()) {
+			// We've arrived somewhere. Control to the player, ahoy!
+			player.onStop();
+		}
+		else if (frictionSimulationBody != null && !playerBody.isSleeping()) {
+			// Simulate friction against the body.
+			float angVel = playerBody.getAngularVelocity();
+			int dir = playerBody.getXVelocity() > 0 ? -1 : 1;
+
+			if (angVel > -.1f && angVel < .1f) {
+				// Ok, a velocity smaller than 0.1f will be considered
+				// stopped.
+				playerBody.setAngularVelocity(0);
 			}
-			else if (frictionSimulationBody != null && !playerBody.isSleeping()) {
-				// Simulate friction against the body.
-				float angVel = playerBody.getAngularVelocity();
-				int dir = playerBody.getXVelocity() > 0 ? -1 : 1;
-
-				if (angVel > -.1f && angVel < .1f) {
-					// Ok, a velocity smaller than 0.1f will be considered
-					// stopped.
-					playerBody.setAngularVelocity(0);
-				}
-				else {
-					playerBody.applyTorque(dir * 1000f);
-				}
+			else {
+				playerBody.applyTorque(dir * 1000f);
 			}
 		}
 	}
@@ -303,20 +309,23 @@ public class Physics implements Updateable, Resetable {
 		ret.addAll(bodyTileMap.keySet());
 
 		// If player has a body set, add it too.
-		if (playerBody != null) {
-			ret.add(playerBody);
+		if (getPlayerBody() != null) {
+			ret.add(getPlayerBody());
 		}
 
 		return ret;
 	}
 
 	/**
-	 * Gets only the body of the player.
+	 * Gets only the body of the player. WARNING! Can be <code>null</code>!
 	 * 
 	 * @return physics body of the player.
 	 */
 	public Body<Circle> getPlayerBody() {
-		return playerBody;
+		if (playerBody != null && playerBody.isAttached()) {
+			return playerBody;
+		}
+		return null;
 	}
 
 	/**
@@ -398,6 +407,7 @@ public class Physics implements Updateable, Resetable {
 		if (playerBody != null) {
 			playerBody.setActive(false);
 			world.remove(playerBody);
+			playerBody = null;
 		}
 
 		// Reset state
@@ -415,6 +425,5 @@ public class Physics implements Updateable, Resetable {
 		if (playerCollisionListener != null) {
 			world.removeListener(playerCollisionListener);
 		}
-		addPlayer();
 	}
 }

@@ -61,13 +61,15 @@ public class CameraController extends KeyAdapter implements Updateable {
 	public void update(int delta) {
 		Camera cam = Camera.get();
 
-		// If the player is in a state that he is ready to be launched, allow
-		// moving the camera 500px / sec as keys are pressed.
-		if (player.isReadyForLaunch()) {
+		// If the player is in a state that he is ready to be launched or hasn't
+		// been positioned for start yet, move the camera 500px / sec as keys
+		// are pressed.
+		if (player.isReadyForLaunch() || !player.isStartPositioned()) {
 			cam.translate(cameraMoveX * delta * .5f, cameraMoveY * delta * .5f);
 		}
 		else {
-			// Glue the camera to the player if player is not ready for launch.
+			// Glue the camera to the player if one is not ready for launch but
+			// has a start position set.
 			Vector oldP = new Vector(cam.getX(), cam.getY());
 			Vector targetP = new Vector(player.getX(), player.getY());
 			Vector curved = Utils.curvePoints(oldP, targetP, 20);

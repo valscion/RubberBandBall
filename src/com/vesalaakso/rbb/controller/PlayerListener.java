@@ -61,6 +61,12 @@ public class PlayerListener implements Updateable {
 		TileMap map = mapContainer.getMap();
 		Body<Circle> playerBody = physics.getPlayerBody();
 
+		// If player body has not yet been added to the physics engine, do
+		// nothing.
+		if (playerBody == null) {
+			return;
+		}
+
 		boolean happinessChanged = false;
 		boolean inSafeArea = false;
 		List<TileMapObject> safeAreas = map.getSafeAreas();

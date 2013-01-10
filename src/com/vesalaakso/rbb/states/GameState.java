@@ -21,6 +21,7 @@ import com.vesalaakso.rbb.controller.InputMaster;
 import com.vesalaakso.rbb.controller.MapChanger;
 import com.vesalaakso.rbb.controller.MenuKeyController;
 import com.vesalaakso.rbb.controller.PlayerListener;
+import com.vesalaakso.rbb.controller.PlayerPositioner;
 import com.vesalaakso.rbb.controller.Resetable;
 import com.vesalaakso.rbb.controller.RubberBandController;
 import com.vesalaakso.rbb.controller.Updateable;
@@ -146,6 +147,8 @@ public class GameState extends BasicGameState {
 		inputMaster.addKeyListener(new MenuKeyController(this));
 		inputMaster.addMouseListener(new RubberBandController(rubberBand));
 		inputMaster.addKeyListener(new DebugKeyController(this, player));
+		inputMaster
+				.addMouseListener(new PlayerPositioner(player, mapContainer));
 	}
 
 	/**
@@ -222,7 +225,7 @@ public class GameState extends BasicGameState {
 	public void resetLevel() {
 		changeLevel(mapContainer.getMap().getLevel());
 	}
-	
+
 	/** Changes to the previous level */
 	public void changeToPreviousLevel() {
 		changeLevel(mapContainer.getMap().getLevel() - 1);
@@ -259,7 +262,7 @@ public class GameState extends BasicGameState {
 		background = new Background();
 
 		// Construct the object representing the player
-		player = new Player(mapContainer);
+		player = new Player();
 
 		// Physics world, too
 		physics = new Physics(player, particleManager, mapContainer);

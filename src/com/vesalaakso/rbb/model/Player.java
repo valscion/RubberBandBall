@@ -9,9 +9,6 @@ import com.vesalaakso.rbb.controller.Resetable;
  */
 public class Player implements Resetable {
 
-	/** The map container to query the map <code>Player</code> belongs to. */
-	private TileMapContainer mapContainer;
-
 	/** Center x-coordinate of the player. */
 	private float xWorld;
 
@@ -27,18 +24,16 @@ public class Player implements Resetable {
 	/** Is player ready to be launched or not */
 	private boolean isReadyForLaunch;
 
+	/** Has player been positioned for start */
+	private boolean isStartPositioned;
+
 	/** The happiness of the player, measured in range -1.0 ... 1.0 */
 	private float happiness;
 
 	/**
-	 * Constructs the <code>Player</code> and sets it up with the given
-	 * <b>TileMapContainer</b> to query the current map when needed.
-	 * 
-	 * @param mapContainer
-	 *            the map container to query the current map from
+	 * Constructs the <code>Player</code>.
 	 */
-	public Player(TileMapContainer mapContainer) {
-		this.mapContainer = mapContainer;
+	public Player() {
 	}
 
 	/**
@@ -46,15 +41,13 @@ public class Player implements Resetable {
 	 */
 	@Override
 	public void reset() {
-		// Set the player to the center of the spawn area
-		TileMapObject spawn = mapContainer.getMap().getSpawnArea();
-		xWorld = spawn.x + spawn.width * .5f;
-		yWorld = spawn.y + spawn.height * .5f;
+		// Make player not ready for launch and unpositioned.
+		isReadyForLaunch = false;
+		isStartPositioned = false;
 
-		// Make player ready to be launched
-		isReadyForLaunch = true;
 		// Reset happiness
 		happiness = 0;
+
 		// Reset angle
 		angle = 0;
 
@@ -201,6 +194,23 @@ public class Player implements Resetable {
 			return false;
 
 		return true;
+	}
+
+	/**
+	 * Gets if the player has been positioned and is ready for action.
+	 * 
+	 * @return if player has a start position set
+	 */
+	public boolean isStartPositioned() {
+		return isStartPositioned;
+	}
+
+	/**
+	 * Sets the player as positioned for start stuff.
+	 */
+	public void setStartPositioned() {
+		isStartPositioned = true;
+		isReadyForLaunch = true;
 	}
 
 }
