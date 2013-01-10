@@ -54,7 +54,7 @@ public class PlayerCollisionListener implements WorldListener {
 	private final static int MAX_BOUNCE_COUNT_FROM_SAME_BODY = 8;
 
 	/** This constant defines the delta to check bounce fixing against */
-	private final static long BOUNCE_BUG_MIN_TIME_DIFF = 150;
+	private final static long BOUNCE_BUG_MIN_TIME_DIFF = 350;
 
 	/**
 	 * Constructs a new <code>PlayerCollisionListener</code> and lets it know
@@ -113,7 +113,6 @@ public class PlayerCollisionListener implements WorldListener {
 			long timeNow = RubberBandBall.getContainer().getTime();
 			if (lastBounceFromSameBody == 0
 					|| lastBounceFromSameBody + BOUNCE_BUG_MIN_TIME_DIFF > timeNow) {
-				System.out.println("Tock, " + bounceCountFromSameBody);
 				lastBounceFromSameBody = timeNow;
 				bounceCountFromSameBody++;
 			}
