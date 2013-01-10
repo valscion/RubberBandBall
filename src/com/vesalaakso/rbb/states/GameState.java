@@ -104,6 +104,9 @@ public class GameState extends BasicGameState {
 	/** We need something to do something when player does something. */
 	private PlayerListener playerListener;
 
+	/** Has this state been initialized in render call before enter already */
+	private boolean renderInitializedBeforeEnter = false;
+
 	/**
 	 * Construct the GameState and tells it which state is responsible for map
 	 * changing routines.
@@ -164,6 +167,23 @@ public class GameState extends BasicGameState {
 	}
 
 	/**
+	 * Resets the state of the game, useful when transitions cause headaches.
+	 * Mainly resets positions of various stuff.
+	 */
+	private void resetBeforeRender() {
+		if (renderInitializedBeforeEnter) {
+			// No need to do anything.
+			return;
+		}
+
+		// Manually call update for background to reset its position
+		background.update(0);
+
+		// This has been done now.
+		renderInitializedBeforeEnter = true;
+	}
+
+	/**
 	 * Makes the game quit on the next update-loop.
 	 */
 	public void stop() {
@@ -220,7 +240,8 @@ public class GameState extends BasicGameState {
 		rubberBand = new RubberBand(player, physics);
 
 		// The player listener. Oh yes.
-		playerListener = new PlayerListener(mapContainer, player, physics, this);
+		playerListener =
+			new PlayerListener(mapContainer, player, physics, this);
 
 		// Add the painters next
 		addPainters();
@@ -260,6 +281,9 @@ public class GameState extends BasicGameState {
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
+		// Initialize some positions before rendering, because of transitions.
+		resetBeforeRender();
+
 		painterContainer.paintAll(g, this);
 	}
 
@@ -304,7 +328,7 @@ public class GameState extends BasicGameState {
 	@Override
 	public void leave(GameContainer container, StateBasedGame game)
 			throws SlickException {
-		System.out.println("left, time " + System.currentTimeMillis());
+		renderInitializedBeforeEnter = false;
 	}
 
 	@Override
@@ -315,7 +339,8 @@ public class GameState extends BasicGameState {
 	/**
 	 * Called when the game should end
 	 * 
-	 * @param reason the reason why game ended
+	 * @param reason
+	 *            the reason why game ended
 	 */
 	public void gameOver(String reason) {
 		// TODO: something
