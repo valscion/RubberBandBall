@@ -59,7 +59,7 @@ public class DebugKeyController extends KeyAdapter implements Updateable {
 				cameraChangeScale = -1.0f;
 				break;
 			case DBG_CHANGE_LEVEL:
-				game.changeLevel(3);
+				game.changeToNextLevel();
 				break;
 			default:
 				// Not ours.

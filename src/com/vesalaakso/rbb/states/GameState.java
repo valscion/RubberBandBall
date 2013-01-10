@@ -196,6 +196,11 @@ public class GameState extends BasicGameState {
 		stopAtNextUpdate = true;
 	}
 
+	/** Changes to the next level */
+	public void changeToNextLevel() {
+		changeLevel(mapContainer.getMap().getLevel() + 1);
+	}
+
 	/**
 	 * Changes the level on the next update() call to the one given.
 	 * 
