@@ -335,6 +335,8 @@ public class GameState extends BasicGameState {
 		if (stopAtNextUpdate) {
 			Transition leave = new FadeOutTransition();
 			Transition enter = new FadeInTransition();
+			// Pause controls when entering the menu
+			inputMaster.pause();
 			game.enterState(State.MAIN_MENU.ordinal(), leave, enter);
 		}
 		if (changeToLevel > 0) {
