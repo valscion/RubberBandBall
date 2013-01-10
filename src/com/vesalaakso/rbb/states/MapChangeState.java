@@ -22,8 +22,8 @@ public class MapChangeState extends BasicGameState {
 	/** The one responsible for telling the game when the map has changed. */
 	private MapChanger mapChanger;
 
-	/** The state id to change to once the mapChanger is finished initializing. */
-	private int newState;
+	/** The state to change to once the mapChanger is finished initializing. */
+	private GameState newState;
 
 	/**
 	 * Setups the routine for changing map.
@@ -31,9 +31,9 @@ public class MapChangeState extends BasicGameState {
 	 * @param mapChanger
 	 *            the MapChanger responsive for updating the models and stuff.
 	 * @param newState
-	 *            the state id to change to when map is ready
+	 *            the state to change to when map is ready
 	 */
-	public void setupChange(MapChanger mapChanger, int newState) {
+	public void setupChange(MapChanger mapChanger, GameState newState) {
 		this.mapChanger = mapChanger;
 		this.newState = newState;
 	}
@@ -69,7 +69,7 @@ public class MapChangeState extends BasicGameState {
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta)
 			throws SlickException {
-		game.enterState(newState, new FadeOutTransition(), new FadeInTransition());
+		game.enterState(newState.getID(), new FadeOutTransition(), new FadeInTransition());
 	}
 
 	@Override

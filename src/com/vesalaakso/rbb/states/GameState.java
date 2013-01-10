@@ -9,6 +9,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.FadeInTransition;
 import org.newdawn.slick.state.transition.FadeOutTransition;
 import org.newdawn.slick.state.transition.Transition;
 import org.newdawn.slick.util.Log;
@@ -177,8 +178,6 @@ public class GameState extends BasicGameState {
 
 		// Manually call update for background to reset its position
 		background.update(0);
-		
-		// Run map change routines.
 
 		// This has been done now.
 		renderInitializedBeforeEnter = true;
@@ -294,17 +293,17 @@ public class GameState extends BasicGameState {
 		// The game was not meant to last forever, my friend.
 		if (stopAtNextUpdate) {
 			Transition leave = new FadeOutTransition();
+			Transition enter = new FadeInTransition();
 			stopAtNextUpdate = false;
 			renderInitializedBeforeEnter = false;
 			// Tell map change listeners that there is no map to come.
 			mapChanger.changeMap(-1);
-			mapChangeState.setupChange(mapChanger, State.MAIN_MENU.ordinal());
-			game.enterState(mapChangeState.getID(), leave, null);
+			game.enterState(State.MAIN_MENU.ordinal(), leave, enter);
 		}
 		if (changeToLevel > 0) {
 			Transition leave = new FadeOutTransition();
 			mapChanger.changeMap(changeToLevel);
-			mapChangeState.setupChange(mapChanger, this.getID());
+			mapChangeState.setupChange(mapChanger, this);
 			game.enterState(mapChangeState.getID(), leave, null);
 			changeToLevel = -1;
 		}
