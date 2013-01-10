@@ -108,7 +108,7 @@ public class MainMenuState extends BasicGameState {
 			
 			float topY = ITEM_START_Y + i * ITEM_OFFSET_Y;
 
-			g.drawRect(ITEM_X, topY, ITEM_WIDTH, ITEM_HEIGHT);
+			g.drawRoundRect(ITEM_X, topY, ITEM_WIDTH, ITEM_HEIGHT, 20);
 
 			float textX = ITEM_X + (ITEM_WIDTH - item.textWidth) / 2;
 			float textY = topY + (ITEM_HEIGHT - lineHeight) / 2;
