@@ -43,9 +43,6 @@ public abstract class TileMapPainter implements Painter {
 	 */
 	protected void drawLayer(int layer) {
 		TileMap map = mapContainer.getMap();
-		if (map == null) {
-			return;
-		}
 		TiledMap tmap = map.getTiledMap();
 
 		// Calculate the top left coordinates in screen dimensions after the

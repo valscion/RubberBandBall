@@ -30,6 +30,9 @@ public class TileMapBackLayerPainter extends TileMapPainter {
 	 */
 	@Override
 	public void paint(Graphics g) {
+		if (this.getMap() == null) {
+			return;
+		}
 		int backlayer = this.getMap().getIndexOfBackLayer();
 		super.drawLayer(backlayer);
 	}

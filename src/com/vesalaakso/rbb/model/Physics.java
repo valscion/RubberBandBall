@@ -85,7 +85,7 @@ public class Physics implements Updateable, MapChangeListener {
 	@Override
 	public void update(int delta) {
 		world.update(1 / 40f);
-		if (player != null) {
+		if (player != null && playerBody != null) {
 			player.setPosition(playerBody.getX(), playerBody.getY());
 			player.setAngle(playerBody.getRotation());
 
@@ -412,6 +412,9 @@ public class Physics implements Updateable, MapChangeListener {
 		}
 		if (newMap != null) {
 			addPlayer();
+		}
+		else {
+			playerBody = null;
 		}
 	}
 }

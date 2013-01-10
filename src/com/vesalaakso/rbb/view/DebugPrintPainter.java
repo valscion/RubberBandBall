@@ -59,6 +59,12 @@ public class DebugPrintPainter implements Painter {
 
 		// Player body
 		Body<Circle> body = physics.getPlayerBody();
+		
+		// If there was no body for the player, don't draw anything.
+		if (body == null) {
+			return;
+		}
+		
 		// Camera
 		Camera cam = Camera.get();
 		

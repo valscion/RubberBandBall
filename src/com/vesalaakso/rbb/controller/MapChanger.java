@@ -81,7 +81,7 @@ public class MapChanger {
 	 *             if the change could not be made.
 	 */
 	public void runChange() throws MapException {
-		if (!newMap.isInitialized()) {
+		if (newMap != null && !newMap.isInitialized()) {
 			newMap.init();
 			initializedMapsMap.put(newMap.getLevel(), newMap);
 		}
