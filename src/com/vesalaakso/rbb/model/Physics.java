@@ -122,6 +122,9 @@ public class Physics implements Updateable, MapChangeListener {
 		// Add all collisions
 		List<TileMapObject> colObjs = map.getCollisionObjects();
 
+		// The last determinant sign of a polygon
+		float lastDetSign = 0;
+
 		for (TileMapObject obj : colObjs) {
 			// The static body we will add later on to the world and
 			// mapBodies list
@@ -142,6 +145,16 @@ public class Physics implements Updateable, MapChangeListener {
 			}
 			else if (isPolygon) {
 				Polygon polygon = createPolygon(obj);
+				// Calculate the determinant
+				float det = polygon.getPointX(0) * polygon.getPointY(1) - 
+						polygon.getPointX(1) * polygon.getPointY(0);
+				float detSign = Math.signum(det);
+				if (lastDetSign == 0) {
+					lastDetSign = detSign;
+				}
+				else if (detSign != lastDetSign) {
+					Log.warn("Map has got mixed CW / CCW polygons!");
+				}
 				body = new StaticBody<Polygon>(polygon, obj.x, obj.y);
 			}
 			else {
