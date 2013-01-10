@@ -247,8 +247,7 @@ public class GameState extends BasicGameState {
 
 	@Override
 	public int getID() {
-		// TODO Create enum for different game states
-		return 1;
+		return State.GAME.ordinal();
 	}
 
 }
