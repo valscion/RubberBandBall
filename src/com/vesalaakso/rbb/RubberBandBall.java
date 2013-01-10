@@ -20,6 +20,9 @@ public class RubberBandBall extends StateBasedGame {
 	/** The height of the display to create */
 	public static final int SCREEN_HEIGHT = 600;
 
+	/** The amount of levels we have */
+	public static final int LEVEL_COUNT = 3;
+
 	/** Constructs a new game. */
 	public RubberBandBall() {
 		super("Rubber band ball");

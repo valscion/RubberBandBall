@@ -14,6 +14,7 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 import org.newdawn.slick.state.transition.Transition;
 import org.newdawn.slick.util.Log;
 
+import com.vesalaakso.rbb.RubberBandBall;
 import com.vesalaakso.rbb.controller.CameraController;
 import com.vesalaakso.rbb.controller.DebugKeyController;
 import com.vesalaakso.rbb.controller.InputMaster;
@@ -177,7 +178,7 @@ public class GameState extends BasicGameState {
 			// No need to do anything.
 			return;
 		}
-		
+
 		stopAtNextUpdate = false;
 		changeToLevel = -1;
 
@@ -187,6 +188,22 @@ public class GameState extends BasicGameState {
 
 		// This has been done now.
 		renderInitializedBeforeEnter = true;
+	}
+
+	/**
+	 * Changes the level on the next update() call to the one given.
+	 * 
+	 * @param level
+	 *            the level index to change to.
+	 */
+	private void changeLevel(int level) {
+		if (level < 1 || level > RubberBandBall.LEVEL_COUNT) {
+			this.changeToLevel = -1;
+			this.stop();
+		}
+		else {
+			this.changeToLevel = level;
+		}
 	}
 
 	/**
@@ -201,14 +218,14 @@ public class GameState extends BasicGameState {
 		changeLevel(mapContainer.getMap().getLevel() + 1);
 	}
 
-	/**
-	 * Changes the level on the next update() call to the one given.
-	 * 
-	 * @param level
-	 *            the level index to change to.
-	 */
-	public void changeLevel(int level) {
-		this.changeToLevel = level;
+	/** Resets the current level */
+	public void resetLevel() {
+		changeLevel(mapContainer.getMap().getLevel());
+	}
+	
+	/** Changes to the previous level */
+	public void changeToPreviousLevel() {
+		changeLevel(mapContainer.getMap().getLevel() - 1);
 	}
 
 	/** Toggles debug mode */
@@ -265,7 +282,7 @@ public class GameState extends BasicGameState {
 
 		// Finally add all objects which hook to the update()-method.
 		addUpdateables();
-		
+
 		// Then reset the map.
 		mapChanger.changeMap(1);
 		try {
