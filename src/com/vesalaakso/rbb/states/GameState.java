@@ -9,6 +9,9 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.FadeInTransition;
+import org.newdawn.slick.state.transition.FadeOutTransition;
+import org.newdawn.slick.state.transition.Transition;
 import org.newdawn.slick.util.Log;
 
 import com.vesalaakso.rbb.controller.CameraController;
@@ -92,6 +95,9 @@ public class GameState extends BasicGameState {
 	/** Is the game in debug mode? */
 	private boolean debugMode = true;
 
+	/** Change to this map on the next update() call. */
+	private int changeToLevel = -1;
+
 	/** A helper method which adds all the painters in the correct order. */
 	private void addPainters() {
 		painterContainer.addPainter(new BackgroundPainter(background));
@@ -141,6 +147,15 @@ public class GameState extends BasicGameState {
 	 */
 	public void stop() {
 		stopAtNextUpdate = true;
+	}
+
+	/**
+	 * Changes the level on the next update() call to the one given.
+	 * 
+	 * @param level the level index to change to.
+	 */
+	public void changeLevel(int level) {
+		this.changeToLevel = level;
 	}
 
 	/** Toggles debug mode */
@@ -227,16 +242,21 @@ public class GameState extends BasicGameState {
 			throws SlickException {
 		// The game was not meant to last forever, my friend.
 		if (stopAtNextUpdate) {
-			// container.exit();
-			// Ha-ha! Fooled you! Change level instead :)
+			Transition leave = new FadeOutTransition();
+			Transition enter = new FadeInTransition();
+			stopAtNextUpdate = false;
+			game.enterState(State.MAIN_MENU.ordinal(), leave, enter);
+		}
+		if (changeToLevel > 0) {
 			try {
-				mapChanger.changeMap(mapContainer.getMap(), new TileMap(3));
+				TileMap newLevel = new TileMap(changeToLevel);
+				mapChanger.changeMap(mapContainer.getMap(), newLevel);
 			}
 			catch (MapException e) {
 				Log.error("Failed to change the map.");
 				throw new SlickException("Failed to change the map.", e);
 			}
-			stopAtNextUpdate = false;
+			changeToLevel = -1;
 		}
 
 		// Update everything that wants to be updated.

@@ -13,6 +13,9 @@ import org.newdawn.slick.font.effects.Effect;
 import org.newdawn.slick.font.effects.ShadowEffect;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.FadeInTransition;
+import org.newdawn.slick.state.transition.FadeOutTransition;
+import org.newdawn.slick.state.transition.Transition;
 
 import com.vesalaakso.rbb.RubberBandBall;
 
@@ -23,22 +26,22 @@ import com.vesalaakso.rbb.RubberBandBall;
  * @author Vesa Laakso
  */
 public class MainMenuState extends BasicGameState {
-	
+
 	/** Width of a single item. */
 	private static final int ITEM_WIDTH = RubberBandBall.SCREEN_WIDTH / 2;
 
 	/** Height of a single item. */
 	private static final int ITEM_HEIGHT = ITEM_WIDTH / 6;
-	
+
 	/** Left x position for all items. */
 	private static final int ITEM_X = ITEM_WIDTH / 2;
-	
+
 	/** Start y-coordinate for items. */
 	private static final int ITEM_START_Y = ITEM_HEIGHT * 2;
-	
+
 	/** Y offset for all items */
 	private static final int ITEM_OFFSET_Y = ITEM_HEIGHT;
-	
+
 	/** All the menu items. */
 	private List<MenuItem> menuItems = new ArrayList<MenuItem>();
 
@@ -47,10 +50,10 @@ public class MainMenuState extends BasicGameState {
 
 	/** The font used to hilight the current selected item */
 	private UnicodeFont hilightFont;
-	
+
 	/** Current item selected */
 	private MenuItem selected;
-	
+
 	/** The state to move to on next update call. */
 	private State moveToState;
 
@@ -80,7 +83,7 @@ public class MainMenuState extends BasicGameState {
 		fEffects = hilightFont.getEffects();
 		fEffects.add(new ShadowEffect(new Color(255, 255, 255), 1, 1, 0.75f));
 		fEffects.add(new ColorEffect(Color.getHSBColor(0.55f, 1.0f, 0.75f)));
-		
+
 		hilightFont.loadGlyphs();
 
 		// Add menu items
@@ -105,7 +108,7 @@ public class MainMenuState extends BasicGameState {
 			else {
 				g.setFont(regularFont);
 			}
-			
+
 			float topY = ITEM_START_Y + i * ITEM_OFFSET_Y;
 
 			g.drawRoundRect(ITEM_X, topY, ITEM_WIDTH, ITEM_HEIGHT, 20);
@@ -120,10 +123,13 @@ public class MainMenuState extends BasicGameState {
 	public void update(GameContainer container, StateBasedGame game, int delta)
 			throws SlickException {
 		if (moveToState != null) {
-			game.enterState(moveToState.ordinal());
+			Transition leave = new FadeOutTransition();
+			Transition enter = new FadeInTransition();
+			game.enterState(moveToState.ordinal(), leave, enter);
+			moveToState = null;
 		}
 	}
-	
+
 	/**
 	 * @see org.newdawn.slick.InputListener#mouseMoved(int, int, int, int)
 	 */
@@ -131,7 +137,7 @@ public class MainMenuState extends BasicGameState {
 	public void mouseMoved(int oldx, int oldy, int newx, int newy) {
 		selected = findItemForCoordinates(newx, newy);
 	}
-	
+
 	/**
 	 * @see org.newdawn.slick.InputListener#mouseClicked(int, int, int, int)
 	 */
@@ -141,17 +147,17 @@ public class MainMenuState extends BasicGameState {
 			moveToState = selected.nextState;
 		}
 	}
-	
+
 	/** Finds the item within the given coordinates */
 	private MenuItem findItemForCoordinates(int x, int y) {
 		// x-coordinate can be checked first
 		int left = ITEM_X;
 		int right = ITEM_X + ITEM_WIDTH;
-		
+
 		if (x < left || x > right) {
 			return null;
 		}
-		
+
 		for (int i = 0, size = menuItems.size(); i < size; i++) {
 			int topY = ITEM_START_Y + i * ITEM_OFFSET_Y;
 			if (y < topY) {
@@ -163,7 +169,7 @@ public class MainMenuState extends BasicGameState {
 			}
 			return menuItems.get(i);
 		}
-		
+
 		// None was found if we got to here.
 		return null;
 	}

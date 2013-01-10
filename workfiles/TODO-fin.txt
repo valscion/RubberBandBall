@@ -4,9 +4,9 @@ TODO:
 - Sama alkualueelle ja loppualueelle - DONE
 - Tasojen välillä siirtyminen
 - Pausevalikko
-- Alkuvalikko
+- Alkuvalikko - DONE
 - Ohjeet
-- Kuva pelaajalle
+- Kuva pelaajalle - DONE
 - Piikit tappamaan
 - Lisää tasoja
 - Partikkelimanagerista efektimanageri -> äänet myös
