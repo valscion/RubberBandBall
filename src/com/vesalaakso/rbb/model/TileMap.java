@@ -294,4 +294,13 @@ public class TileMap {
 
 		return path;
 	}
+
+	/**
+	 * Get the level this map is.
+	 * 
+	 * @return the level number of this map
+	 */
+	public int getLevel() {
+		return level;
+	}
 }

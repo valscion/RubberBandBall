@@ -27,7 +27,6 @@ import com.vesalaakso.rbb.model.ParticleManager;
 import com.vesalaakso.rbb.model.Physics;
 import com.vesalaakso.rbb.model.Player;
 import com.vesalaakso.rbb.model.RubberBand;
-import com.vesalaakso.rbb.model.TileMap;
 import com.vesalaakso.rbb.model.TileMapContainer;
 import com.vesalaakso.rbb.model.exceptions.MapException;
 import com.vesalaakso.rbb.view.BackgroundPainter;
@@ -101,7 +100,7 @@ public class GameState extends BasicGameState {
 
 	/** The state which handles map changing routines. */
 	private MapChangeState mapChangeState;
-	
+
 	/** We need something to do something when player does something. */
 	private PlayerListener playerListener;
 
@@ -219,7 +218,7 @@ public class GameState extends BasicGameState {
 
 		// Add the rubber band to the game
 		rubberBand = new RubberBand(player, physics);
-		
+
 		// The player listener. Oh yes.
 		playerListener = new PlayerListener(mapContainer, player, physics, this);
 
@@ -235,7 +234,7 @@ public class GameState extends BasicGameState {
 		// Now create the first map and use the hooks we just initialized to
 		// initialize the game.
 		try {
-			mapChanger.changeMap(null, new TileMap(3));
+			mapChanger.changeMap(3);
 			mapChanger.runChange();
 		}
 		catch (MapException e) {
@@ -276,16 +275,9 @@ public class GameState extends BasicGameState {
 		}
 		if (changeToLevel > 0) {
 			Transition leave = new FadeOutTransition();
-			try {
-				TileMap newLevel = new TileMap(changeToLevel);
-				mapChanger.changeMap(mapContainer.getMap(), newLevel);
-				mapChangeState.setupChange(mapChanger, this);
-				game.enterState(mapChangeState.getID(), leave, null);
-			}
-			catch (MapException e) {
-				Log.error("Failed to change the map.");
-				throw new SlickException("Failed to change the map.", e);
-			}
+			mapChanger.changeMap(changeToLevel);
+			mapChangeState.setupChange(mapChanger, this);
+			game.enterState(mapChangeState.getID(), leave, null);
 			changeToLevel = -1;
 		}
 
