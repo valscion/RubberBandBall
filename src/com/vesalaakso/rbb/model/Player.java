@@ -47,6 +47,8 @@ public class Player implements MapChangeListener {
 
 		// Make player ready to be launched
 		isReadyForLaunch = true;
+		// Reset happiness
+		happiness = 0;
 
 		// Set the camera to the players coordinates, too.
 		Camera.get().setPosition(xWorld, yWorld);

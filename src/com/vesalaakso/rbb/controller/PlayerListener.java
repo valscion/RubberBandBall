@@ -18,7 +18,7 @@ import com.vesalaakso.rbb.states.GameState;
  * 
  * @author Vesa Laakso
  */
-public class PlayerListener implements Updateable, MapChangeListener {
+public class PlayerListener implements Updateable {
 
 	/** The map container to read map from which to read areas from. */
 	private TileMapContainer mapContainer;
@@ -105,17 +105,6 @@ public class PlayerListener implements Updateable, MapChangeListener {
 			speed = Math.abs(speed);
 			player.setHappiness((speed * 5 - 50) / 100);
 		}
-	}
-
-	/**
-	 * Reset the player happiness on map change.
-	 * 
-	 * @see MapChangeListener#onMapChange(com.vesalaakso.rbb.model.TileMap,
-	 *      com.vesalaakso.rbb.model.TileMap)
-	 */
-	@Override
-	public void onMapChange(TileMap oldMap, TileMap newMap) {
-		player.setHappiness(0);
 	}
 
 }

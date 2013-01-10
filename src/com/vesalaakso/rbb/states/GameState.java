@@ -152,7 +152,6 @@ public class GameState extends BasicGameState {
 		mapChanger.addListener(player);
 		mapChanger.addListener(rubberBand);
 		mapChanger.addListener(physics);
-		mapChanger.addListener(playerListener);
 		mapChanger.addListener(particleManager);
 	}
 
