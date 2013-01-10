@@ -46,6 +46,12 @@ public class Physics implements Updateable, Resetable {
 	/** The <code>World</code> in which The Magic (tm) happens. */
 	private World world;
 
+	/** Current x-gravity in the world */
+	private float xGravity;
+
+	/** Current y-gravity in the world */
+	private float yGravity;
+
 	/** The bodies associated with the map, linked to the collidable object. */
 	private Map<Body<?>, TileMapObject> bodyTileMap = Maps.newHashMap();
 
@@ -122,6 +128,23 @@ public class Physics implements Updateable, Resetable {
 				playerBody.applyTorque(dir * 1000f);
 			}
 		}
+		// If we're in a floaty world, force the player to stop at small
+		// velocities
+		if (xGravity == 0 && yGravity == 0 && !playerBody.isSleeping()) {
+			float angVel = playerBody.getAngularVelocity();
+			float vel = Math.abs(playerBody.getXVelocity())
+					+ Math.abs(playerBody.getYVelocity());
+
+			if (angVel > -.1f && angVel < .1f) {
+				// An angular velocity smaller than 0.1f will be considered
+				// stopped.
+				playerBody.setAngularVelocity(0);
+			}
+			if (vel < .1f) {
+				// A combined velocity smaller than 0.1f will force stop player.
+				playerBody.setVelocity(0, 0);
+			}
+		}
 	}
 
 	/**
@@ -188,12 +211,12 @@ public class Physics implements Updateable, Resetable {
 		String strGravX = map.getTiledMap().getMapProperty("gravity_x", "");
 		String strGravY = map.getTiledMap().getMapProperty("gravity_y", "");
 
-		float gravX = 0.0f;
-		float gravY = DEFAULT_GRAVITY;
+		float xGravity = 0.0f;
+		float yGravity = DEFAULT_GRAVITY;
 
 		if (!strGravX.isEmpty()) {
 			try {
-				gravX = Float.parseFloat(strGravX);
+				xGravity = Float.parseFloat(strGravX);
 			}
 			catch (NumberFormatException e) {
 				Log.warn("Failed to parse gravity_x from map properties");
@@ -201,14 +224,14 @@ public class Physics implements Updateable, Resetable {
 		}
 		if (!strGravY.isEmpty()) {
 			try {
-				gravY = Float.parseFloat(strGravY);
+				yGravity = Float.parseFloat(strGravY);
 			}
 			catch (NumberFormatException e) {
 				Log.warn("Failed to parse gravity_y from map properties");
 			}
 		}
 
-		world.setGravity(gravX, gravY);
+		world.setGravity(xGravity, yGravity);
 	}
 
 	/**
@@ -276,6 +299,12 @@ public class Physics implements Updateable, Resetable {
 		// simulate it ourselves elsewhere. Angular damping specifies the amount
 		// of spinning force the circle will lose over time at every update.
 		float angularDamping = 0.1f;
+
+		if (xGravity == 0 && yGravity == 0) {
+			// Larger damping when there's no gravity
+			damping *= 2;
+			angularDamping *= 2;
+		}
 
 		Circle shape = new Circle(radius, density, restitution);
 		playerBody =
