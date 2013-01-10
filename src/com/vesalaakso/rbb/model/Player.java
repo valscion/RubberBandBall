@@ -40,10 +40,12 @@ public class Player implements MapChangeListener {
 
 	/** A helper method to reset the position and status of the player. */
 	private void reset() {
-		// Set the player to the center of the spawn area
-		TileMapObject spawn = map.getSpawnArea();
-		xWorld = spawn.x + spawn.width * .5f;
-		yWorld = spawn.y + spawn.height * .5f;
+		if (map != null) {
+			// Set the player to the center of the spawn area
+			TileMapObject spawn = map.getSpawnArea();
+			xWorld = spawn.x + spawn.width * .5f;
+			yWorld = spawn.y + spawn.height * .5f;
+		}
 
 		// Make player ready to be launched
 		isReadyForLaunch = true;

@@ -62,7 +62,10 @@ public class MapChanger {
 		this.oldMap = this.newMap;
 		
 		// Get the new map
-		if (initializedMapsMap.containsKey(newMap)) {
+		if (newMap < 0) {
+			this.newMap = null;
+		}
+		else if (initializedMapsMap.containsKey(newMap)) {
 			this.newMap = initializedMapsMap.get(newMap);
 		}
 		else {

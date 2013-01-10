@@ -17,7 +17,8 @@ public interface MapChangeListener {
 	 *            the map that just finished. Will be <code>null</code> if there
 	 *            was no map being played before.
 	 * @param newMap
-	 *            the new map which will follow the old map
+	 *            the new map which will follow the old map. Will be
+	 *            <code>null</code> if game ended.
 	 */
 	public void onMapChange(TileMap oldMap, TileMap newMap);
 
