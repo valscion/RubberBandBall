@@ -12,6 +12,7 @@ import org.newdawn.fizzy.Polygon;
 import org.newdawn.fizzy.Rectangle;
 import org.newdawn.fizzy.StaticBody;
 import org.newdawn.fizzy.World;
+import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.tiled.GroupObject;
 import org.newdawn.slick.util.Log;
 
@@ -419,7 +420,42 @@ public class Physics implements Updateable, Resetable {
 	 * @return player velocity in y-direction
 	 */
 	public float getPlayerFallingVelocity() {
-		return playerBody.getYVelocity();
+		if (xGravity == 0 && yGravity != 0) {
+			if (yGravity < 0) {
+				return -playerBody.getYVelocity();
+			}
+			else {
+				return playerBody.getYVelocity();
+			}
+		}
+		if (xGravity != 0 && yGravity == 0) {
+			if (xGravity < 0) {
+				return -playerBody.getXVelocity();
+			}
+			else {
+				return playerBody.getXVelocity();
+			}
+		}
+		if (xGravity != 0 && yGravity != 0) {
+			Vector2f gravVec = new Vector2f(xGravity, yGravity);
+			return gravVec.length();
+		}
+		// If we got so far, there is no gravity.
+		return 0;
+	}
+	
+	/**
+	 * Sets the gravity in the world.
+	 * 
+	 * @param xGravity gravity in x-direction
+	 * @param yGravity gravity in y-direction
+	 */
+	public void setGravity(float xGravity, float yGravity) {
+		if (xGravity != this.xGravity || yGravity != this.yGravity) {
+			this.xGravity = xGravity;
+			this.yGravity = yGravity;
+			world.setGravity(xGravity, yGravity);
+		}
 	}
 
 	/**

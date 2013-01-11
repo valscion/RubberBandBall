@@ -21,5 +21,7 @@ public enum TileMapObjectType {
 	/** Area which responds to a triggered action */
 	RESPONSIVE,
 	/** An area representing a graphics detail */
-	GRAPHIC;
+	GRAPHIC,
+	/** A gravity changing field. */
+	GRAVITY;
 }

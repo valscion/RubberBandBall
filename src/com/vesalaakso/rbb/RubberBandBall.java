@@ -21,7 +21,7 @@ public class RubberBandBall extends StateBasedGame {
 	public static final int SCREEN_HEIGHT = 600;
 
 	/** The amount of levels we have */
-	public static final int LEVEL_COUNT = 3;
+	public static final int LEVEL_COUNT = 4;
 
 	/** Constructs a new game. */
 	public RubberBandBall() {

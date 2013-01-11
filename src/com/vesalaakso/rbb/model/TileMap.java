@@ -10,6 +10,7 @@ import org.newdawn.slick.tiled.TiledMap;
 import org.newdawn.slick.tiled.TiledMapPlus;
 import org.newdawn.slick.util.Log;
 
+import com.google.common.collect.Lists;
 import com.vesalaakso.rbb.model.exceptions.MapException;
 
 /**
@@ -40,16 +41,20 @@ public class TileMap {
 	private TileMapObject spawnArea;
 
 	/** Safe areas */
-	private List<TileMapObject> safeAreas = new ArrayList<TileMapObject>();
+	private List<TileMapObject> safeAreas = Lists.newArrayList();
 
 	/** Trigger areas. */
-	private List<TileMapObject> triggerAreas = new ArrayList<TileMapObject>();
+	private List<TileMapObject> triggerAreas = Lists.newArrayList();
 
 	/** Finish area. */
 	private TileMapObject finishArea;
-	
+
+	/** Gravity field areas */
+	private List<GravityArea> gravityAreas = Lists.newArrayList();
+
 	/** Collision objects in the map. */
-	private List<TileMapObject> collisionObjects = new ArrayList<TileMapObject>();
+	private List<TileMapObject> collisionObjects =
+		new ArrayList<TileMapObject>();
 
 	/**
 	 * Constructs a new TileMap. You need to call {@link #init}-method before
@@ -129,19 +134,19 @@ public class TileMap {
 		if (spawnArea == null) {
 			throw new MapException("Level " + level + " had no spawn area!");
 		}
-		
+
 		// Store finish area
 		for (GroupObject area : areaGroup.getObjectsOfType("finish")) {
 			if (finishArea != null) {
-				throw new MapException("More than one finish area set in level "
-						+ level);
+				throw new MapException(
+						"More than one finish area set in level " + level);
 			}
 			finishArea = new TileMapObject(area, this);
 		}
 		if (finishArea == null) {
 			throw new MapException("Level " + level + " had no finish area!");
 		}
-		
+
 		// Store trigger areas
 		for (GroupObject area : areaGroup.getObjectsOfType("trigger")) {
 			triggerAreas.add(new TileMapObject(area, this));
@@ -152,11 +157,16 @@ public class TileMap {
 			safeAreas.add(new TileMapObject(area, this));
 		}
 
+		// Store gravity fields
+		for (GroupObject area : areaGroup.getObjectsOfType("gravity")) {
+			gravityAreas.add(new GravityArea(area, this));
+		}
+
 		// Store collision objects
 		for (GroupObject area : map.getObjectGroup("collisions").getObjects()) {
 			TileMapObject newObj = new TileMapObject(area, this);
 			collisionObjects.add(newObj);
-			
+
 			newObj.findObjectAbove();
 		}
 	}
@@ -231,7 +241,6 @@ public class TileMap {
 	 * 
 	 * @return trigger areas
 	 */
-
 	public List<TileMapObject> getTriggerAreas() {
 		return triggerAreas;
 	}
@@ -243,6 +252,15 @@ public class TileMap {
 	 */
 	public TileMapObject getFinishArea() {
 		return finishArea;
+	}
+
+	/**
+	 * Returns the gravity fields.
+	 * 
+	 * @return gravity fields
+	 */
+	public List<GravityArea> getGravityAreas() {
+		return gravityAreas;
 	}
 
 	/**
