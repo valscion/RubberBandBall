@@ -127,6 +127,7 @@ public class MainMenuState extends BasicGameState {
 			Transition enter = new FadeInTransition();
 			game.enterState(moveToState.ordinal(), leave, enter);
 			moveToState = null;
+			selected = null;
 		}
 	}
 
