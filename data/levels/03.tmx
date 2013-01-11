@@ -77,11 +77,6 @@
    </properties>
   </object>
  </objectgroup>
- <layer name="meta" width="36" height="32" visible="0" opacity="0.5">
-  <data encoding="base64" compression="zlib">
-   eJztll0KxCAMhL2SXbbt/U+2LyuEkOjkr4XSgby0Jn4BHdPa89SVuJPny76dzcek9Yb2KbFEmD7/0DRqSowzFi/Tioeu43usWIaiPJsQCPPLY9dh5EHuV3fyWFlQeWpmsmR4bSYLeo9XdTL8OYOF1r4ip7I2z6F3PKqn8HCfGTE7kwf5vzfZQ6NngedrPNxb+o08ks95Z6coT5X/a0L6vlISj7auKrw8ER/X5hk+Q/D9pdk3403x8lCmzPctwlMhC88O1qT+bA2UB2WK+JCVZ8UU9UQPz8iregOqalfoB1StOpQ=
-  </data>
- </layer>
  <objectgroup color="#ff3b3b" name="collisions" width="36" height="32">
   <properties>
    <property name="collisionlayer" value="true"/>

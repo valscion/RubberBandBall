@@ -19,11 +19,6 @@
   <object name="SpawnArea" type="spawn" x="32" y="512" width="128" height="96"/>
   <object name="FinishArea" type="finish" x="320" y="608" width="320" height="160"/>
  </objectgroup>
- <layer name="meta" width="22" height="26">
-  <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjIJRMApGwSgY3gAACPAAAQ==
-  </data>
- </layer>
  <objectgroup color="#ff3b3b" name="collisions" width="22" height="26">
   <properties>
    <property name="collisionlayer" value="true"/>
