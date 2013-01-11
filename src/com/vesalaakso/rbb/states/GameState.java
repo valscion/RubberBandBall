@@ -16,6 +16,7 @@ import org.newdawn.slick.util.Log;
 
 import com.vesalaakso.rbb.RubberBandBall;
 import com.vesalaakso.rbb.controller.CameraController;
+import com.vesalaakso.rbb.controller.CameraPositionLimiter;
 import com.vesalaakso.rbb.controller.DebugKeyController;
 import com.vesalaakso.rbb.controller.InputMaster;
 import com.vesalaakso.rbb.controller.MapChanger;
@@ -97,6 +98,10 @@ public class GameState extends BasicGameState {
 	/** And some eye candy. */
 	private Background background;
 
+	/** A little something to stop the camera from going to distances. */
+	private CameraPositionLimiter cameraPositionLimiter =
+		new CameraPositionLimiter(mapContainer);
+
 	/** If the game should stop at next update()-call, this flag knows. */
 	private boolean stopAtNextUpdate;
 
@@ -145,8 +150,7 @@ public class GameState extends BasicGameState {
 	 */
 	private void addControllers(Input input) {
 		inputMaster = new InputMaster(input);
-		inputMaster
-				.addMouseListener(new CameraController(player, mapContainer));
+		inputMaster.addMouseListener(new CameraController(player));
 		inputMaster.addKeyListener(new MenuKeyController(this));
 		inputMaster.addMouseListener(new RubberBandController(rubberBand));
 		inputMaster.addKeyListener(new DebugKeyController(this, player));
@@ -160,6 +164,7 @@ public class GameState extends BasicGameState {
 	 */
 	private void addResetables() {
 		resetables.add(player);
+		resetables.add(cameraPositionLimiter);
 		resetables.add(rubberBand);
 		resetables.add(physics);
 		resetables.add(particleManager);
@@ -169,6 +174,7 @@ public class GameState extends BasicGameState {
 	/** A helper method which adds all updateables. */
 	private void addUpdateables() {
 		updateables.add(inputMaster);
+		updateables.add(cameraPositionLimiter);
 		updateables.add(physics);
 		updateables.add(playerListener);
 		updateables.add(background);

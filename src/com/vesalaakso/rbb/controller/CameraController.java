@@ -5,8 +5,6 @@ import org.newdawn.fizzy.Vector;
 import com.vesalaakso.rbb.RubberBandBall;
 import com.vesalaakso.rbb.model.Camera;
 import com.vesalaakso.rbb.model.Player;
-import com.vesalaakso.rbb.model.TileMap;
-import com.vesalaakso.rbb.model.TileMapContainer;
 import com.vesalaakso.rbb.util.Utils;
 
 /**
@@ -29,22 +27,16 @@ public class CameraController extends MouseAdapter implements Updateable {
 	/** The Player the camera will follow. */
 	private Player player;
 
-	/** Map container to query map from to limit camera position */
-	private TileMapContainer mapContainer;
-
 	/**
 	 * Constructs a new CameraController and associates it with the given
-	 * <code>Player</code> and <code>TileMapContainer</code>.
+	 * <code>Player</code>.
 	 * 
 	 * @param player
 	 *            the <code>Player</code> this controller will make the Camera
 	 *            follow.
-	 * @param mapContainer
-	 *            map container to query map from
 	 */
-	public CameraController(Player player, TileMapContainer mapContainer) {
+	public CameraController(Player player) {
 		this.player = player;
-		this.mapContainer = mapContainer;
 	}
 
 	@Override
@@ -124,39 +116,6 @@ public class CameraController extends MouseAdapter implements Updateable {
 
 			cam.setPosition(curved.x, curved.y);
 		}
-
-		// Limit camera position based on map height.
-		int mapWidth =
-			mapContainer.getMap().getWidthInTiles() * TileMap.TILE_SIZE;
-		int mapHeight =
-			mapContainer.getMap().getHeightInTiles() * TileMap.TILE_SIZE;
-
-		// Position to set the camera to
-		float camX = cam.getX();
-		float camY = cam.getY();
-
-		// Current viewport width and height halves in pixels
-		float halfScrW = RubberBandBall.SCREEN_WIDTH / (2 * cam.getScaling());
-		float halfScrH = RubberBandBall.SCREEN_HEIGHT / (2 * cam.getScaling());
-
-		if (camX < halfScrW) {
-			// Over the left
-			camX = halfScrW;
-		}
-		else if (camX > mapWidth - halfScrW) {
-			// Over the right
-			camX = mapWidth - halfScrW;
-		}
-		if (camY < halfScrH) {
-			// Over the top
-			camY = halfScrH;
-		}
-		else if (camY > mapHeight - halfScrH) {
-			// Over the bottom
-			camY = mapHeight - halfScrH;
-		}
-
-		cam.setPosition(camX, camY);
 	}
 
 }
