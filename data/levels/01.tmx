@@ -1,65 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="22" height="26" tilewidth="32" tileheight="32">
+<map version="1.0" orientation="orthogonal" width="30" height="32" tilewidth="32" tileheight="32">
  <properties>
   <property name="gravity_x" value="0"/>
   <property name="gravity_y" value="0"/>
  </properties>
  <tileset firstgid="1" source="Tiles.tsx"/>
- <layer name="back" width="22" height="26">
+ <layer name="back" width="30" height="32">
   <data encoding="base64" compression="zlib">
-   eJzt1NsKgCAMBuB1jiCwrPd/1QwSZG3zsOoq4b/KPhxzGgAwH6RBecJc4L62F8zQxnWk1COZscXV0ypMyebczqVyWRX27DKhfXXwvcTmzhu65jr7mTFi+/84twe6/4PSLV2/G3f93aWyC6YF+Z7hO5Yy7xbi80a5OWaqK/WAMp9w8fxQM+qjefO43mjf0t/Nd6necskxS3IAsiEO7g==
+   eJzt1NcKgDAMBdBYJ4Lg/P9ftQ8KJTadqQMbuE+Oo+W2IwCMOb9NiXKHOcF11gdM1cbrwLEeJtM2oetRRZgxNuXWMoXMnNAeZHr0HqFcT2FT/yvQfcWRzmLj53zdBvT9bRO7oZPd97vn3tVlM5iLo0m51DebzlMf08flNF1dUwdCTA4Xny8+Nu5OTOdd+8y917L7PVfXPSqcZs53sgNo5Scu
   </data>
  </layer>
- <layer name="over" width="22" height="26">
+ <layer name="over" width="30" height="32">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjIJRMApGwSgY3gAACPAAAQ==
+   eJztwQENAAAAwqD3T20PBxQAAAD8Gw8AAAE=
   </data>
  </layer>
- <objectgroup name="areas" width="22" height="26">
-  <object name="SpawnArea" type="spawn" x="32" y="512" width="128" height="96"/>
-  <object name="FinishArea" type="finish" x="320" y="608" width="320" height="160"/>
+ <objectgroup name="areas" width="30" height="32">
+  <object name="SpawnArea" type="spawn" x="160" y="608" width="128" height="96"/>
+  <object name="FinishArea" type="finish" x="448" y="704" width="320" height="160"/>
  </objectgroup>
- <objectgroup color="#ff3b3b" name="collisions" width="22" height="26">
+ <objectgroup color="#ff3b3b" name="collisions" width="30" height="32">
   <properties>
    <property name="collisionlayer" value="true"/>
   </properties>
-  <object x="128" y="32" width="128" height="32"/>
-  <object x="320" y="96" width="192" height="32"/>
-  <object x="0" y="256" width="32" height="352"/>
-  <object x="32" y="608" width="128" height="32"/>
-  <object x="160" y="448" width="32" height="160"/>
-  <object x="192" y="448" width="192" height="32"/>
-  <object x="640" y="256" width="32" height="192"/>
-  <object x="512" y="576" width="128" height="32"/>
-  <object x="640" y="608" width="32" height="160"/>
-  <object x="320" y="768" width="320" height="32"/>
-  <object x="288" y="544" width="32" height="224"/>
-  <object x="192" y="288" width="224" height="32"/>
-  <object x="320" y="256" width="96" height="32"/>
-  <object x="192" y="192" width="32" height="96"/>
-  <object x="224" y="192" width="32" height="32"/>
-  <object x="32" y="160">
+  <object x="256" y="128" width="128" height="32"/>
+  <object x="448" y="192" width="192" height="32"/>
+  <object x="128" y="352" width="32" height="352"/>
+  <object x="160" y="704" width="128" height="32"/>
+  <object x="288" y="544" width="32" height="160"/>
+  <object x="320" y="544" width="192" height="32"/>
+  <object x="768" y="352" width="32" height="192"/>
+  <object x="640" y="672" width="128" height="32"/>
+  <object x="768" y="704" width="32" height="160"/>
+  <object x="448" y="864" width="320" height="32"/>
+  <object x="416" y="640" width="32" height="224"/>
+  <object x="320" y="384" width="224" height="32"/>
+  <object x="448" y="352" width="96" height="32"/>
+  <object x="320" y="288" width="32" height="96"/>
+  <object x="352" y="288" width="32" height="32"/>
+  <object x="160" y="256">
    <polygon points="0,0 96,-96 96,-128 -32,0"/>
   </object>
-  <object x="320" y="128">
+  <object x="448" y="224">
    <polygon points="0,0 0,-32 -64,-96 -64,-64"/>
   </object>
-  <object x="640" y="256">
+  <object x="768" y="352">
    <polygon points="0,0 32,0 -128,-160 -128,-128"/>
   </object>
-  <object x="512" y="576">
+  <object x="640" y="672">
    <polygon points="0,0 32,0 160,-128 128,-128"/>
   </object>
-  <object x="384" y="480">
+  <object x="512" y="576">
    <polygon points="0,0 32,-32 0,-32"/>
   </object>
-  <object x="320" y="544">
+  <object x="448" y="640">
    <polygon points="0,0 64,-64 32,-64 -32,0"/>
   </object>
-  <object x="288" y="256">
+  <object x="416" y="352">
    <polygon points="0,0 32,0 -32,-64 -32,-32"/>
   </object>
-  <object x="32" y="224" width="64" height="32"/>
-  <object x="0" y="160" width="32" height="64"/>
+  <object x="160" y="320" width="64" height="32"/>
+  <object x="128" y="256" width="32" height="64"/>
  </objectgroup>
 </map>
