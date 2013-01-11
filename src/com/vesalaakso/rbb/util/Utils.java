@@ -94,7 +94,16 @@ public class Utils {
 	 * @return screen x-coordinate corresponding to the given world x-coordinate
 	 */
 	public static float worldToScreenX(float worldX) {
-		return 0;
+		// Need to calc half of the width of the screen for this
+		float screenHalfWidth = RubberBandBall.SCREEN_WIDTH * 0.5f;
+
+		// Camera.
+		Camera cam = Camera.get();
+
+		// Calculate the world coordinate
+		float x = (worldX - cam.getX()) * cam.getScaling() + screenHalfWidth;
+
+		return x;
 	}
 
 	/**
@@ -112,8 +121,8 @@ public class Utils {
 		// Camera.
 		Camera cam = Camera.get();
 
-		// Calculate the screen coordinate
-		float y = worldY - (cam.getY() - screenHalfHeight) / cam.getScaling();
+		// Calculate the world coordinate
+		float y = (worldY - cam.getY()) * cam.getScaling() + screenHalfHeight;
 
 		return y;
 	}
