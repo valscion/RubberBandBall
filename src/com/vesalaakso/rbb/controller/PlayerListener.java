@@ -5,6 +5,7 @@ import java.util.List;
 import org.newdawn.fizzy.Body;
 import org.newdawn.fizzy.Circle;
 
+import com.vesalaakso.rbb.model.GravityArea;
 import com.vesalaakso.rbb.model.Physics;
 import com.vesalaakso.rbb.model.Player;
 import com.vesalaakso.rbb.model.TileMap;
@@ -97,6 +98,17 @@ public class PlayerListener implements Updateable {
 				else {
 					game.resetLevel();
 				}
+			}
+		}
+
+		// Check for gravity fields.
+		List<GravityArea> gravityAreas = map.getGravityAreas();
+		for (GravityArea gravityArea : gravityAreas) {
+			if (player.isInsideArea(gravityArea)) {
+				// Gravity change time!
+				float xGravity = gravityArea.xGravity;
+				float yGravity = gravityArea.yGravity;
+				physics.setGravity(xGravity, yGravity);
 			}
 		}
 

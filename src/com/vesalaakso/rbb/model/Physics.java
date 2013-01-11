@@ -212,8 +212,8 @@ public class Physics implements Updateable, Resetable {
 		String strGravX = map.getTiledMap().getMapProperty("gravity_x", "");
 		String strGravY = map.getTiledMap().getMapProperty("gravity_y", "");
 
-		float xGravity = 0.0f;
-		float yGravity = DEFAULT_GRAVITY;
+		xGravity = 0.0f;
+		yGravity = DEFAULT_GRAVITY;
 
 		if (!strGravX.isEmpty()) {
 			try {
