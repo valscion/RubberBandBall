@@ -77,6 +77,35 @@ public class TileMapObject {
 		height = obj.height;
 		props = obj.props;
 		this.map = map;
+		setColor(initColor());
+	}
+
+	/** A helper to specify the background color */
+	private Color initColor() {
+		java.awt.Color tmpC;
+		tmpC = java.awt.Color.getHSBColor(0.2f, 0.5f, 0.5f);
+		switch (type) {
+			case SAFE:
+				// Green
+				tmpC = java.awt.Color.getHSBColor(0.3f, 0.5f, 0.33f);
+				break;
+			case FINISH:
+				// Brighter green
+				tmpC = java.awt.Color.getHSBColor(0.3f, 0.5f, 0.66f);
+				break;
+			case SPAWN:
+				// Yellow
+				tmpC = java.awt.Color.getHSBColor(0.16f, 1.0f, 0.33f);
+				break;
+			case TRIGGER:
+				// Blue
+				tmpC = java.awt.Color.getHSBColor(0.7f, 0.5f, 0.3f);
+				break;
+			default:
+				// Gray
+				tmpC = java.awt.Color.getHSBColor(0, 0, 0.3f);
+		}
+		return new Color(tmpC.getRed(), tmpC.getGreen(), tmpC.getBlue());
 	}
 
 	/**

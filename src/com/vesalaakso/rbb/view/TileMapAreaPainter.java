@@ -96,10 +96,10 @@ public class TileMapAreaPainter implements Painter {
 		}
 
 		for (TileMapObject area : safeAreas) {
-			paintArea(g, area);
+			paintArea(g, area, modulate);
 		}
-		paintArea(g, spawnArea);
-		paintArea(g, finishArea);
+		paintArea(g, spawnArea, modulate);
+		paintArea(g, finishArea, modulate);
 
 		// Paint gravity areas
 		List<GravityArea> gravityAreas = map.getGravityAreas();
@@ -117,7 +117,10 @@ public class TileMapAreaPainter implements Painter {
 	 * A helper which draws a single <code>TileMapObject</code> with the current
 	 * graphics context properly set.
 	 */
-	private void paintArea(Graphics g, TileMapObject area) {
+	private void paintArea(Graphics g, TileMapObject area, float modulate) {
+		Color c = area.getColor();
+		c = c.brighter(modulate * .75f);
+		g.setColor(new Color(c.r, c.g, c.b, 0.33f));
 		g.fillRect(area.x, area.y, area.width, area.height);
 	}
 
