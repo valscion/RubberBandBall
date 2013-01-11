@@ -176,22 +176,16 @@ public class Player implements Resetable {
 	}
 
 	/**
-	 * Helper to check if the player is inside the given rectangle. Uses world
-	 * coordinates.
+	 * Helper to check if the player is inside the given rectangular tile map
+	 * object / area.
 	 * 
-	 * @param x
-	 *            top left x-coordinate of the rectangle
-	 * @param y
-	 *            top left y-coordinate of the rectangle
-	 * @param width
-	 *            rectangle width
-	 * @param height
-	 *            rectangle height
-	 * @return <code>true</code> if the player is inside the specified rectangle
+	 * @param area
+	 *            the TileMapObject representing an area.
+	 * @return <code>true</code> if the player is inside the specified area
 	 */
-	public boolean isInsideArea(float x, float y, float width, float height) {
-		return Utils.isPointInsideRect(this.xWorld, this.yWorld, x, y, width,
-				height);
+	public boolean isInsideArea(TileMapObject area) {
+		return Utils.isPointInsideRect(this.xWorld, this.yWorld, area.x,
+				area.y, area.width, area.height);
 	}
 
 	/**

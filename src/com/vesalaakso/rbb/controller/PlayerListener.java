@@ -69,22 +69,29 @@ public class PlayerListener implements Updateable {
 
 		boolean happinessChanged = false;
 		boolean inSafeArea = false;
+		boolean inFinishArea = false;
 		List<TileMapObject> safeAreas = map.getSafeAreas();
+		TileMapObject finishArea = map.getFinishArea();
 
-		for (TileMapObject area : safeAreas) {
-			if (player.isInsideArea(area.x, area.y, area.width, area.height)) {
+		for (TileMapObject safeArea : safeAreas) {
+			if (player.isInsideArea(safeArea)) {
 				player.setHappiness(1);
 				happinessChanged = true;
 				inSafeArea = true;
 			}
 		}
 
+		if (player.isInsideArea(finishArea)) {
+			player.setHappiness(1);
+			happinessChanged = true;
+			inFinishArea = true;
+		}
+
 		// If player has stopped and is not in safe area, possibly change to
 		// next level or start over.
 		if (playerBody.isActive() && playerBody.isSleeping()) {
 			if (!inSafeArea) {
-				TileMapObject fin = map.getFinishArea();
-				if (player.isInsideArea(fin.x, fin.y, fin.width, fin.height)) {
+				if (inFinishArea) {
 					game.changeToNextLevel();
 				}
 				else {
