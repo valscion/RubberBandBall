@@ -18,9 +18,6 @@ public class GravityArea extends TileMapObject {
 	/** The y-gravity this area specifies */
 	public final float yGravity;
 
-	/** The background color for this area */
-	public final Color color;
-
 	/**
 	 * Constructs a new gravity field.
 	 * 
@@ -51,7 +48,7 @@ public class GravityArea extends TileMapObject {
 					+ obj.name + " in map " + map.getLevel(), e);
 		}
 
-		color = initColor();
+		setColor(initColor());
 	}
 
 	/** A helper to specify the background color */

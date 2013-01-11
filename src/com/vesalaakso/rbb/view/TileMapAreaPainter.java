@@ -1,5 +1,6 @@
 package com.vesalaakso.rbb.view;
 
+import java.util.EnumMap;
 import java.util.List;
 
 import org.newdawn.slick.Color;
@@ -8,10 +9,12 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.util.Log;
 
+import com.google.common.collect.Maps;
 import com.vesalaakso.rbb.model.GravityArea;
 import com.vesalaakso.rbb.model.TileMap;
 import com.vesalaakso.rbb.model.TileMapContainer;
 import com.vesalaakso.rbb.model.TileMapObject;
+import com.vesalaakso.rbb.model.TileMapObjectType;
 import com.vesalaakso.rbb.util.Utils;
 
 /**
@@ -27,8 +30,9 @@ public class TileMapAreaPainter implements Painter {
 	 */
 	private TileMapContainer mapContainer;
 
-	/** The image used to draw gravity fields */
-	private Image gravityAreaImage;
+	/** The images used to draw areas */
+	private EnumMap<TileMapObjectType, Image> areaImages = Maps
+			.newEnumMap(TileMapObjectType.class);
 
 	/** The color used to draw safe areas */
 	private static Color colorSafeArea = calcSafeAreaColor();
@@ -46,7 +50,8 @@ public class TileMapAreaPainter implements Painter {
 
 		// XXX Proper loading
 		try {
-			gravityAreaImage = new Image("data/levels/grav-arrow.png");
+			areaImages.put(TileMapObjectType.GRAVITY, new Image(
+					"data/levels/grav-arrow.png"));
 		}
 		catch (SlickException e) {
 			Log.warn("Failed to load image for gravity arrow", e);
@@ -83,23 +88,24 @@ public class TileMapAreaPainter implements Painter {
 		// First things first: Set the color we will draw with.
 		g.setColor(colorSafeArea);
 
-		for (TileMapObject area : safeAreas) {
-			paintArea(g, area);
-		}
-		paintArea(g, spawnArea);
-		paintArea(g, finishArea);
-
-		// Calculate a modulating value to change the fields colors dynamically.
+		// Calculate a modulating value to change the area colors dynamically.
 		float modulate = (Utils.getTime() % 4000) / 2000.0f;
 
 		if (modulate > 1.0f) {
 			modulate = 1.0f - (modulate - 1.0f);
 		}
 
+		for (TileMapObject area : safeAreas) {
+			paintArea(g, area);
+		}
+		paintArea(g, spawnArea);
+		paintArea(g, finishArea);
+
 		// Paint gravity areas
 		List<GravityArea> gravityAreas = map.getGravityAreas();
+		Image gravityAreaImage = areaImages.get(TileMapObjectType.GRAVITY);
 		for (GravityArea area : gravityAreas) {
-			Color c = area.color;
+			Color c = area.getColor();
 			c = c.brighter(modulate * .75f);
 			g.setColor(new Color(c.r, c.g, c.b, 0.15f));
 			g.drawRoundRect(area.x, area.y, area.width, area.height, 10);

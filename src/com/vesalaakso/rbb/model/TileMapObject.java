@@ -3,6 +3,7 @@ package com.vesalaakso.rbb.model;
 import java.util.List;
 import java.util.Properties;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.tiled.GroupObject;
@@ -39,6 +40,8 @@ public class TileMapObject {
 	private final TileMap map;
 	/** The underlying GroupObject */
 	private final GroupObject groupObject;
+	/** The color to draw this map with */
+	private Color color;
 
 	/**
 	 * Constructs a new object based on the given <code>GroupObject</code>.
@@ -167,6 +170,25 @@ public class TileMapObject {
 					"Couldn't get polygon for the object \"%s\" at (%d, %d)",
 					name, x, y), e);
 		}
+	}
+
+
+	/**
+	 * Gets the color this area should be drawn with.
+	 * 
+	 * @return color for this area
+	 */
+	public Color getColor() {
+		return color;
+	}
+
+	/**
+	 * A setter for subclasses to set the color
+	 * 
+	 * @param color the new color
+	 */
+	protected void setColor(Color color) {
+		this.color = color;
 	}
 
 	/**
