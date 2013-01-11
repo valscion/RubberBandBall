@@ -142,7 +142,8 @@ public class Physics implements Updateable, Resetable {
 				playerBody.setAngularVelocity(0);
 			}
 			if (vel < .25f) {
-				// A combined velocity smaller than 0.25f will force stop player.
+				// A combined velocity smaller than 0.25f will force stop
+				// player.
 				playerBody.setVelocity(0, 0);
 			}
 		}
@@ -406,12 +407,17 @@ public class Physics implements Updateable, Resetable {
 	}
 
 	/**
-	 * Sets the y-force of the player to 0, effectively forcing it to start
-	 * dropping down or not letting it bounce.
+	 * Sets the rising of the player to 0, effectively forcing it to start
+	 * dropping down, not letting it bounce.
 	 */
 	public void stopPlayerRising() {
 		Log.info("Forcefully stopped player from bouncing.");
-		playerBody.setVelocity(playerBody.getXVelocity(), 0);
+		if (yGravity != 0) {
+			playerBody.setVelocity(playerBody.getXVelocity(), 0);
+		}
+		if (xGravity != 0) {
+			playerBody.setVelocity(0, playerBody.getYVelocity());
+		}
 	}
 
 	/**
@@ -443,12 +449,14 @@ public class Physics implements Updateable, Resetable {
 		// If we got so far, there is no gravity.
 		return 0;
 	}
-	
+
 	/**
 	 * Sets the gravity in the world.
 	 * 
-	 * @param xGravity gravity in x-direction
-	 * @param yGravity gravity in y-direction
+	 * @param xGravity
+	 *            gravity in x-direction
+	 * @param yGravity
+	 *            gravity in y-direction
 	 */
 	public void setGravity(float xGravity, float yGravity) {
 		if (xGravity != this.xGravity || yGravity != this.yGravity) {
@@ -490,5 +498,37 @@ public class Physics implements Updateable, Resetable {
 		if (playerCollisionListener != null) {
 			world.removeListener(playerCollisionListener);
 		}
+	}
+
+	/**
+	 * Returns whether player is above the given body. Takes gravity direction
+	 * into account.
+	 * 
+	 * @param body
+	 *            the body to check against
+	 * 
+	 * @return <code>true</code> if player is above the given body
+	 */
+	public boolean playerIsAbove(Body<?> body) {
+		float playerValue, bodyValue;
+		if (yGravity != 0) {
+			playerValue = playerBody.getY();
+			if (yGravity < 0) {
+				playerValue = -playerValue;
+			}
+			bodyValue = body.getY();
+		}
+		else if (xGravity != 0) {
+			playerValue = playerBody.getX();
+			if (xGravity < 0) {
+				playerValue = -playerValue;
+			}
+			bodyValue = body.getY();
+		}
+		else {
+			return false;
+		}
+
+		return playerValue < bodyValue;
 	}
 }

@@ -89,7 +89,7 @@ public class PlayerCollisionListener implements WorldListener {
 
 		if (tile.objectType == GroupObject.ObjectType.RECTANGLE) {
 			// Simulate friction for objects that are below us.
-			if (player.getY() < lastCollisionBody.getY()) {
+			if (physics.playerIsAbove(lastCollisionBody)) {
 				physics.startSimulatingFriction(lastCollisionBody);
 				// Also if the player has bounced waaay too many times, stop it.
 				if (bounceCountFromSameBody >= MAX_BOUNCE_COUNT_FROM_SAME_BODY) {
