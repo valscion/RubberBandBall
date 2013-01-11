@@ -86,6 +86,39 @@ public class Utils {
 	}
 
 	/**
+	 * Calculate the current screen x-coordinate for the given world
+	 * x-coordinate.
+	 * 
+	 * @param worldX
+	 *            the world x-coordinate to transform
+	 * @return screen x-coordinate corresponding to the given world x-coordinate
+	 */
+	public static float worldToScreenX(float worldX) {
+		return 0;
+	}
+
+	/**
+	 * Calculate the current screen y-coordinate for the given world
+	 * y-coordinate.
+	 * 
+	 * @param worldY
+	 *            the world y-coordinate to transform
+	 * @return screen y-coordinate corresponding to the given world y-coordinate
+	 */
+	public static float worldToScreenY(float worldY) {
+		// Need to calc half of the height of the screen for this
+		float screenHalfHeight = RubberBandBall.SCREEN_HEIGHT * 0.5f;
+
+		// Camera.
+		Camera cam = Camera.get();
+
+		// Calculate the screen coordinate
+		float y = worldY - (cam.getY() - screenHalfHeight) / cam.getScaling();
+
+		return y;
+	}
+
+	/**
 	 * Get the accurate system time
 	 * 
 	 * @return The system time in milliseconds
@@ -193,4 +226,5 @@ public class Utils {
 			return false;
 		return true;
 	}
+
 }
