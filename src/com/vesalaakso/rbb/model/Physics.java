@@ -141,8 +141,8 @@ public class Physics implements Updateable, Resetable {
 				// stopped.
 				playerBody.setAngularVelocity(0);
 			}
-			if (vel < .1f) {
-				// A combined velocity smaller than 0.1f will force stop player.
+			if (vel < .25f) {
+				// A combined velocity smaller than 0.25f will force stop player.
 				playerBody.setVelocity(0, 0);
 			}
 		}
