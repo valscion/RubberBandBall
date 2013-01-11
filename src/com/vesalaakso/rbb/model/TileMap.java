@@ -36,12 +36,6 @@ public class TileMap {
 	/** Index of the over layer that is drawn last */
 	private int overLayer;
 
-	/**
-	 * Index of the meta layer that contains information about special tiles.
-	 * This layer is not drawn.
-	 */
-	private int metaLayer;
-
 	/** Spawn area. */
 	private TileMapObject spawnArea;
 
@@ -89,10 +83,9 @@ public class TileMap {
 		// Find the layer indexes
 		backLayer = map.getLayerIndex("back");
 		overLayer = map.getLayerIndex("over");
-		metaLayer = map.getLayerIndex("meta");
 
 		// Validate that layer indexes were actually found.
-		if (backLayer == -1 || overLayer == -1 || metaLayer == -1) {
+		if (backLayer == -1 || overLayer == -1) {
 			throw new MapException("Invalid map layers for level " + level);
 		}
 
@@ -213,15 +206,6 @@ public class TileMap {
 	 */
 	public int getIndexOfOverLayer() {
 		return overLayer;
-	}
-
-	/**
-	 * Gets the index of the meta layer.
-	 * 
-	 * @return index of meta layer
-	 */
-	public int getIndexOfMetaLayer() {
-		return metaLayer;
 	}
 
 	/**
