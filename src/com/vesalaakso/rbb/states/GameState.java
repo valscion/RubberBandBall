@@ -270,6 +270,31 @@ public class GameState extends BasicGameState {
 	}
 
 	/**
+	 * Called when a player fails the map.
+	 * 
+	 * @param reason
+	 *            the reason why game ended
+	 */
+	public void failedMap(String reason) {
+		// TODO: something better and moar graphical.
+		System.out.println("GAME OVER -- " + reason);
+		System.out.println(gameStatus);
+		resetLevel();
+		gameStatus.onMapFailed();
+	}
+
+	/**
+	 * Called when a player successfully completes the map.
+	 */
+	public void completedMap() {
+		// TODO: something better and moar graphical.
+		System.out.println("Yay!");
+		System.out.println(gameStatus);
+		changeToNextLevel();
+		gameStatus.onMapCompleted();
+	}
+
+	/**
 	 * From slick: Initialise the state. It should load any resources it needs
 	 * at this stage
 	 * 
@@ -383,31 +408,6 @@ public class GameState extends BasicGameState {
 	@Override
 	public int getID() {
 		return State.GAME.ordinal();
-	}
-
-	/**
-	 * Called when a player fails the map.
-	 * 
-	 * @param reason
-	 *            the reason why game ended
-	 */
-	public void failedMap(String reason) {
-		// TODO: something better and moar graphical.
-		System.out.println("GAME OVER -- " + reason);
-		System.out.println(gameStatus);
-		resetLevel();
-		gameStatus.onMapFailed();
-	}
-
-	/**
-	 * Called when a player successfully completes the map.
-	 */
-	public void completedMap() {
-		// TODO: something better and moar graphical.
-		System.out.println("Yay!");
-		System.out.println(gameStatus);
-		changeToNextLevel();
-		gameStatus.onMapCompleted();
 	}
 
 }
