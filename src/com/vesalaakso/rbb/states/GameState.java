@@ -354,6 +354,7 @@ public class GameState extends BasicGameState {
 			// Pause controls when entering the menu
 			inputMaster.pause();
 			game.enterState(State.MAIN_MENU.ordinal(), leave, enter);
+			return;
 		}
 		if (changeToLevel > 0) {
 			Transition leave = new FadeOutTransition();
@@ -394,7 +395,7 @@ public class GameState extends BasicGameState {
 		// TODO: something better and moar graphical.
 		System.out.println("GAME OVER -- " + reason);
 		System.out.println(gameStatus);
-		this.stop();
+		resetLevel();
 		gameStatus.onMapFailed();
 	}
 
@@ -405,7 +406,7 @@ public class GameState extends BasicGameState {
 		// TODO: something better and moar graphical.
 		System.out.println("Yay!");
 		System.out.println(gameStatus);
-		this.changeToNextLevel();
+		changeToNextLevel();
 		gameStatus.onMapCompleted();
 	}
 
