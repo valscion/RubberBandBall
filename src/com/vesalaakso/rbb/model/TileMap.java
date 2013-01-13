@@ -1,6 +1,5 @@
 package com.vesalaakso.rbb.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.newdawn.slick.SlickException;
@@ -53,8 +52,7 @@ public class TileMap {
 	private List<GravityArea> gravityAreas = Lists.newArrayList();
 
 	/** Collision objects in the map. */
-	private List<TileMapObject> collisionObjects =
-		new ArrayList<TileMapObject>();
+	private List<TileMapObject> collisionObjects = Lists.newArrayList();
 
 	/**
 	 * Constructs a new TileMap. You need to call {@link #init}-method before

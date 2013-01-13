@@ -5,6 +5,7 @@ import java.util.Map;
 import org.newdawn.slick.util.Log;
 
 import com.google.common.collect.Maps;
+import com.vesalaakso.rbb.model.GameStatus;
 import com.vesalaakso.rbb.model.TileMap;
 import com.vesalaakso.rbb.model.TileMapContainer;
 import com.vesalaakso.rbb.model.exceptions.MapException;
@@ -23,17 +24,25 @@ public class MapChanger {
 	private Map<Integer, TileMap> initializedMapsMap = Maps.newHashMap();
 
 	/** The map container to update */
-	private TileMapContainer mapContainer;
+	private final TileMapContainer mapContainer;
+
+	/** The game status to update when map is changed */
+	private final GameStatus gameStatus;
 
 	/**
 	 * Initializes the MapChanger and associates it with the given
-	 * TileMapContainer, which in turn gets reset when map is changed.
+	 * TileMapContainer, which in turn gets reset when map is changed. Also the
+	 * game status needs to be updated when map is changed so associate this
+	 * class with the current <code>GameStatus</code>, too.
 	 * 
 	 * @param mapContainer
 	 *            the <code>TileMapContainer</code> to change map from
+	 * @param gameStatus
+	 *            the <code>GameStatus</code> to update when map is changed.
 	 */
-	public MapChanger(TileMapContainer mapContainer) {
+	public MapChanger(TileMapContainer mapContainer, GameStatus gameStatus) {
 		this.mapContainer = mapContainer;
+		this.gameStatus = gameStatus;
 	}
 
 	/**
@@ -67,6 +76,10 @@ public class MapChanger {
 			initializedMapsMap.put(newMap.getLevel(), newMap);
 		}
 
+		// Tell the game status that we're changing the map.
+		gameStatus.onMapChange(mapContainer.getMap(), newMap);
+
+		// Updating map container map updates the map for all.
 		mapContainer.setMap(newMap);
 	}
 

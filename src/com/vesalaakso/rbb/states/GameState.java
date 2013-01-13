@@ -28,6 +28,7 @@ import com.vesalaakso.rbb.controller.RubberBandController;
 import com.vesalaakso.rbb.controller.Updateable;
 import com.vesalaakso.rbb.model.Background;
 import com.vesalaakso.rbb.model.Camera;
+import com.vesalaakso.rbb.model.GameStatus;
 import com.vesalaakso.rbb.model.ParticleManager;
 import com.vesalaakso.rbb.model.Physics;
 import com.vesalaakso.rbb.model.Player;
@@ -59,11 +60,14 @@ public class GameState extends BasicGameState {
 	 */
 	private final TileMapContainer mapContainer = new TileMapContainer();
 
+	/** The current game status is stored in this attribute. */
+	private final GameStatus gameStatus;
+
 	/**
 	 * The <code>MapChanger</code> responsible for changing the map and
 	 * notifying everything that needs to be notified.
 	 */
-	private MapChanger mapChanger = new MapChanger(mapContainer);
+	private final MapChanger mapChanger;
 
 	/**
 	 * A <code>PainterContainer</code> which stores everything that can be
@@ -122,13 +126,18 @@ public class GameState extends BasicGameState {
 
 	/**
 	 * Construct the GameState and tells it which state is responsible for map
-	 * changing routines.
+	 * changing routines and also the GameStatus which handles the scores and
+	 * all.
 	 * 
 	 * @param mapChangeState
 	 *            the state which handles map changing routines.
+	 * @param gameStatus
+	 *            the game status where the game status is stored in ":D"
 	 */
-	public GameState(MapChangeState mapChangeState) {
+	public GameState(MapChangeState mapChangeState, GameStatus gameStatus) {
 		this.mapChangeState = mapChangeState;
+		this.gameStatus = gameStatus;
+		this.mapChanger = new MapChanger(mapContainer, gameStatus);
 	}
 
 	/** A helper method which adds all the painters in the correct order. */
@@ -376,15 +385,28 @@ public class GameState extends BasicGameState {
 	}
 
 	/**
-	 * Called when the game should end
+	 * Called when a player fails the map.
 	 * 
 	 * @param reason
 	 *            the reason why game ended
 	 */
-	public void gameOver(String reason) {
-		// TODO: something
+	public void failedMap(String reason) {
+		// TODO: something better and moar graphical.
 		System.out.println("GAME OVER -- " + reason);
+		System.out.println(gameStatus);
 		this.stop();
+		gameStatus.onMapFailed();
+	}
+
+	/**
+	 * Called when a player successfully completes the map.
+	 */
+	public void completedMap() {
+		// TODO: something better and moar graphical.
+		System.out.println("Yay!");
+		System.out.println(gameStatus);
+		this.changeToNextLevel();
+		gameStatus.onMapCompleted();
 	}
 
 }

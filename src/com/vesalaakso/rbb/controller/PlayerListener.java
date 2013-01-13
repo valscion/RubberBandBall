@@ -93,10 +93,10 @@ public class PlayerListener implements Updateable {
 		if (playerBody.isActive() && playerBody.isSleeping()) {
 			if (!inSafeArea) {
 				if (inFinishArea) {
-					game.changeToNextLevel();
+					game.completedMap();
 				}
 				else {
-					game.resetLevel();
+					game.failedMap("Stopped in an unsafe environment");
 				}
 			}
 		}
