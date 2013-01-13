@@ -110,7 +110,7 @@ public class GameState extends BasicGameState {
 	private boolean stopAtNextUpdate;
 
 	/** Is the game in debug mode? */
-	private boolean debugMode = true;
+	private boolean debugMode = false;
 
 	/** Change to this map on the next update() call. */
 	private int changeToLevel = -1;
