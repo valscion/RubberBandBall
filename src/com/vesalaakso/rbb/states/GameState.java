@@ -339,7 +339,7 @@ public class GameState extends BasicGameState {
 		addUpdateables();
 
 		// Then reset the map.
-		mapChanger.changeMap(4);
+		mapChanger.changeMap(1);
 		try {
 			mapChanger.runChange();
 		}
