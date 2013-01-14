@@ -85,8 +85,6 @@ public class PainterContainer {
 
 		// Game scale is set by camera.
 		float scaling = cam.getScaling();
-		g.scale(scaling, scaling);
-		g.setLineWidth(scaling);
 
 		// All of the painters to be drawn. If we're not in debug mode,
 		// allPainters is the same as regular painters. If we are in debug mode,
@@ -124,12 +122,12 @@ public class PainterContainer {
 				if (!isWorldTranslationOn) {
 					// We wanted to go back to regular drawing mode.
 					g.popTransform();
-					g.resetTransform();
 					g.setLineWidth(1);
 				}
 				else {
 					// Translate to world coordinates
 					g.pushTransform();
+					g.scale(scaling, scaling);
 					g.translate(-transX, -transY);
 					g.setLineWidth(scaling);
 				}

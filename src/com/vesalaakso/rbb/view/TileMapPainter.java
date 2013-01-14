@@ -1,7 +1,9 @@
 package com.vesalaakso.rbb.view;
 
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.tiled.TiledMap;
 
+import com.vesalaakso.rbb.model.Camera;
 import com.vesalaakso.rbb.model.TileMap;
 import com.vesalaakso.rbb.model.TileMapContainer;
 import com.vesalaakso.rbb.util.Utils;
@@ -18,9 +20,10 @@ public abstract class TileMapPainter implements Painter {
 	private TileMapContainer mapContainer;
 
 	/**
-	 * An empty constructor with no access modifier to prevent other than
-	 * the classes in this package instantiating this class.
-	 * @param mapContainer 
+	 * An empty constructor with no access modifier to prevent other than the
+	 * classes in this package instantiating this class.
+	 * 
+	 * @param mapContainer
 	 */
 	TileMapPainter(TileMapContainer mapContainer) {
 		this.mapContainer = mapContainer;
@@ -40,10 +43,16 @@ public abstract class TileMapPainter implements Painter {
 	 * 
 	 * @param layer
 	 *            which layer should be drawn
+	 * @param g
+	 *            the graphics context to use
 	 */
-	protected void drawLayer(int layer) {
+	protected void drawLayer(int layer, Graphics g) {
 		TileMap map = mapContainer.getMap();
 		TiledMap tmap = map.getTiledMap();
+
+		// Save old transform and apply scaling manually
+		g.pushTransform();
+		g.scale(Camera.get().getScaling(), Camera.get().getScaling());
 
 		// Calculate the top left coordinates in screen dimensions after the
 		// camera has moved and scaled.
@@ -60,8 +69,11 @@ public abstract class TileMapPainter implements Painter {
 
 		// Drawing it now.
 		tmap.render(offsetX, offsetY, firstTileX, firstTileY,
-				map.getWidthInTiles() + 3, map.getHeightInTiles() + 3,
-				layer, false);
+				map.getWidthInTiles() + 3, map.getHeightInTiles() + 3, layer,
+				false);
+
+		// Reset old transform
+		g.popTransform();
 	}
 
 	/**
