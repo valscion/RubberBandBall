@@ -33,10 +33,10 @@ public class Physics implements Updateable, Resetable {
 	private static final float DEFAULT_GRAVITY = 20.0f;
 
 	/**
-	 * Bounce cap, if the speed when the ball bounces is smaller than this
-	 * value, don't let the ball bounce.
+	 * Angular velocity cap, if the rotational speed is smaller than this, the
+	 * ball is stopped from spinning.
 	 */
-	public static final float MIN_BOUNCE_VELOCITY = 2.5f;
+	private static final float MIN_ANGULAR_VELOCITY = 0.1f;
 
 	/**
 	 * The ParticleManager which will create nice little effects as events in
@@ -118,11 +118,17 @@ public class Physics implements Updateable, Resetable {
 		else if (frictionSimulationBody != null && !playerBody.isSleeping()) {
 			// Simulate friction against the body.
 			float angVel = playerBody.getAngularVelocity();
-			int dir = playerBody.getXVelocity() > 0 ? -1 : 1;
+			int dir = 0;
+			if (xGravity == 0 && yGravity != 0) {
+				dir = playerBody.getXVelocity() > 0 ? -1 : 1;
+			}
+			else if (xGravity != 0 && yGravity == 0 ) {
+				dir = playerBody.getYVelocity() > 0 ? -1 : 1;
+			}
 
-			if (angVel > -.1f && angVel < .1f) {
-				// Ok, a velocity smaller than 0.1f will be considered
-				// stopped.
+			if (Math.abs(angVel) < MIN_ANGULAR_VELOCITY) {
+				// Ok, a velocity smaller than MIN_ANGULAR_VELOCITY will be
+				// considered stopped.
 				playerBody.setAngularVelocity(0);
 			}
 			else {
