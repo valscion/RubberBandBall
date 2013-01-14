@@ -11,6 +11,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
 import com.vesalaakso.rbb.model.Physics;
+import com.vesalaakso.rbb.model.ResourceManager;
 
 /**
  * This class handles the drawing of the physics world. Useful when debugging
@@ -47,8 +48,11 @@ public class PhysicsPainter implements Painter {
 		return true;
 	}
 
+	/**
+	 * @see com.vesalaakso.rbb.view.Painter#paint(Graphics, ResourceManager)
+	 */
 	@Override
-	public void paint(Graphics g) {
+	public void paint(Graphics g, ResourceManager resManager) {
 		// Get all the physics bodies in the physics world.
 		List<Body<?>> bodies = physics.getBodies();
 

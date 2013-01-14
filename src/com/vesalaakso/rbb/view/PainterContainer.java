@@ -7,6 +7,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
 import com.vesalaakso.rbb.model.Camera;
+import com.vesalaakso.rbb.model.ResourceManager;
 import com.vesalaakso.rbb.states.GameState;
 import com.vesalaakso.rbb.util.Utils;
 
@@ -24,6 +25,23 @@ public class PainterContainer {
 
 	/** Everything that is to be painted in debug mode */
 	private List<Painter> debugPainters = new LinkedList<Painter>();
+
+	/** The resource manager to use when needing to query for resources. */
+	private ResourceManager resManager;
+
+	/**
+	 * Constructs the painter container and associates it with the given
+	 * resource manager. The resource manager will be passed on to all painters
+	 * later on, when <code>paint()</code> method is called for all
+	 * {@link Painter}s.
+	 * 
+	 * @param resManager
+	 *            the resource manager to use when painters need to get a
+	 *            resource, such as a loaded font
+	 */
+	public PainterContainer(ResourceManager resManager) {
+		this.resManager = resManager;
+	}
 
 	/**
 	 * Adds a new <code>Painter</code> to the end of the painters list. The
@@ -117,7 +135,7 @@ public class PainterContainer {
 			Color origColor = g.getColor();
 
 			// Paint.
-			p.paint(g);
+			p.paint(g, resManager);
 
 			// Restore color, if needed.
 			if (g.getColor().equals(origColor) == false) {

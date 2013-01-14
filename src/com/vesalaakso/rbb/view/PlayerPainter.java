@@ -4,6 +4,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
 import com.vesalaakso.rbb.model.Player;
+import com.vesalaakso.rbb.model.ResourceManager;
 
 /**
  * Handles the drawing of the Player.
@@ -75,11 +76,10 @@ public class PlayerPainter implements Painter {
 	}
 
 	/**
-	 * @see com.vesalaakso.rbb.view.Painter#paint(org.newdawn.slick.Graphics,
-	 *      com.vesalaakso.rbb.model.Camera)
+	 * @see com.vesalaakso.rbb.view.Painter#paint(Graphics, ResourceManager)
 	 */
 	@Override
-	public void paint(Graphics g) {
+	public void paint(Graphics g, ResourceManager resManager) {
 		// Before drawing, center the drawing to player coordinates and apply
 		// player rotation, too
 		float rotation = (float) Math.toDegrees(player.getAngle());

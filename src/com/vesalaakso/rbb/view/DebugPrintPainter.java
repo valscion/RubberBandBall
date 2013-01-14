@@ -7,8 +7,10 @@ import org.newdawn.slick.Graphics;
 
 import com.vesalaakso.rbb.RubberBandBall;
 import com.vesalaakso.rbb.model.Camera;
+import com.vesalaakso.rbb.model.Font;
 import com.vesalaakso.rbb.model.Physics;
 import com.vesalaakso.rbb.model.Player;
+import com.vesalaakso.rbb.model.ResourceManager;
 import com.vesalaakso.rbb.util.Utils;
 
 /**
@@ -49,10 +51,10 @@ public class DebugPrintPainter implements Painter {
 	}
 
 	/**
-	 * @see com.vesalaakso.rbb.view.Painter#paint(org.newdawn.slick.Graphics)
+	 * @see com.vesalaakso.rbb.view.Painter#paint(Graphics, ResourceManager)
 	 */
 	@Override
-	public void paint(Graphics g) {
+	public void paint(Graphics g, ResourceManager resManager) {
 		// Force no transformations. This painter must be the last painter
 		// because of this as transformations will get screwed over.
 		g.resetTransform();
@@ -91,7 +93,10 @@ public class DebugPrintPainter implements Painter {
 						mouseWX, mouseWY)
 		};
 
-		// Loop through it.
+		// Set the font
+		g.setFont(resManager.getFont(Font.REGULAR));
+
+		// Loop through all strings.
 		for (int i = 0; i < rows.length; i++) {
 			g.drawString(rows[i], 10, 60 + i * 15);
 		}

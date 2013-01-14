@@ -11,6 +11,7 @@ import org.newdawn.slick.util.Log;
 
 import com.google.common.collect.Maps;
 import com.vesalaakso.rbb.model.GravityArea;
+import com.vesalaakso.rbb.model.ResourceManager;
 import com.vesalaakso.rbb.model.TileMap;
 import com.vesalaakso.rbb.model.TileMapContainer;
 import com.vesalaakso.rbb.model.TileMapObject;
@@ -75,10 +76,10 @@ public class TileMapAreaPainter implements Painter {
 	}
 
 	/**
-	 * @see com.vesalaakso.rbb.view.Painter#paint(org.newdawn.slick.Graphics)
+	 * @see com.vesalaakso.rbb.view.Painter#paint(Graphics, ResourceManager)
 	 */
 	@Override
-	public void paint(Graphics g) {
+	public void paint(Graphics g, ResourceManager resManager) {
 		TileMap map = mapContainer.getMap();
 
 		List<TileMapObject> safeAreas = map.getSafeAreas();

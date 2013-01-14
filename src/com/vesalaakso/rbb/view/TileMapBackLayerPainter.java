@@ -2,6 +2,7 @@ package com.vesalaakso.rbb.view;
 
 import org.newdawn.slick.Graphics;
 
+import com.vesalaakso.rbb.model.ResourceManager;
 import com.vesalaakso.rbb.model.TileMapContainer;
 
 /**
@@ -29,7 +30,7 @@ public class TileMapBackLayerPainter extends TileMapPainter {
 	 * @see Painter#paint
 	 */
 	@Override
-	public void paint(Graphics g) {
+	public void paint(Graphics g, ResourceManager resManager) {
 		int backlayer = this.getMap().getIndexOfBackLayer();
 		super.drawLayer(backlayer);
 	}

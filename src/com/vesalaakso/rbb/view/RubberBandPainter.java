@@ -4,6 +4,7 @@ import org.newdawn.fizzy.Vector;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 
+import com.vesalaakso.rbb.model.ResourceManager;
 import com.vesalaakso.rbb.model.RubberBand;
 
 /**
@@ -38,8 +39,11 @@ public class RubberBandPainter implements Painter {
 		return true;
 	}
 
+	/**
+	 * @see com.vesalaakso.rbb.view.Painter#paint(Graphics, ResourceManager)
+	 */
 	@Override
-	public void paint(Graphics g) {
+	public void paint(Graphics g, ResourceManager resManager) {
 		if (!rubberBand.isPulled()) {
 			// Don't paint the rubber band unless it's being pulled.
 			return;

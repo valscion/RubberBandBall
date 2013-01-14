@@ -32,6 +32,7 @@ import com.vesalaakso.rbb.model.GameStatus;
 import com.vesalaakso.rbb.model.ParticleManager;
 import com.vesalaakso.rbb.model.Physics;
 import com.vesalaakso.rbb.model.Player;
+import com.vesalaakso.rbb.model.ResourceManager;
 import com.vesalaakso.rbb.model.RubberBand;
 import com.vesalaakso.rbb.model.TileMapContainer;
 import com.vesalaakso.rbb.model.TileMapObject;
@@ -74,7 +75,7 @@ public class GameState extends BasicGameState {
 	 * A <code>PainterContainer</code> which stores everything that can be
 	 * painted.
 	 */
-	private PainterContainer painterContainer = new PainterContainer();
+	private final PainterContainer painterContainer;
 
 	/**
 	 * All the stuff which need to be updated in update()-method are stored
@@ -134,11 +135,16 @@ public class GameState extends BasicGameState {
 	 *            the state which handles map changing routines.
 	 * @param gameStatus
 	 *            the game status where the game status is stored in ":D"
+	 * @param resourceManager
+	 *            the resource manager to associate with a new
+	 *            {@link PainterContainer}
 	 */
-	public GameState(MapChangeState mapChangeState, GameStatus gameStatus) {
+	public GameState(MapChangeState mapChangeState, GameStatus gameStatus,
+			ResourceManager resourceManager) {
 		this.mapChangeState = mapChangeState;
 		this.gameStatus = gameStatus;
 		this.mapChanger = new MapChanger(mapContainer, gameStatus);
+		this.painterContainer = new PainterContainer(resourceManager);
 	}
 
 	/** A helper method which adds all the painters in the correct order. */

@@ -6,6 +6,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.particles.ParticleSystem;
 
 import com.vesalaakso.rbb.model.ParticleManager;
+import com.vesalaakso.rbb.model.ResourceManager;
 
 /**
  * A <code>Painter</code> responsible for drawing all the particle systems.
@@ -39,8 +40,11 @@ public class ParticleSystemPainter implements Painter {
 		return true;
 	}
 
+	/**
+	 * @see com.vesalaakso.rbb.view.Painter#paint(Graphics, ResourceManager)
+	 */
 	@Override
-	public void paint(Graphics g) {
+	public void paint(Graphics g, ResourceManager resManager) {
 		// Get all of the ParticleSystems there are.
 		List<ParticleSystem> systems = particleManager.getSystems();
 

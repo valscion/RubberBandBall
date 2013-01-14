@@ -43,7 +43,7 @@ public class RubberBandBall extends StateBasedGame {
 		// Add the states.
 		addState(new LoadState(resourceManager));
 		addState(new MainMenuState(resourceManager));
-		addState(new GameState(mapChangeState, gameStatus));
+		addState(new GameState(mapChangeState, gameStatus, resourceManager));
 		addState(mapChangeState);
 
 		// Enter first state

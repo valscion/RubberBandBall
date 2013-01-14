@@ -3,7 +3,9 @@ package com.vesalaakso.rbb.view;
 import org.newdawn.slick.Graphics;
 
 import com.vesalaakso.rbb.RubberBandBall;
+import com.vesalaakso.rbb.model.Font;
 import com.vesalaakso.rbb.model.GameStatus;
+import com.vesalaakso.rbb.model.ResourceManager;
 
 /**
  * A painter responsible for drawing the game status.
@@ -35,8 +37,13 @@ public class GameStatusPainter implements Painter {
 		return false;
 	}
 
+	/**
+	 * @see com.vesalaakso.rbb.view.Painter#paint(Graphics, ResourceManager)
+	 */
 	@Override
-	public void paint(Graphics g) {
+	public void paint(Graphics g, ResourceManager resManager) {
+		g.setFont(resManager.getFont(Font.SCORE));
+		
 		float x = RubberBandBall.SCREEN_WIDTH - 200;
 		float y1 = RubberBandBall.SCREEN_HEIGHT - 50;
 		float y2 = y1 + 20;
@@ -46,5 +53,4 @@ public class GameStatusPainter implements Painter {
 		g.drawString(shotsStr, x, y1);
 		g.drawString(triesStr, x, y2);
 	}
-
 }

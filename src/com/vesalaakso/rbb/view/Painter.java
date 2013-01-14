@@ -3,6 +3,7 @@ package com.vesalaakso.rbb.view;
 import org.newdawn.slick.Graphics;
 
 import com.vesalaakso.rbb.model.Camera;
+import com.vesalaakso.rbb.model.ResourceManager;
 
 /**
  * Classes that implement this interface will handle drawing of every single
@@ -31,6 +32,8 @@ interface Painter {
 	 * @param g
 	 *            <code>Graphics</code>-object which will be used to draw stuff
 	 *            to screen.
+	 * @param resManager
+	 *            the resource manager to query for fonts and images and all
 	 */
-	public void paint(Graphics g);
+	public void paint(Graphics g, ResourceManager resManager);
 }
