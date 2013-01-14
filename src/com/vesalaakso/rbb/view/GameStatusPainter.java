@@ -42,10 +42,6 @@ public class GameStatusPainter implements Painter {
 	 */
 	@Override
 	public void paint(Graphics g, ResourceManager resManager) {
-		// Reset transforms for a while.
-		g.pushTransform();
-		g.resetTransform();
-
 		g.setFont(resManager.getFont(Font.SCORE));
 
 		float x = RubberBandBall.SCREEN_WIDTH - 200;
@@ -56,8 +52,5 @@ public class GameStatusPainter implements Painter {
 		String triesStr = "Tries: " + gameStatus.getCurrentTryCount();
 		g.drawString(shotsStr, x, y1);
 		g.drawString(triesStr, x, y2);
-
-		// Reset the old transforms
-		g.popTransform();
 	}
 }

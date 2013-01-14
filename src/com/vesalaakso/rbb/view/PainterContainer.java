@@ -118,17 +118,21 @@ public class PainterContainer {
 				float transX = Utils.screenToWorldX(0);
 				float transY = Utils.screenToWorldY(0);
 
-				if (isWorldTranslationOn) {
+				// Flip the flag.
+				isWorldTranslationOn = !isWorldTranslationOn;
+
+				if (!isWorldTranslationOn) {
 					// We wanted to go back to regular drawing mode.
-					g.translate(transX, transY);
+					g.popTransform();
+					g.resetTransform();
+					g.setLineWidth(1);
 				}
 				else {
 					// Translate to world coordinates
+					g.pushTransform();
 					g.translate(-transX, -transY);
+					g.setLineWidth(scaling);
 				}
-
-				// Flip the flag.
-				isWorldTranslationOn = !isWorldTranslationOn;
 			}
 
 			// Store the color before drawing this Painter
@@ -141,6 +145,11 @@ public class PainterContainer {
 			if (g.getColor().equals(origColor) == false) {
 				g.setColor(origColor);
 			}
+		}
+
+		// Clear transformation stack, if needed
+		if (isWorldTranslationOn) {
+			g.popTransform();
 		}
 
 		// Reset all transformations to normal

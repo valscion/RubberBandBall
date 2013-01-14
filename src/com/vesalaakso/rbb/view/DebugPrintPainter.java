@@ -54,10 +54,6 @@ public class DebugPrintPainter implements Painter {
 	 */
 	@Override
 	public void paint(Graphics g, ResourceManager resManager) {
-		// Force no transformations.
-		g.pushTransform();
-		g.resetTransform();
-
 		// Player body
 		Body<Circle> body = physics.getPlayerBody();
 		// Camera
@@ -99,9 +95,6 @@ public class DebugPrintPainter implements Painter {
 		for (int i = 0; i < rows.length; i++) {
 			g.drawString(rows[i], 10, 60 + i * 15);
 		}
-
-		// Reset transforms to normal
-		g.popTransform();
 	}
 
 }

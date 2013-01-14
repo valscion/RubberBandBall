@@ -43,14 +43,7 @@ public class BackgroundPainter implements Painter {
 	 */
 	@Override
 	public void paint(Graphics g, ResourceManager resManager) {
-		// Nope, we don't want any transforms affecting this.
-		g.pushTransform();
-		g.resetTransform();
-
 		g.drawImage(bg.getImage(), bg.getX(), bg.getY());
-
-		// Reset transforms
-		g.popTransform();
 	}
 
 }

@@ -80,6 +80,9 @@ public class PlayerPainter implements Painter {
 	 */
 	@Override
 	public void paint(Graphics g, ResourceManager resManager) {
+		// Save the old transformations before doing anything funky.
+		g.pushTransform();
+		
 		// Before drawing, center the drawing to player coordinates and apply
 		// player rotation, too
 		float rotation = (float) Math.toDegrees(player.getAngle());
@@ -104,8 +107,7 @@ public class PlayerPainter implements Painter {
 		drawMouth(g);
 
 		// Reset transformations
-		g.rotate(0, 0, -rotation);
-		g.translate(-player.getX(), -player.getY());
+		g.popTransform();
 	}
 
 	/** A helper to draw eyes. */
