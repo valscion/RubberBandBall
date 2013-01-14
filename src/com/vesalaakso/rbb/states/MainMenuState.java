@@ -1,16 +1,11 @@
 package com.vesalaakso.rbb.states;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.UnicodeFont;
-import org.newdawn.slick.font.effects.ColorEffect;
-import org.newdawn.slick.font.effects.Effect;
-import org.newdawn.slick.font.effects.ShadowEffect;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.state.transition.FadeInTransition;
@@ -18,6 +13,8 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 import org.newdawn.slick.state.transition.Transition;
 
 import com.vesalaakso.rbb.RubberBandBall;
+import com.vesalaakso.rbb.model.Font;
+import com.vesalaakso.rbb.model.ResourceManager;
 
 /**
  * A game state responsible for main menu logic and drawing. From here we can
@@ -42,14 +39,11 @@ public class MainMenuState extends BasicGameState {
 	/** Y offset for all items */
 	private static final int ITEM_OFFSET_Y = ITEM_HEIGHT;
 
+	/** The resource manager to query for resources, mainly fonts */
+	private ResourceManager resourceManager;
+
 	/** All the menu items. */
 	private List<MenuItem> menuItems = new ArrayList<MenuItem>();
-
-	/** The regular font. */
-	private UnicodeFont regularFont;
-
-	/** The font used to hilight the current selected item */
-	private UnicodeFont hilightFont;
 
 	/** Current item selected */
 	private MenuItem selected;
@@ -57,56 +51,45 @@ public class MainMenuState extends BasicGameState {
 	/** The state to move to on next update call. */
 	private State moveToState;
 
+	/**
+	 * Constructs the main state and associates it with the given resource
+	 * manager.
+	 * 
+	 * @param resourceManager
+	 *            the resource manager behind all resource loading
+	 */
+	public MainMenuState(ResourceManager resourceManager) {
+		this.resourceManager = resourceManager;
+	}
+
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
-		// TODO Some pics.
-
-		// Load the regularFont used to draw the menu. TODO: Proper resource
-		// path
-		regularFont =
-			new UnicodeFont("data/fonts/Rokkitt.ttf", 40, false, false);
-		regularFont.addAsciiGlyphs();
-
-		// Effectify the regularFont
-		List<Effect> fEffects = regularFont.getEffects();
-		fEffects.add(new ColorEffect(Color.getHSBColor(0.55f, 1.0f, 0.75f)));
-
-		regularFont.loadGlyphs();
-
-		// Load the hilightFont used to hilight the current item.
-		hilightFont =
-			new UnicodeFont("data/fonts/Rokkitt.ttf", 40, false, false);
-		hilightFont.addAsciiGlyphs();
-
-		// Effectify the hilightFont
-		fEffects = hilightFont.getEffects();
-		fEffects.add(new ShadowEffect(new Color(255, 255, 255), 1, 1, 0.75f));
-		fEffects.add(new ColorEffect(Color.getHSBColor(0.55f, 1.0f, 0.75f)));
-
-		hilightFont.loadGlyphs();
-
-		// Add menu items
-		menuItems.add(new MenuItem("Start the game", State.GAME));
+		// NO-OP, see LoadState.java
 	}
 
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
 
-		g.setFont(regularFont);
+		// If menu items haven't been added yet, add them.
+		if (menuItems.isEmpty()) {
+			menuItems.add(new MenuItem("Start the game", State.GAME));
+		}
 
-		float lineHeight = regularFont.getLineHeight();
+		g.setFont(resourceManager.getFont(Font.MENU_ITEM));
+
+		float lineHeight = g.getFont().getLineHeight();
 
 		for (int i = 0, size = menuItems.size(); i < size; i++) {
 			MenuItem item = menuItems.get(i);
 
 			// If we've currently selected this item, hilight it.
 			if (item == selected) {
-				g.setFont(hilightFont);
+				g.setFont(resourceManager.getFont(Font.MENU_ITEM_HILIGHTED));
 			}
 			else {
-				g.setFont(regularFont);
+				g.setFont(resourceManager.getFont(Font.MENU_ITEM));
 			}
 
 			float topY = ITEM_START_Y + i * ITEM_OFFSET_Y;
@@ -200,7 +183,8 @@ public class MainMenuState extends BasicGameState {
 		MenuItem(String text, State nextState) {
 			this.text = text;
 			this.nextState = nextState;
-			this.textWidth = regularFont.getWidth(text);
+			this.textWidth =
+				resourceManager.getFont(Font.MENU_ITEM).getWidth(text);
 		}
 	}
 }
