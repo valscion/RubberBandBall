@@ -123,7 +123,7 @@ public class GameStatus {
 			return 0;
 		}
 
-		return triesPerMap[currentLevel];
+		return triesPerMap[currentLevel - 1];
 	}
 
 	/**
