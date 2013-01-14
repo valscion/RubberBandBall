@@ -11,9 +11,9 @@ public enum Font {
 	/** Menu items, hilighted */
 	MENU_ITEM_HILIGHTED("Rokkitt.ttf", 40),
 	/** Regular text */
-	REGULAR("neuropol_x_free.ttf", 12),
+	REGULAR("LondonMM.ttf", 14),
 	/** Scores in game */
-	SCORE("LondonMM.ttf", 15);
+	SCORE("neuropol_x_free.ttf", 15);
 
 	/** The font file name behind the enum */
 	public final String fileName;
