@@ -11,6 +11,8 @@ TODO:
 - Lisää tasoja
 - Partikkelimanagerista efektimanageri -> äänet myös
 - Taustamusiikki
-- Kameran zoomaus hiiren rullalla
-- Kameran sijainnin limitteri toimimaan kunnolla, kun zoomi liian pieni
-- kuseeko kameran tweening kun pelaaja menee liian lähelle reunaa ja limitteri iskee päälle?
+- Kameran zoomaus hiiren rullalla - DONE
+- Kameran sijainnin limitteri toimimaan kunnolla, kun zoomi
+  liian pieni - DONE
+- kuseeko kameran tweening kun pelaaja menee liian lähelle
+  reunaa ja limitteri iskee päälle? - EI

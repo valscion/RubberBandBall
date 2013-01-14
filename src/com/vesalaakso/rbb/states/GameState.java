@@ -319,7 +319,7 @@ public class GameState extends BasicGameState {
 		background = new Background();
 
 		// Construct the object representing the player
-		player = new Player(mapContainer);
+		player = new Player(mapContainer, gameStatus);
 
 		// Physics world, too
 		physics = new Physics(player, particleManager, mapContainer);

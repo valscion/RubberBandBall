@@ -118,7 +118,7 @@ public class RubberBand implements Resetable {
 		System.out.println("              x-force: " + forceX);
 		System.out.println("              y-force: " + forceY);
 
-		player.setLaunched();
+		player.launch();
 		physics.launchPlayer(forceX, forceY);
 	}
 

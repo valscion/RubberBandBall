@@ -13,6 +13,9 @@ public class Player implements Resetable {
 	/** The map container to query the map <code>Player</code> belongs to. */
 	private TileMapContainer mapContainer;
 
+	/** The game status to update when the player is launched */
+	private GameStatus gameStatus;
+
 	/** Center x-coordinate of the player. */
 	private float xWorld;
 
@@ -40,9 +43,12 @@ public class Player implements Resetable {
 	 * 
 	 * @param mapContainer
 	 *            the map container to query the current map from
+	 * @param gameStatus
+	 *            the game status to update when the player is launched
 	 */
-	public Player(TileMapContainer mapContainer) {
+	public Player(TileMapContainer mapContainer, GameStatus gameStatus) {
 		this.mapContainer = mapContainer;
+		this.gameStatus = gameStatus;
 	}
 
 	/**
@@ -143,10 +149,11 @@ public class Player implements Resetable {
 	}
 
 	/**
-	 * Marks the player as not ready for launch.
+	 * Marks the player as not ready for launch and updates the game status.
 	 */
-	public void setLaunched() {
+	public void launch() {
 		isReadyForLaunch = false;
+		gameStatus.increaseCurrentShotCount();
 	}
 
 	/**
