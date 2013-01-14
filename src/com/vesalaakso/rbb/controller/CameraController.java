@@ -18,11 +18,20 @@ public class CameraController extends MouseAdapter implements Updateable {
 	/** This is the closest to the border mouse can get to gain full speed */
 	private static final int BORDER_MIN_DIST = 10;
 
+	/**
+	 * The speed how fast the camera will be moved when mouse enters the edges
+	 * of screen.
+	 */
+	private static final float CAMERA_MOVE_SPEED = 15.0f;
+
 	/** The speed of which the camera will be moved in x-axis. */
 	private float cameraMoveX = 0.0f;
 
 	/** The speed of which the camera will be moved in y-axis. */
 	private float cameraMoveY = 0.0f;
+
+	/** The scale to try to move the camera to */
+	private float cameraTargetScale = 1.0f;
 
 	/** The Player the camera will follow. */
 	private Player player;
@@ -61,6 +70,19 @@ public class CameraController extends MouseAdapter implements Updateable {
 		moveCamera(xDist, yDist);
 	}
 
+	@Override
+	public void mouseWheelMoved(int change) {
+		if (change < 0) {
+			cameraTargetScale *= .75f;
+			if (cameraTargetScale < Camera.MIN_SCALING) {
+				cameraTargetScale = Camera.MIN_SCALING;
+			}
+		}
+		else {
+			cameraTargetScale *= 1.25f;
+		}
+	}
+
 	/**
 	 * Handles moving camera based on the given values
 	 * 
@@ -72,22 +94,22 @@ public class CameraController extends MouseAdapter implements Updateable {
 	private void moveCamera(int xDist, int yDist) {
 		if (xDist < 0) {
 			xDist = Utils.clamp(-xDist, BORDER_MIN_DIST, BORDER_MAX_DIST);
-			cameraMoveX = (1.0f / xDist) * 15.0f;
+			cameraMoveX = (1.0f / xDist) * CAMERA_MOVE_SPEED;
 		}
 		else if (xDist > 0) {
 			xDist = Utils.clamp(xDist, BORDER_MIN_DIST, BORDER_MAX_DIST);
-			cameraMoveX = -(1.0f / xDist) * 15.0f;
+			cameraMoveX = -(1.0f / xDist) * CAMERA_MOVE_SPEED;
 		}
 		else {
 			cameraMoveX = 0;
 		}
 		if (yDist < 0) {
 			yDist = Utils.clamp(-yDist, BORDER_MIN_DIST, BORDER_MAX_DIST);
-			cameraMoveY = (1.0f / yDist) * 15.0f;
+			cameraMoveY = (1.0f / yDist) * CAMERA_MOVE_SPEED;
 		}
 		else if (yDist > 0) {
 			yDist = Utils.clamp(yDist, BORDER_MIN_DIST, BORDER_MAX_DIST);
-			cameraMoveY = -(1.0f / yDist) * 15.0f;
+			cameraMoveY = -(1.0f / yDist) * CAMERA_MOVE_SPEED;
 		}
 		else {
 			cameraMoveY = 0;
@@ -101,11 +123,18 @@ public class CameraController extends MouseAdapter implements Updateable {
 	public void update(int delta) {
 		Camera cam = Camera.get();
 
+		// If scaling target differs enough from the current scale, scale.
+		float camScale = cam.getScaling();
+		if (Math.abs(camScale - cameraTargetScale) > 1e-5f) {
+			float newScale = Utils.curveValue(camScale, cameraTargetScale, 20);
+			cam.setScaling(newScale);
+		}
+
 		// If the player is in a state that he is ready to be launched or hasn't
-		// been positioned for start yet, move the camera 500px / sec as keys
-		// are pressed.
+		// been positioned for start yet, move the camera by the speed specified
+		// with mouse position
 		if (player.isReadyForLaunch() || !player.isStartPositioned()) {
-			cam.translate(cameraMoveX * delta * .5f, cameraMoveY * delta * .5f);
+			cam.translate(cameraMoveX * delta, cameraMoveY * delta);
 		}
 		else {
 			// Glue the camera to the player if one is not ready for launch but

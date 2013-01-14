@@ -36,11 +36,36 @@ public class Utils {
 		}
 
 		// Calculate the new coordinations using weighted average function
-		float x = ((old.x * (n - 1)) + target.x) / n;
-		float y = ((old.y * (n - 1)) + target.y) / n;
+		float x = curveValue(old.x, target.x, n);
+		float y = curveValue(old.y, target.y, n);
 
 		// Return the curved endpoint
 		return new Vector(x, y);
+	}
+	
+	/**
+	 * Calculates a value between two values in a curved way. This method can be
+	 * used to apply tweening between stuff.
+	 * 
+	 * @param old
+	 *            the value where we start from
+	 * @param target
+	 *            the value where we want to end up in the long run
+	 * @param n
+	 *            the slowdown factor, must be >= 1
+	 * @return smoothed value between the values <code>old</code> and
+	 *         <code>target</code>.
+	 */
+	public static float curveValue(float old, float target, int n) {
+		if (n < 1) {
+			n = 1;
+		}
+
+		// Calculate the new value using weighted average function
+		float ret = ((old * (n - 1)) + target) / n;
+
+		// Return the curved value
+		return ret;
 	}
 
 	/**

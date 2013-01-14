@@ -6,11 +6,11 @@ import com.vesalaakso.rbb.model.TileMap;
 import com.vesalaakso.rbb.model.TileMapContainer;
 
 /**
- * Limits the camera position to the current map.
+ * Limits the camera position and scaling to the current map.
  * 
  * @author Vesa Laakso
  */
-public class CameraPositionLimiter implements Resetable, Updateable {
+public class CameraLimiter implements Resetable, Updateable {
 
 	/** The map container to query the current map from */
 	private TileMapContainer mapContainer;
@@ -21,7 +21,7 @@ public class CameraPositionLimiter implements Resetable, Updateable {
 	 * 
 	 * @param mapContainer the map container to query the current map from
 	 */
-	public CameraPositionLimiter(TileMapContainer mapContainer) {
+	public CameraLimiter(TileMapContainer mapContainer) {
 		this.mapContainer = mapContainer;
 	}
 
@@ -41,6 +41,20 @@ public class CameraPositionLimiter implements Resetable, Updateable {
 		// Current viewport width and height halves in pixels
 		float halfScrW = RubberBandBall.SCREEN_WIDTH / (2 * cam.getScaling());
 		float halfScrH = RubberBandBall.SCREEN_HEIGHT / (2 * cam.getScaling());
+
+		// Limit scaling
+		if (halfScrW * 2 > mapWidth) {
+			float newScale = ((float) RubberBandBall.SCREEN_WIDTH / mapWidth);
+			cam.setScaling(newScale);
+			halfScrW = RubberBandBall.SCREEN_WIDTH / (2 * cam.getScaling());
+			halfScrH = RubberBandBall.SCREEN_HEIGHT / (2 * cam.getScaling());
+		}
+		if (halfScrH * 2 > mapHeight) {
+			float newScale = ((float) RubberBandBall.SCREEN_HEIGHT / mapHeight);
+			cam.setScaling(newScale);
+			halfScrW = RubberBandBall.SCREEN_WIDTH / (2 * cam.getScaling());
+			halfScrH = RubberBandBall.SCREEN_HEIGHT / (2 * cam.getScaling());
+		}
 
 		if (camX < halfScrW) {
 			// Over the left

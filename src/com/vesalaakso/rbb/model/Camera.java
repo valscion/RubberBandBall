@@ -15,6 +15,12 @@ public class Camera {
 
 	/** The only instance of this class. */
 	private static final Camera _instance = new Camera();
+	
+	/** The minimum scaling the camera can have */
+	public static final float MIN_SCALING = 0.5f;
+
+	/** The maximum scaling the camera can have */
+	public static final float MAX_SCALING = 2.0f;
 
 	/** X-coordinate of the camera, in world coordinates. */
 	private float x;
@@ -101,8 +107,11 @@ public class Camera {
 	 *            the new scaling factor of the whole game.
 	 */
 	public void setScaling(float scale) {
-		if (scale < 1) {
-			scale = 1;
+		if (scale < MIN_SCALING) {
+			scale = MIN_SCALING;
+		}
+		else if (scale > MAX_SCALING) {
+			scale = MAX_SCALING;
 		}
 		this.scaling = scale;
 	}

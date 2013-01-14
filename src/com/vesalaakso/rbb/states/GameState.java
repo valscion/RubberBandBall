@@ -16,7 +16,7 @@ import org.newdawn.slick.util.Log;
 
 import com.vesalaakso.rbb.RubberBandBall;
 import com.vesalaakso.rbb.controller.CameraController;
-import com.vesalaakso.rbb.controller.CameraPositionLimiter;
+import com.vesalaakso.rbb.controller.CameraLimiter;
 import com.vesalaakso.rbb.controller.DebugKeyController;
 import com.vesalaakso.rbb.controller.InputMaster;
 import com.vesalaakso.rbb.controller.MapChanger;
@@ -105,8 +105,8 @@ public class GameState extends BasicGameState {
 	private Background background;
 
 	/** A little something to stop the camera from going to distances. */
-	private CameraPositionLimiter cameraPositionLimiter =
-		new CameraPositionLimiter(mapContainer);
+	private CameraLimiter cameraPositionLimiter =
+		new CameraLimiter(mapContainer);
 
 	/** If the game should stop at next update()-call, this flag knows. */
 	private boolean stopAtNextUpdate;
