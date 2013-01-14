@@ -38,6 +38,7 @@ import com.vesalaakso.rbb.model.TileMapObject;
 import com.vesalaakso.rbb.model.exceptions.MapException;
 import com.vesalaakso.rbb.view.BackgroundPainter;
 import com.vesalaakso.rbb.view.DebugPrintPainter;
+import com.vesalaakso.rbb.view.GameStatusPainter;
 import com.vesalaakso.rbb.view.PainterContainer;
 import com.vesalaakso.rbb.view.PhysicsPainter;
 import com.vesalaakso.rbb.view.PlayerPainter;
@@ -148,6 +149,7 @@ public class GameState extends BasicGameState {
 		painterContainer.addPainter(new PlayerPainter(player));
 		painterContainer.addPainter(new TileMapOverLayerPainter(mapContainer));
 		painterContainer.addPainter(new RubberBandPainter(rubberBand));
+		painterContainer.addPainter(new GameStatusPainter(gameStatus));
 		painterContainer.addDebugPainter(new PhysicsPainter(physics));
 		painterContainer
 				.addDebugPainter(new DebugPrintPainter(physics, player));

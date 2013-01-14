@@ -113,6 +113,20 @@ public class GameStatus {
 	}
 
 	/**
+	 * Gets the current try count in the current map
+	 * 
+	 * @return the current try count in the current map
+	 */
+	public int getCurrentTryCount() {
+		// Validate the level
+		if (currentLevel <= 0) {
+			return 0;
+		}
+
+		return triesPerMap[currentLevel];
+	}
+
+	/**
 	 * Called when a map is completed, this updates the stored scores of maps.
 	 */
 	public void onMapCompleted() {
