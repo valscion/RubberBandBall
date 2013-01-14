@@ -7,7 +7,7 @@ TODO:
 - Alkuvalikko - DONE
 - Ohjeet
 - Kuva pelaajalle - DONE
-- Piikit tappamaan
+- Piikit tappamaan - Ei tule
 - Lisää tasoja
 - Partikkelimanagerista efektimanageri -> äänet myös
 - Taustamusiikki
