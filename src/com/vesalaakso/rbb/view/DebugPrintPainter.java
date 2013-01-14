@@ -14,8 +14,7 @@ import com.vesalaakso.rbb.model.ResourceManager;
 import com.vesalaakso.rbb.util.Utils;
 
 /**
- * A Painter to draw all sorts of useful debug prints. This painter must be the
- * last painter to draw or else the transformations will get all screwed up.
+ * A Painter to draw all sorts of useful debug prints.
  * 
  * @author Vesa Laakso
  */
@@ -55,8 +54,8 @@ public class DebugPrintPainter implements Painter {
 	 */
 	@Override
 	public void paint(Graphics g, ResourceManager resManager) {
-		// Force no transformations. This painter must be the last painter
-		// because of this as transformations will get screwed over.
+		// Force no transformations.
+		g.pushTransform();
 		g.resetTransform();
 
 		// Player body
@@ -101,6 +100,8 @@ public class DebugPrintPainter implements Painter {
 			g.drawString(rows[i], 10, 60 + i * 15);
 		}
 
+		// Reset transforms to normal
+		g.popTransform();
 	}
 
 }
