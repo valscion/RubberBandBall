@@ -180,6 +180,7 @@ public class GameState extends BasicGameState {
 	 * first render.
 	 */
 	private void addResetables() {
+		resetables.add(inputMaster);
 		resetables.add(player);
 		resetables.add(cameraPositionLimiter);
 		resetables.add(rubberBand);

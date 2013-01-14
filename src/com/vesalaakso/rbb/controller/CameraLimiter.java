@@ -14,12 +14,13 @@ public class CameraLimiter implements Resetable, Updateable {
 
 	/** The map container to query the current map from */
 	private TileMapContainer mapContainer;
-	
+
 	/**
 	 * Construct a new camera position limiter and associate it with the given
 	 * <code>TileMapContainer</code>.
 	 * 
-	 * @param mapContainer the map container to query the current map from
+	 * @param mapContainer
+	 *            the map container to query the current map from
 	 */
 	public CameraLimiter(TileMapContainer mapContainer) {
 		this.mapContainer = mapContainer;

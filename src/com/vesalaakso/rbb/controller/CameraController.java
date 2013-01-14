@@ -10,7 +10,8 @@ import com.vesalaakso.rbb.util.Utils;
 /**
  * This class handles the controlling of {@link Camera}.
  */
-public class CameraController extends MouseAdapter implements Updateable {
+public class CameraController extends MouseAdapter implements Updateable,
+		Resetable {
 
 	/** If camera enters this border area from the screen, it will move. */
 	private static final int BORDER_MAX_DIST = 50;
@@ -145,6 +146,13 @@ public class CameraController extends MouseAdapter implements Updateable {
 
 			cam.setPosition(curved.x, curved.y);
 		}
+	}
+
+	@Override
+	public void reset() {
+		cameraMoveX = 0;
+		cameraMoveY = 0;
+		cameraTargetScale = 1;
 	}
 
 }

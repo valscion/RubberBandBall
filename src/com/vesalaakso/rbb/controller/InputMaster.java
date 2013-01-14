@@ -2,6 +2,7 @@ package com.vesalaakso.rbb.controller;
 
 import java.util.List;
 
+import org.newdawn.slick.ControlledInputReciever;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.KeyListener;
 import org.newdawn.slick.MouseListener;
@@ -13,13 +14,16 @@ import com.google.common.collect.Lists;
  * 
  * @author Vesa Laakso
  */
-public class InputMaster implements Updateable {
+public class InputMaster implements Updateable, Resetable {
 
 	/** The input that generates events */
 	private Input input;
 
 	/** List of controllers which would like to act upon every frame. */
 	private List<Updateable> updateables = Lists.newLinkedList();
+
+	/** List of controllers which would like to be reset when map changes. */
+	private List<Resetable> resetables = Lists.newLinkedList();
 
 	/** Added mouse listeners. */
 	private List<MouseListener> mouseListeners = Lists.newLinkedList();
@@ -51,9 +55,7 @@ public class InputMaster implements Updateable {
 	public void addKeyListener(KeyListener controller) {
 		input.addKeyListener(controller);
 		keyListeners.add(controller);
-		if (controller instanceof Updateable) {
-			updateables.add((Updateable) controller);
-		}
+		afterControllerAdded(controller);
 	}
 
 	/**
@@ -66,8 +68,16 @@ public class InputMaster implements Updateable {
 	public void addMouseListener(MouseListener controller) {
 		input.addMouseListener(controller);
 		mouseListeners.add(controller);
+		afterControllerAdded(controller);
+	}
+	
+	/** A helper method to do stuff after a controller is added */
+	private void afterControllerAdded(ControlledInputReciever controller) {
 		if (controller instanceof Updateable) {
 			updateables.add((Updateable) controller);
+		}
+		if (controller instanceof Resetable) {
+			resetables.add((Resetable) controller);
 		}
 	}
 
@@ -112,6 +122,18 @@ public class InputMaster implements Updateable {
 	public void update(int delta) {
 		for (Updateable c : updateables) {
 			c.update(delta);
+		}
+	}
+
+	/**
+	 * Resets all controllers which would like to be reset
+	 * 
+	 * @see com.vesalaakso.rbb.controller.Resetable#reset()
+	 */
+	@Override
+	public void reset() {
+		for (Resetable r : resetables) {
+			r.reset();
 		}
 	}
 
