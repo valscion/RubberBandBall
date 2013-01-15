@@ -139,7 +139,22 @@ public abstract class AbstractMenuState extends BasicGameState {
 	@Override
 	public void mouseClicked(int button, int x, int y, int clickCount) {
 		if (selected != null) {
-			moveToState = selected.nextState;
+			onMenuItemSelected(selected);
+		}
+	}
+
+	/**
+	 * When a <code>MenuItem</code> is selected, this method gets called. By
+	 * default it moves on to the state that was given to the menu item and if
+	 * no state was given, it does nothing. So for anything special, you should
+	 * override this method.
+	 * 
+	 * @param selectedItem
+	 *            the MenuItem which was selected
+	 */
+	public void onMenuItemSelected(MenuItem selectedItem) {
+		if (selectedItem.nextState != null) {
+			moveToState = selectedItem.nextState;
 		}
 	}
 
@@ -177,16 +192,21 @@ public abstract class AbstractMenuState extends BasicGameState {
 		final State nextState;
 		/** The width of the given text in pixels */
 		final float textWidth;
+		/** The numerical ID for this menu */
+		final int id;
 
 		/**
-		 * Creates a new menu item with the specified text and action.
+		 * Creates a new menu item with the specified text, action and ID.
 		 * 
+		 * @param id
+		 *            the ID to set for the new menu item
 		 * @param text
 		 *            text to display
 		 * @param nextState
 		 *            state to move to when item is selected
 		 */
-		MenuItem(String text, State nextState) {
+		MenuItem(int id, String text, State nextState) {
+			this.id = id;
 			this.text = text;
 			this.nextState = nextState;
 			this.textWidth =

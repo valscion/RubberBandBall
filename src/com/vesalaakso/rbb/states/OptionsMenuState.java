@@ -11,10 +11,14 @@ import com.vesalaakso.rbb.model.ResourceManager;
  */
 public class OptionsMenuState extends AbstractMenuState {
 
+	/** ID for returning to main menu button */
+	private static final int RETURN_BUTTON = 1;
+
 	/**
 	 * Constructs a state responsible for changing settings.
 	 * 
-	 * @param resourceManager the resource manager to consult for resources
+	 * @param resourceManager
+	 *            the resource manager to consult for resources
 	 */
 	public OptionsMenuState(ResourceManager resourceManager) {
 		super(resourceManager);
@@ -23,7 +27,8 @@ public class OptionsMenuState extends AbstractMenuState {
 	@Override
 	public void preRender(List<MenuItem> menuItems,
 		ResourceManager resourceManager) {
-		menuItems.add(new MenuItem("Back to main menu", State.MAIN_MENU));
+		menuItems.add(new MenuItem(RETURN_BUTTON, "Back to main menu",
+				State.MAIN_MENU));
 	}
 
 	@Override
