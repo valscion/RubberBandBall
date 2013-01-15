@@ -42,7 +42,7 @@ public class Utils {
 		// Return the curved endpoint
 		return new Vector(x, y);
 	}
-	
+
 	/**
 	 * Calculates a value between two values in a curved way. This method can be
 	 * used to apply tweening between stuff.
@@ -175,6 +175,29 @@ public class Utils {
 	 * @return the clamped value
 	 */
 	public static int clamp(int value, int min, int max) {
+		if (value < min) {
+			return min;
+		}
+		if (value > max) {
+			return max;
+		}
+		return value;
+	}
+
+	/**
+	 * Clamps the value to the given range. If the min and max values are given
+	 * in an incorrect way this method is useless.
+	 * 
+	 * @param value
+	 *            the value to clamp
+	 * @param min
+	 *            the minimum amount for the value
+	 * @param max
+	 *            the maximum amount for the value
+	 * 
+	 * @return the clamped value
+	 */
+	public static float clamp(float value, float min, float max) {
 		if (value < min) {
 			return min;
 		}

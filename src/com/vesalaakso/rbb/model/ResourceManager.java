@@ -2,6 +2,7 @@ package com.vesalaakso.rbb.model;
 
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.util.Log;
 
@@ -50,5 +51,16 @@ public class ResourceManager {
 	 */
 	public Music getMusic(Audio audio) {
 		return audioContainer.getMusic(audio);
+	}
+
+	/**
+	 * Returns a specific sound.
+	 * 
+	 * @param audio
+	 *            the sound to get
+	 * @return the sound one wanted
+	 */
+	public Sound getSound(Audio audio) {
+		return audioContainer.getSound(audio);
 	}
 }

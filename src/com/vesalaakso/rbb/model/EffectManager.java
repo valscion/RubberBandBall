@@ -6,12 +6,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.particles.ParticleIO;
 import org.newdawn.slick.particles.ParticleSystem;
 import org.newdawn.slick.util.Log;
 
 import com.vesalaakso.rbb.controller.Resetable;
 import com.vesalaakso.rbb.controller.Updateable;
+import com.vesalaakso.rbb.util.Utils;
 
 /**
  * A class responsible for all the nice effects in the game.
@@ -24,14 +26,14 @@ public class EffectManager implements Updateable, Resetable {
 	 * When a collision force smaller than this value is given for effectifying
 	 * collisions, simulate a small collision.
 	 */
-	private static final float COLLISION_LIMIT_SMALL = 10.0f;
+	private static final float COLLISION_LIMIT_SMALL = 20.0f;
 
 	/**
 	 * When a collision force bigger than {@link #COLLISION_LIMIT_SMALL} and
 	 * smaller than this value is given for effectifying collisions, simulate a
 	 * normal sized collision.
 	 */
-	private static final float COLLISION_LIMIT_NORMAL = 20.0f;
+	private static final float COLLISION_LIMIT_NORMAL = 40.0f;
 
 	/** The resource manager to query for resources. */
 	private final ResourceManager resourceManager;
@@ -103,7 +105,25 @@ public class EffectManager implements Updateable, Resetable {
 	public void addCollisionEffect(float worldX, float worldY, float force) {
 		if (force > COLLISION_LIMIT_NORMAL) {
 			// BOOM!
+			Sound boom = resourceManager.getSound(Audio.SOUND_HIT_BIG);
+			float pitch = 1.0f;
+			float volume = (force / COLLISION_LIMIT_NORMAL) * 0.5f;
+			boom.play(pitch, Utils.clamp(volume, 0.5f, 1.5f));
 			addExplosionEmitter(worldX, worldY);
+		}
+		else if (force > COLLISION_LIMIT_SMALL) {
+			// A normal hit sound
+			Sound clank = resourceManager.getSound(Audio.SOUND_HIT_NORMAL);
+			float pitch = 1.0f;
+			float volume = (force / COLLISION_LIMIT_SMALL) * 0.5f;
+			clank.play(pitch, Utils.clamp(volume, 0.5f, 1.5f));
+		}
+		else {
+			// A small hit sound
+			Sound hit = resourceManager.getSound(Audio.SOUND_HIT_SMALL);
+			float pitch = 1.0f;
+			float volume = (force / COLLISION_LIMIT_SMALL) * 2.0f;
+			hit.play(pitch, Utils.clamp(volume, 0.5f, 1.5f));
 		}
 	}
 
