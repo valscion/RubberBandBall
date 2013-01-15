@@ -6,11 +6,12 @@ TODO:
 - Pausevalikko
 - Alkuvalikko - DONE
 - Ohjeet
+- Kunnon asetusvalikko
 - Kuva pelaajalle - DONE
 - Piikit tappamaan - Ei tule
 - Lisää tasoja
-- Partikkelimanagerista efektimanageri -> äänet myös
-- Taustamusiikki
+- Partikkelimanagerista efektimanageri -> äänet myös - DONE
+- Taustamusiikki - DONE
 - Kameran zoomaus hiiren rullalla - DONE
 - Kameran sijainnin limitteri toimimaan kunnolla, kun zoomi
   liian pieni - DONE
