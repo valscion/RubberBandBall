@@ -20,6 +20,19 @@ import com.vesalaakso.rbb.controller.Updateable;
  */
 public class EffectManager implements Updateable, Resetable {
 
+	/**
+	 * When a collision force smaller than this value is given for effectifying
+	 * collisions, simulate a small collision.
+	 */
+	private static final float COLLISION_LIMIT_SMALL = 10.0f;
+
+	/**
+	 * When a collision force bigger than {@link #COLLISION_LIMIT_SMALL} and
+	 * smaller than this value is given for effectifying collisions, simulate a
+	 * normal sized collision.
+	 */
+	private static final float COLLISION_LIMIT_NORMAL = 20.0f;
+
 	/** The resource manager to query for resources. */
 	private final ResourceManager resourceManager;
 
@@ -77,6 +90,24 @@ public class EffectManager implements Updateable, Resetable {
 	}
 
 	/**
+	 * Adds effects for a collision in the given world coordinates and the given
+	 * force.
+	 * 
+	 * @param worldX
+	 *            the x-coordinate in the world where the collision happened
+	 * @param worldY
+	 *            the y-coordinate in the world where the collision happened
+	 * @param force
+	 *            the force of the collision
+	 */
+	public void addCollisionEffect(float worldX, float worldY, float force) {
+		if (force > COLLISION_LIMIT_NORMAL) {
+			// BOOM!
+			addExplosionEmitter(worldX, worldY);
+		}
+	}
+
+	/**
 	 * Adds an explosion emitter to the given coordinates (in world space)
 	 * 
 	 * @param worldX
@@ -84,7 +115,7 @@ public class EffectManager implements Updateable, Resetable {
 	 * @param worldY
 	 *            the y-coordinate in the world to add the explosion into
 	 */
-	public void addExplosionEmitter(float worldX, float worldY) {
+	private void addExplosionEmitter(float worldX, float worldY) {
 		// Get the explosion system to set active
 		ParticleSystem system = explosionSystems.get(nextExplosionID);
 

@@ -81,10 +81,16 @@ public class PlayerCollisionListener implements WorldListener {
 	 */
 	@Override
 	public void collided(CollisionEvent event) {
-		// Particles!
-		effectManager.addExplosionEmitter(player.getX(), player.getY());
-
+		// Store the last collision body
 		lastCollisionBody = getCollisionBody(event);
+		
+		// Add a collision effect based on the collision force
+		Body<?> playerBody = physics.getPlayerBody();
+		float force = 0.0f;
+		force += Math.abs(playerBody.getXVelocity());
+		force += Math.abs(playerBody.getYVelocity());
+		effectManager.addCollisionEffect(player.getX(), player.getY(), force);
+
 		TileMapObject tile = physics.getTileMapObject(lastCollisionBody);
 
 		if (tile.objectType == GroupObject.ObjectType.RECTANGLE) {
