@@ -3,9 +3,7 @@ package com.vesalaakso.rbb.controller;
 import org.newdawn.fizzy.Body;
 import org.newdawn.fizzy.CollisionEvent;
 import org.newdawn.fizzy.WorldListener;
-import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.tiled.GroupObject;
-import org.newdawn.slick.util.Log;
 
 import com.vesalaakso.rbb.model.EffectManager;
 import com.vesalaakso.rbb.model.Physics;
@@ -86,28 +84,12 @@ public class PlayerCollisionListener implements WorldListener {
 		// Store the last collision body
 		lastCollisionBody = getCollisionBody(event);
 
-		// Get the collision point. As the colliding object is a circle, there
-		// can only be one collision point to a rectangular object.
-		Vector2f collisionVec = getCollisionPoint(event);
-
-		// Check for collision bugging, sometimes collision effects are init in
-		// a weird place.
-		Vector2f playerVec = new Vector2f(player.getX(), player.getY());
-		float radiusSquared = player.getRadius() * player.getRadius();
-		if (collisionVec.distanceSquared(playerVec) > radiusSquared + 40) {
-			// Wut?
-			String logStrFormat = "Weird collision logged at (%.1f; %.1f)";
-			Log.info(String.format(logStrFormat, lastCollisionBody.getX(),
-					lastCollisionBody.getY()));
-			//return;
-		}
-
 		// Add a collision effect based on the collision force
 		Body<?> playerBody = physics.getPlayerBody();
 		float force = 0.0f;
 		force += Math.abs(playerBody.getXVelocity());
 		force += Math.abs(playerBody.getYVelocity());
-		effectManager.addCollisionEffect(collisionVec.x, collisionVec.y, force);
+		effectManager.addCollisionEffect(player.getX(), player.getY(), force);
 
 		TileMapObject tile = physics.getTileMapObject(lastCollisionBody);
 
@@ -169,21 +151,6 @@ public class PlayerCollisionListener implements WorldListener {
 			ret = event.getBodyB();
 		}
 		return ret;
-	}
-
-	/**
-	 * Returns the collision point as a vector from the given collision event.
-	 * Useful for setting up proper effects and all.
-	 */
-	private Vector2f getCollisionPoint(CollisionEvent event) {
-		// As the other object is circular (player) and the other is rectangular
-		// or triangular, there can only be one collision point. That is the
-		// reference point of collision vectors.
-		org.newdawn.fizzy.Vector contactPoint =
-			event.getContact().getReferencePoint();
-
-		Vector2f returnVector = new Vector2f(contactPoint.x, contactPoint.y);
-		return returnVector;
 	}
 
 }

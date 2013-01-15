@@ -33,7 +33,7 @@ public class EffectManager implements Updateable, Resetable {
 	 * smaller than this value is given for effectifying collisions, simulate a
 	 * normal sized collision.
 	 */
-	private static final float COLLISION_LIMIT_NORMAL = 40.0f;
+	private static final float COLLISION_LIMIT_NORMAL = 10.0f;
 
 	/** The resource manager to query for resources. */
 	private final ResourceManager resourceManager;
@@ -65,6 +65,7 @@ public class EffectManager implements Updateable, Resetable {
 		try {
 			ParticleSystem explosions =
 				ParticleIO.loadConfiguredSystem(dir + file);
+			explosions.setVisible(false);
 			explosionSystems.add(explosions);
 			for (int i = 0; i < MAX_EXPLOSIONS - 1; i++) {
 				explosionSystems.add(explosions.duplicate());
@@ -88,6 +89,10 @@ public class EffectManager implements Updateable, Resetable {
 		for (int i = 0; i < runningExplosionSystems; i++) {
 			ParticleSystem system = explosionSystems.get(i);
 			system.update(delta);
+			if (system.isVisible() && system.getParticleCount() == 0) {
+				// It has most likely stopped. Force it. Stops it from bugging.
+				system.setVisible(false);
+			}
 		}
 	}
 
@@ -139,9 +144,10 @@ public class EffectManager implements Updateable, Resetable {
 		// Get the explosion system to set active
 		ParticleSystem system = explosionSystems.get(nextExplosionID);
 
-		// Set the systems position and reset it
-		system.setPosition(worldX, worldY);
+		// Set the systems position and reset it and show it.
 		system.reset();
+		system.setPosition(worldX, worldY);
+		system.setVisible(true);
 
 		// We have a new running system.
 		if (runningExplosionSystems < MAX_EXPLOSIONS) {
@@ -173,7 +179,9 @@ public class EffectManager implements Updateable, Resetable {
 	@Override
 	public void reset() {
 		for (int i = 0; i < runningExplosionSystems; i++) {
-			explosionSystems.get(i).reset();
+			ParticleSystem system = explosionSystems.get(i);
+			system.reset();
+			system.setVisible(false);
 		}
 		runningExplosionSystems = 0;
 		nextExplosionID = 0;
