@@ -29,7 +29,7 @@ import com.vesalaakso.rbb.controller.Updateable;
 import com.vesalaakso.rbb.model.Background;
 import com.vesalaakso.rbb.model.Camera;
 import com.vesalaakso.rbb.model.GameStatus;
-import com.vesalaakso.rbb.model.ParticleManager;
+import com.vesalaakso.rbb.model.EffectManager;
 import com.vesalaakso.rbb.model.Physics;
 import com.vesalaakso.rbb.model.Player;
 import com.vesalaakso.rbb.model.ResourceManager;
@@ -95,8 +95,8 @@ public class GameState extends BasicGameState {
 	/** The player is controlled by this rubber band! */
 	private RubberBand rubberBand;
 
-	/** Ooh, particles, yes please! */
-	private ParticleManager particleManager = new ParticleManager();
+	/** Ooh, effects, yes please! */
+	private final EffectManager effectManager;
 
 	/** Of course we need physics, here it is! */
 	private Physics physics;
@@ -145,6 +145,7 @@ public class GameState extends BasicGameState {
 		this.gameStatus = gameStatus;
 		this.mapChanger = new MapChanger(mapContainer, gameStatus);
 		this.painterContainer = new PainterContainer(resourceManager);
+		this.effectManager = new EffectManager(resourceManager);
 	}
 
 	/** A helper method which adds all the painters in the correct order. */
@@ -185,7 +186,7 @@ public class GameState extends BasicGameState {
 		resetables.add(cameraPositionLimiter);
 		resetables.add(rubberBand);
 		resetables.add(physics);
-		resetables.add(particleManager);
+		resetables.add(effectManager);
 		resetables.add(background);
 	}
 
@@ -196,7 +197,7 @@ public class GameState extends BasicGameState {
 		updateables.add(physics);
 		updateables.add(playerListener);
 		updateables.add(background);
-		updateables.add(particleManager);
+		updateables.add(effectManager);
 	}
 
 	/**
@@ -323,7 +324,7 @@ public class GameState extends BasicGameState {
 		player = new Player(mapContainer, gameStatus);
 
 		// Physics world, too
-		physics = new Physics(player, particleManager, mapContainer);
+		physics = new Physics(player, effectManager, mapContainer);
 
 		// Add the rubber band to the game
 		rubberBand = new RubberBand(player, physics);

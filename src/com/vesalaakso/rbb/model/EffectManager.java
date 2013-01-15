@@ -14,18 +14,21 @@ import com.vesalaakso.rbb.controller.Resetable;
 import com.vesalaakso.rbb.controller.Updateable;
 
 /**
- * A class responsible for all the particle systems in the game.
+ * A class responsible for all the nice effects in the game.
  * 
  * @author Vesa Laakso
  */
-public class ParticleManager implements Updateable, Resetable {
+public class EffectManager implements Updateable, Resetable {
+
+	/** The resource manager to query for resources. */
+	private final ResourceManager resourceManager;
 
 	/** Maximum amount of explosions */
 	private static final int MAX_EXPLOSIONS = 40;
 
-	/** 20 explosions running at max, stored here. */
+	/** 40 explosions running at max, stored here. */
 	private List<ParticleSystem> explosionSystems =
-			new ArrayList<ParticleSystem>(MAX_EXPLOSIONS);
+		new ArrayList<ParticleSystem>(MAX_EXPLOSIONS);
 
 	/** Amount of running explosion systems */
 	private int runningExplosionSystems = 0;
@@ -34,15 +37,19 @@ public class ParticleManager implements Updateable, Resetable {
 	private int nextExplosionID = 0;
 
 	/**
-	 * Constructs a new <code>ParticleManager</code>.
+	 * Constructs a new <code>EffectManager</code> and associates it with the
+	 * given <code>ResourceManager</code>.
+	 * 
+	 * @param resourceManager
+	 *            the resource manager to query for sound fx
 	 */
-	public ParticleManager() {
+	public EffectManager(ResourceManager resourceManager) {
 		String dir = "data/slick_particle_effects/";
 		String file = "explosion.xml";
 		ParticleSystem.setRelativePath(dir);
 		try {
 			ParticleSystem explosions =
-					ParticleIO.loadConfiguredSystem(dir + file);
+				ParticleIO.loadConfiguredSystem(dir + file);
 			explosionSystems.add(explosions);
 			for (int i = 0; i < MAX_EXPLOSIONS - 1; i++) {
 				explosionSystems.add(explosions.duplicate());
@@ -54,6 +61,8 @@ public class ParticleManager implements Updateable, Resetable {
 		catch (SlickException e) {
 			Log.error("Couldn't duplicate explosions ParticleSystem", e);
 		}
+
+		this.resourceManager = resourceManager;
 	}
 
 	/**
@@ -101,7 +110,7 @@ public class ParticleManager implements Updateable, Resetable {
 	 * 
 	 * @return list of particle systems
 	 */
-	public List<ParticleSystem> getSystems() {
+	public List<ParticleSystem> getParticleSystems() {
 		List<ParticleSystem> systems = new LinkedList<ParticleSystem>();
 		for (int i = 0; i < runningExplosionSystems; i++) {
 			systems.add(explosionSystems.get(i));

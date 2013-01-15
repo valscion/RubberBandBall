@@ -5,7 +5,7 @@ import java.util.List;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.particles.ParticleSystem;
 
-import com.vesalaakso.rbb.model.ParticleManager;
+import com.vesalaakso.rbb.model.EffectManager;
 import com.vesalaakso.rbb.model.ResourceManager;
 
 /**
@@ -15,18 +15,18 @@ import com.vesalaakso.rbb.model.ResourceManager;
  */
 public class ParticleSystemPainter implements Painter {
 
-	/** The ParticleManager associated with this Painter. */
-	private ParticleManager particleManager;
+	/** The EffectManager associated with this Painter. */
+	private EffectManager effectManager;
 
 	/**
 	 * Constructs a new <code>ParticleSystemPainter</code> and associates it
-	 * with the given <code>ParticleManager</code>.
+	 * with the given <code>EffectManager</code>.
 	 * 
-	 * @param particleManager
-	 *            the <code>ParticleManager</code> to be drawn.
+	 * @param effectManager
+	 *            the <code>EffectManager</code> whose particles will be drawn.
 	 */
-	public ParticleSystemPainter(ParticleManager particleManager) {
-		this.particleManager = particleManager;
+	public ParticleSystemPainter(EffectManager effectManager) {
+		this.effectManager = effectManager;
 	}
 
 	/**
@@ -46,7 +46,7 @@ public class ParticleSystemPainter implements Painter {
 	@Override
 	public void paint(Graphics g, ResourceManager resManager) {
 		// Get all of the ParticleSystems there are.
-		List<ParticleSystem> systems = particleManager.getSystems();
+		List<ParticleSystem> systems = effectManager.getParticleSystems();
 
 		// Loop through them all and render them.
 		for (ParticleSystem ps : systems) {

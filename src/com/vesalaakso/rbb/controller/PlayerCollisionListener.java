@@ -5,7 +5,7 @@ import org.newdawn.fizzy.CollisionEvent;
 import org.newdawn.fizzy.WorldListener;
 import org.newdawn.slick.tiled.GroupObject;
 
-import com.vesalaakso.rbb.model.ParticleManager;
+import com.vesalaakso.rbb.model.EffectManager;
 import com.vesalaakso.rbb.model.Physics;
 import com.vesalaakso.rbb.model.Player;
 import com.vesalaakso.rbb.model.TileMapObject;
@@ -24,8 +24,8 @@ public class PlayerCollisionListener implements WorldListener {
 	/** The player who is colliding */
 	private Player player;
 
-	/** Ooh, we can create particles, yes! */
-	private ParticleManager particleManager;
+	/** Ooh, we can haz effects, yes! */
+	private EffectManager effectManager;
 
 	/**
 	 * The physics body where the player last collided to but has not yet been
@@ -65,15 +65,15 @@ public class PlayerCollisionListener implements WorldListener {
 	 *            the physics simulation where The Magic (tm) happens
 	 * @param player
 	 *            the {@link Player}-model for the collisions
-	 * @param particleManager
-	 *            the ParticleManager which will be used to create particles
-	 *            when needed
+	 * @param effectManager
+	 *            the EffectManager which will be used to create effects when
+	 *            needed
 	 */
 	public PlayerCollisionListener(Physics physics, Player player,
-			ParticleManager particleManager) {
+			EffectManager effectManager) {
 		this.physics = physics;
 		this.player = player;
-		this.particleManager = particleManager;
+		this.effectManager = effectManager;
 	}
 
 	/**
@@ -82,7 +82,7 @@ public class PlayerCollisionListener implements WorldListener {
 	@Override
 	public void collided(CollisionEvent event) {
 		// Particles!
-		particleManager.addExplosionEmitter(player.getX(), player.getY());
+		effectManager.addExplosionEmitter(player.getX(), player.getY());
 
 		lastCollisionBody = getCollisionBody(event);
 		TileMapObject tile = physics.getTileMapObject(lastCollisionBody);

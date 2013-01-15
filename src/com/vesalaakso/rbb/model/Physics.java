@@ -39,10 +39,10 @@ public class Physics implements Updateable, Resetable {
 	private static final float MIN_ANGULAR_VELOCITY = 0.1f;
 
 	/**
-	 * The ParticleManager which will create nice little effects as events in
+	 * The EffectManager which will create nice little effects as events in
 	 * the physics world will happen.
 	 */
-	private ParticleManager particleManager;
+	private EffectManager effectManager;
 
 	/** The <code>World</code> in which The Magic (tm) happens. */
 	private World world;
@@ -79,17 +79,17 @@ public class Physics implements Updateable, Resetable {
 	 * 
 	 * @param player
 	 *            the <code>Player</code> bouncing around in the world.
-	 * @param particleManager
-	 *            the <code>ParticleManager</code> responsible for all the nice
-	 *            and juicy particles
+	 * @param effectManager
+	 *            the <code>EffectManager</code> responsible for all the nice
+	 *            and juicy particles and sound fx
 	 * @param mapContainer
 	 *            the <code>TileMapContainer</code> to query the current map
 	 *            from
 	 */
-	public Physics(Player player, ParticleManager particleManager,
+	public Physics(Player player, EffectManager effectManager,
 			TileMapContainer mapContainer) {
 		this.player = player;
-		this.particleManager = particleManager;
+		this.effectManager = effectManager;
 		this.world = new World(DEFAULT_GRAVITY);
 		this.mapContainer = mapContainer;
 	}
@@ -326,7 +326,7 @@ public class Physics implements Updateable, Resetable {
 
 		// Initialize the listener and add it to the world
 		playerCollisionListener =
-				new PlayerCollisionListener(this, player, particleManager);
+				new PlayerCollisionListener(this, player, effectManager);
 		world.addBodyListener(playerBody, playerCollisionListener);
 
 		// Also, make the player not yet take part in any collision.
