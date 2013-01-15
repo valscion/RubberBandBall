@@ -10,6 +10,8 @@ public enum State {
 	GAME,
 	/** The state for main menu */
 	MAIN_MENU,
+	/** The state for options menu */
+	OPTIONS_MENU,
 	/** A state handling map transition. */
 	MAP_CHANGE,
 	/** A state handling resource loading */

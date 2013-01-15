@@ -11,6 +11,7 @@ import com.vesalaakso.rbb.states.GameState;
 import com.vesalaakso.rbb.states.LoadState;
 import com.vesalaakso.rbb.states.MainMenuState;
 import com.vesalaakso.rbb.states.MapChangeState;
+import com.vesalaakso.rbb.states.OptionsMenuState;
 import com.vesalaakso.rbb.states.State;
 
 /**
@@ -43,6 +44,7 @@ public class RubberBandBall extends StateBasedGame {
 		// Add the states.
 		addState(new LoadState(resourceManager));
 		addState(new MainMenuState(resourceManager));
+		addState(new OptionsMenuState(resourceManager));
 		addState(new GameState(mapChangeState, gameStatus, resourceManager));
 		addState(mapChangeState);
 
