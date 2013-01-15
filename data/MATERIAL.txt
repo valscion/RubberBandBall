@@ -1,2 +1,6 @@
-sounds contents from http://www.coolbasic.com/res_sound.php?lang=fi
-spacebg from http://opengameart.org/content/space-backgrounds
+sounds-directory contents
+	-> http://www.coolbasic.com/res_sound.php?lang=fi
+spacebg.png
+	-> http://opengameart.org/content/space-backgrounds
+slick_particle_effects
+	-> http://slick.cokeandcode.com/wiki/doku.php?id=configurable_emitters&s=particle
