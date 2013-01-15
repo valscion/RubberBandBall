@@ -7,7 +7,13 @@ package com.vesalaakso.rbb.model;
  */
 public enum Audio {
 	/** Background music */
-	BACKGROUND("darkware_-_avenger_theme.xm");
+	MUSIC_BACKGROUND("darkware_-_avenger_theme.xm"),
+	/** Sound effect for small speed hit */
+	SOUND_HIT_SMALL("hit1.ogg"),
+	/** Sound effect for regular speed hit */
+	SOUND_HIT_NORMAL("hit2.ogg"),
+	/** Sound effect for high speed hit */
+	SOUND_HIT_BIG("hit3.ogg");
 
 	/** The string for the file name of audio file */
 	public final String fileName;
