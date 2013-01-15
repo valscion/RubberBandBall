@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -13,6 +14,7 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 import org.newdawn.slick.state.transition.Transition;
 
 import com.vesalaakso.rbb.RubberBandBall;
+import com.vesalaakso.rbb.model.Audio;
 import com.vesalaakso.rbb.model.Font;
 import com.vesalaakso.rbb.model.ResourceManager;
 
@@ -72,9 +74,12 @@ public class MainMenuState extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
 
-		// If menu items haven't been added yet, add them.
+		// If menu items haven't been added yet, add them and start playing
+		// music.
 		if (menuItems.isEmpty()) {
 			menuItems.add(new MenuItem("Start the game", State.GAME));
+			Music m = resourceManager.getMusic(Audio.BACKGROUND);
+			m.loop();
 		}
 
 		g.setFont(resourceManager.getFont(Font.MENU_ITEM));
