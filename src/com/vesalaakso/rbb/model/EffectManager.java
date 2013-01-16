@@ -9,7 +9,6 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.particles.ParticleIO;
 import org.newdawn.slick.particles.ParticleSystem;
-import org.newdawn.slick.util.Log;
 
 import com.vesalaakso.rbb.controller.Resetable;
 import com.vesalaakso.rbb.controller.Updateable;
@@ -60,12 +59,20 @@ public class EffectManager implements Updateable, Resetable {
 	 *            the resource manager to query for sound fx
 	 */
 	public EffectManager(ResourceManager resourceManager) {
-		String dir = "data/slick_particle_effects/";
-		String file = "explosion.xml";
-		ParticleSystem.setRelativePath(dir);
+		this.resourceManager = resourceManager;
+	}
+
+	/**
+	 * Initializes the effect manager. Must be called for particles to work.
+	 * 
+	 * @throws SlickException
+	 *             if failed to load particle systems
+	 */
+	public void init() throws SlickException {
+		explosionSystems.clear();
 		try {
 			ParticleSystem explosions =
-				ParticleIO.loadConfiguredSystem(dir + file);
+				ParticleIO.loadConfiguredSystem("explosion.xml");
 			explosions.setVisible(false);
 			explosionSystems.add(explosions);
 			for (int i = 0; i < MAX_EXPLOSIONS - 1; i++) {
@@ -73,13 +80,8 @@ public class EffectManager implements Updateable, Resetable {
 			}
 		}
 		catch (IOException e) {
-			Log.error("Could not load emitter explosion.xml", e);
+			throw new SlickException("Could not load emitter explosion.xml", e);
 		}
-		catch (SlickException e) {
-			Log.error("Couldn't duplicate explosions ParticleSystem", e);
-		}
-
-		this.resourceManager = resourceManager;
 	}
 
 	/**

@@ -28,7 +28,6 @@ import com.vesalaakso.rbb.controller.RubberBandController;
 import com.vesalaakso.rbb.controller.Updateable;
 import com.vesalaakso.rbb.model.Camera;
 import com.vesalaakso.rbb.model.GameStatus;
-import com.vesalaakso.rbb.model.EffectManager;
 import com.vesalaakso.rbb.model.Physics;
 import com.vesalaakso.rbb.model.Player;
 import com.vesalaakso.rbb.model.ResourceManager;
@@ -95,11 +94,11 @@ public class GameState extends BasicGameState {
 	/** The player is controlled by this rubber band! */
 	private RubberBand rubberBand;
 
-	/** Ooh, effects, yes please! */
-	private final EffectManager effectManager;
-
 	/** Of course we need physics, here it is! */
 	private Physics physics;
+
+	/** Resources are always a nice addition, take this! */
+	private ResourceManager resourceManager;
 
 	/** A little something to stop the camera from going to distances. */
 	private CameraLimiter cameraPositionLimiter = new CameraLimiter(
@@ -138,12 +137,12 @@ public class GameState extends BasicGameState {
 	 */
 	public GameState(MapChangeState mapChangeState, GameStatus gameStatus,
 			ResourceManager resourceManager) {
+		this.resourceManager = resourceManager;
 		this.mapChangeState = mapChangeState;
 		this.gameStatus = gameStatus;
 		this.mapChanger =
 			new MapChanger(mapContainer, gameStatus, resourceManager);
 		this.painterContainer = new PainterContainer(resourceManager);
-		this.effectManager = new EffectManager(resourceManager);
 	}
 
 	/** A helper method which adds all the painters in the correct order. */
@@ -154,7 +153,8 @@ public class GameState extends BasicGameState {
 		painterContainer.addPainter(new PlayerPainter(player));
 		painterContainer.addPainter(new TileMapOverLayerPainter(mapContainer));
 		painterContainer.addPainter(new RubberBandPainter(rubberBand));
-		painterContainer.addPainter(new ParticleSystemPainter(effectManager));
+		painterContainer.addPainter(new ParticleSystemPainter(resourceManager
+				.getEffectManager()));
 		painterContainer.addPainter(new GameStatusPainter(gameStatus));
 		painterContainer.addDebugPainter(new PhysicsPainter(physics));
 		painterContainer
@@ -185,7 +185,7 @@ public class GameState extends BasicGameState {
 		resetables.add(cameraPositionLimiter);
 		resetables.add(rubberBand);
 		resetables.add(physics);
-		resetables.add(effectManager);
+		resetables.add(resourceManager.getEffectManager());
 	}
 
 	/** A helper method which adds all updateables. */
@@ -194,7 +194,7 @@ public class GameState extends BasicGameState {
 		updateables.add(cameraPositionLimiter);
 		updateables.add(physics);
 		updateables.add(playerListener);
-		updateables.add(effectManager);
+		updateables.add(resourceManager.getEffectManager());
 	}
 
 	/**
@@ -320,7 +320,9 @@ public class GameState extends BasicGameState {
 		player = new Player(mapContainer, gameStatus);
 
 		// Physics world, too
-		physics = new Physics(player, effectManager, mapContainer);
+		physics =
+			new Physics(player, resourceManager.getEffectManager(),
+					mapContainer);
 
 		// Add the rubber band to the game
 		rubberBand = new RubberBand(player, physics);

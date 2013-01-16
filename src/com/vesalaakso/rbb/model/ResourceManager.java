@@ -38,6 +38,9 @@ public class ResourceManager {
 	/** The tiled map container maps are stored in */
 	private TiledMapPlusContainer mapContainer = new TiledMapPlusContainer();
 
+	/** The effect manager. */
+	private EffectManager effectManager = new EffectManager(this);
+
 	/**
 	 * Initializes the resource manager
 	 * 
@@ -51,7 +54,8 @@ public class ResourceManager {
 		fontContainer.init();
 		audioContainer.init();
 		gfxContainer.init();
-		
+		effectManager.init();
+
 		// Before loading map, add a location for map related resources
 		ResourceLoader.addResourceLocation(new MapResourceLocation());
 		mapContainer.init();
@@ -111,5 +115,14 @@ public class ResourceManager {
 	 */
 	public TiledMapPlus getMap(int level) {
 		return mapContainer.getMap(level);
+	}
+
+	/**
+	 * Returns the <code>EffectManager</code>.
+	 * 
+	 * @return the effect manager
+	 */
+	public EffectManager getEffectManager() {
+		return effectManager;
 	}
 }
