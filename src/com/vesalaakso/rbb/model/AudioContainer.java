@@ -1,5 +1,6 @@
 package com.vesalaakso.rbb.model;
 
+import java.net.URL;
 import java.util.Map;
 
 import org.newdawn.slick.Music;
@@ -37,16 +38,34 @@ public class AudioContainer {
 	/** A helper to load a music file */
 	private Music loadMusic(Audio audio) throws SlickException {
 		Music m;
-		String filePath = "data/sounds/" + audio.fileName;
-		m = new Music(filePath);
+		String resourcePath = "/com/vesalaakso/rbb/data/" + audio.fileName;
+		URL path = this.getClass().getResource(resourcePath);
+
+		if (path == null) {
+			String err =
+				String.format("Could not find music %s with file name %s",
+						audio, audio.fileName);
+			throw new SlickException(err);
+		}
+
+		m = new Music(path);
 		return m;
 	}
 
 	/** A helper to load a sound file */
 	private Sound loadSound(Audio audio) throws SlickException {
 		Sound s;
-		String filePath = "data/sounds/" + audio.fileName;
-		s = new Sound(filePath);
+		String resourcePath = "/com/vesalaakso/rbb/data/" + audio.fileName;
+		URL path = this.getClass().getResource(resourcePath);
+
+		if (path == null) {
+			String err =
+				String.format("Could not find sound %s with file name %s",
+						audio, audio.fileName);
+			throw new SlickException(err);
+		}
+
+		s = new Sound(path);
 		return s;
 	}
 
