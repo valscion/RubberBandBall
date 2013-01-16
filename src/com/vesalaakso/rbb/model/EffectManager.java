@@ -33,7 +33,7 @@ public class EffectManager implements Updateable, Resetable {
 	 * smaller than this value is given for effectifying collisions, simulate a
 	 * normal sized collision.
 	 */
-	private static final float COLLISION_LIMIT_NORMAL = 10.0f;
+	private static final float COLLISION_LIMIT_NORMAL = 40.0f;
 
 	/** The resource manager to query for resources. */
 	private final ResourceManager resourceManager;

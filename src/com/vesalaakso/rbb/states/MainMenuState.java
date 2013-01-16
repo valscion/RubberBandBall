@@ -50,6 +50,7 @@ public class MainMenuState extends AbstractMenuState {
 		// MUSIC!
 		Music m = resourceManager.getMusic(Audio.MUSIC_BACKGROUND);
 		m.loop();
+		m.setVolume(0.33f);
 	}
 
 	@Override
