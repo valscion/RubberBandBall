@@ -1,8 +1,8 @@
 package com.vesalaakso.rbb.model.resources;
 
 import java.awt.Color;
+import java.util.EnumMap;
 import java.util.List;
-import java.util.Map;
 
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.UnicodeFont;
@@ -22,7 +22,7 @@ import com.google.common.collect.Maps;
 public class FontContainer {
 
 	/** All the fonts are stored in this map. */
-	private Map<Font, UnicodeFont> fonts = Maps.newHashMap();
+	private EnumMap<Font, UnicodeFont> fonts = Maps.newEnumMap(Font.class);
 
 	/**
 	 * Initializes all the fonts.

@@ -1,6 +1,6 @@
 package com.vesalaakso.rbb.model.resources;
 
-import java.util.Map;
+import java.util.EnumMap;
 
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -15,7 +15,7 @@ import com.google.common.collect.Maps;
 public class GfxContainer {
 
 	/** All graphics files are stored in this map */
-	private Map<Gfx, Image> images = Maps.newHashMap();
+	private EnumMap<Gfx, Image> images = Maps.newEnumMap(Gfx.class);
 
 	/**
 	 * Initializes all the graphics files.

@@ -1,6 +1,6 @@
 package com.vesalaakso.rbb.model.resources;
 
-import java.util.Map;
+import java.util.EnumMap;
 
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
@@ -17,10 +17,10 @@ import com.google.common.collect.Maps;
 public class AudioContainer {
 
 	/** All music files are stored in this map */
-	private Map<Audio, Music> musics = Maps.newHashMap();
+	private EnumMap<Audio, Music> musics = Maps.newEnumMap(Audio.class);
 
 	/** All sound effect files are stored in this map */
-	private Map<Audio, Sound> sounds = Maps.newHashMap();
+	private EnumMap<Audio, Sound> sounds = Maps.newEnumMap(Audio.class);
 
 	/**
 	 * Initializes all the audio files.
