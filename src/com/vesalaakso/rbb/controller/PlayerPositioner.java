@@ -44,7 +44,7 @@ public class PlayerPositioner extends MouseAdapter {
 	 *         or not
 	 */
 	private boolean updatePosition(int mouseX, int mouseY) {
-		if (player.isStartPositioned()) {
+		if (player.isStartPositioned() || mapContainer.getMap() == null) {
 			return false;
 		}
 		float x = Utils.screenToWorldX(mouseX);

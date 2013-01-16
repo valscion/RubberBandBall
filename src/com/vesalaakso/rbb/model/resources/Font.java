@@ -1,4 +1,4 @@
-package com.vesalaakso.rbb.model;
+package com.vesalaakso.rbb.model.resources;
 
 /**
  * An enumeration to map all fonts to a constant

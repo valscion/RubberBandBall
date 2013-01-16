@@ -2,7 +2,6 @@ package com.vesalaakso.rbb.model;
 
 import java.util.List;
 
-import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.GroupObject;
 import org.newdawn.slick.tiled.ObjectGroup;
 import org.newdawn.slick.tiled.TiledMap;
@@ -54,43 +53,32 @@ public class TileMap {
 	/** Collision objects in the map. */
 	private List<TileMapObject> collisionObjects = Lists.newArrayList();
 
+	/** The resource manager to consult for tiled maps */
+	private ResourceManager resourceManager;
+
 	/**
 	 * Constructs a new TileMap. You need to call {@link #init}-method before
 	 * actually using the tile map however.
 	 * 
 	 * @param level
 	 *            the level this map represents
+	 * @param resourceManager
+	 *            the resource manager to consult for the tile map resource
 	 */
-	public TileMap(int level) {
+	public TileMap(int level, ResourceManager resourceManager) {
 		this.level = level;
+		this.resourceManager = resourceManager;
 	}
 
 	/**
 	 * Initializes and loads the level.
 	 * 
 	 * @throws MapException
-	 *             if a mapfile was not found for this level
+	 *             if the level contained malformed data
 	 */
 	public void init() throws MapException {
-		String path = findMapPath(level);
-		try {
-			map = new TiledMapPlus(path);
-		}
-		catch (SlickException e) {
-			throw new MapException("Failed to load map " + level, e);
-		}
-		catch (RuntimeException e) {
-			throw new MapException("Failed to load map " + level, e);
-		}
-
-		// Find the layer indexes
-		backLayer = map.getLayerIndex("back");
-		overLayer = map.getLayerIndex("over");
-
-		// Validate that layer indexes were actually found.
-		if (backLayer == -1 || overLayer == -1) {
-			throw new MapException("Invalid map layers for level " + level);
-		}
+		// Store the tiled map for this level
+		map = resourceManager.getMap(level);
 
 		// Loop through every object and store them
 		saveAllObjects();
@@ -271,28 +259,32 @@ public class TileMap {
 	}
 
 	/**
-	 * Finds the absolute file path to a level.
+	 * Finds the package file path to a level.
 	 * 
 	 * @param level
 	 *            the level to search for
-	 * @return an absolute file path to the given level
+	 * @return a package path for the given level
 	 * @throws MapException
 	 *             if the file was not found for the given level
 	 */
-	public static String findMapPath(int level) throws MapException {
+	public static String findMapResourcePath(int level) throws MapException {
 		String filename = level + ".tmx";
 		if (level >= 0 && level <= 9) {
 			// Keep it zero padded if necessary
 			filename = "0" + filename;
 		}
 
-		// The directory where the maps reside
-		String dirname = "data/levels/";
-
-		// aaand combine them.
-		String path = dirname + filename;
-
+		String path = getMapResourcesLocation() + "/" + filename;
 		return path;
+	}
+
+	/**
+	 * Returns the package path for all levels
+	 * 
+	 * @return the package path for all levels
+	 */
+	public static String getMapResourcesLocation() {
+		return "/com/vesalaakso/rbb/data/levels";
 	}
 
 	/**

@@ -6,6 +6,7 @@ import org.newdawn.slick.util.Log;
 
 import com.google.common.collect.Maps;
 import com.vesalaakso.rbb.model.GameStatus;
+import com.vesalaakso.rbb.model.ResourceManager;
 import com.vesalaakso.rbb.model.TileMap;
 import com.vesalaakso.rbb.model.TileMapContainer;
 import com.vesalaakso.rbb.model.exceptions.MapException;
@@ -23,6 +24,9 @@ public class MapChanger {
 	/** Already initialized maps mapped to their index */
 	private Map<Integer, TileMap> initializedMapsMap = Maps.newHashMap();
 
+	/** A resource manager to consult for maps */
+	private ResourceManager resourceManager;
+
 	/** The map container to update */
 	private final TileMapContainer mapContainer;
 
@@ -38,11 +42,16 @@ public class MapChanger {
 	 * @param mapContainer
 	 *            the <code>TileMapContainer</code> to change map from
 	 * @param gameStatus
-	 *            the <code>GameStatus</code> to update when map is changed.
+	 *            the <code>GameStatus</code> to update when map is changed
+	 * @param resourceManager
+	 *            the <code>ResourceManager</code> that has all the current
+	 *            levels loaded
 	 */
-	public MapChanger(TileMapContainer mapContainer, GameStatus gameStatus) {
+	public MapChanger(TileMapContainer mapContainer, GameStatus gameStatus,
+			ResourceManager resourceManager) {
 		this.mapContainer = mapContainer;
 		this.gameStatus = gameStatus;
+		this.resourceManager = resourceManager;
 	}
 
 	/**
@@ -59,7 +68,7 @@ public class MapChanger {
 			this.newMap = initializedMapsMap.get(newMap);
 		}
 		else {
-			this.newMap = new TileMap(newMap);
+			this.newMap = new TileMap(newMap, resourceManager);
 		}
 	}
 

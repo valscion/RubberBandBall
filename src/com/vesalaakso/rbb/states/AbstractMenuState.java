@@ -13,8 +13,8 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 import org.newdawn.slick.state.transition.Transition;
 
 import com.vesalaakso.rbb.RubberBandBall;
-import com.vesalaakso.rbb.model.Font;
 import com.vesalaakso.rbb.model.ResourceManager;
+import com.vesalaakso.rbb.model.resources.Font;
 
 /**
  * An abstract class for variety of menus

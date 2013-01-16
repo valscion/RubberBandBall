@@ -5,7 +5,16 @@ import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.UnicodeFont;
+import org.newdawn.slick.tiled.TiledMapPlus;
 import org.newdawn.slick.util.Log;
+
+import com.vesalaakso.rbb.model.resources.Audio;
+import com.vesalaakso.rbb.model.resources.AudioContainer;
+import com.vesalaakso.rbb.model.resources.Font;
+import com.vesalaakso.rbb.model.resources.FontContainer;
+import com.vesalaakso.rbb.model.resources.Gfx;
+import com.vesalaakso.rbb.model.resources.GfxContainer;
+import com.vesalaakso.rbb.model.resources.TiledMapPlusContainer;
 
 /**
  * Handles loading and storing of different resources.
@@ -23,6 +32,9 @@ public class ResourceManager {
 	/** The graphics container images are stored in */
 	private GfxContainer gfxContainer = new GfxContainer();
 
+	/** The tiled map container maps are stored in */
+	private TiledMapPlusContainer mapContainer = new TiledMapPlusContainer();
+
 	/**
 	 * Initializes the resource manager
 	 * 
@@ -33,6 +45,7 @@ public class ResourceManager {
 		fontContainer.init();
 		audioContainer.init();
 		gfxContainer.init();
+		mapContainer.init();
 		Log.info("Resource Manager initialized successfully");
 	}
 
@@ -78,5 +91,16 @@ public class ResourceManager {
 	 */
 	public Image getImage(Gfx gfx) {
 		return gfxContainer.getImage(gfx);
+	}
+
+	/**
+	 * Returns a specific tiled map
+	 * 
+	 * @param level
+	 *            the level to get
+	 * @return the tiled map corresponding to the given level
+	 */
+	public TiledMapPlus getMap(int level) {
+		return mapContainer.getMap(level);
 	}
 }

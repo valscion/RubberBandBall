@@ -3,9 +3,9 @@ package com.vesalaakso.rbb.view;
 import org.newdawn.slick.Graphics;
 
 import com.vesalaakso.rbb.RubberBandBall;
-import com.vesalaakso.rbb.model.Font;
 import com.vesalaakso.rbb.model.GameStatus;
 import com.vesalaakso.rbb.model.ResourceManager;
+import com.vesalaakso.rbb.model.resources.Font;
 
 /**
  * A painter responsible for drawing the game status.

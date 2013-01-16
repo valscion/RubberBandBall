@@ -1,4 +1,4 @@
-package com.vesalaakso.rbb.model;
+package com.vesalaakso.rbb.model.resources;
 
 import java.awt.Color;
 import java.util.List;

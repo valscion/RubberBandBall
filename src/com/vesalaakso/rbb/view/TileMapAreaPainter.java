@@ -1,21 +1,17 @@
 package com.vesalaakso.rbb.view;
 
-import java.util.EnumMap;
 import java.util.List;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.util.Log;
 
-import com.google.common.collect.Maps;
 import com.vesalaakso.rbb.model.GravityArea;
 import com.vesalaakso.rbb.model.ResourceManager;
 import com.vesalaakso.rbb.model.TileMap;
 import com.vesalaakso.rbb.model.TileMapContainer;
 import com.vesalaakso.rbb.model.TileMapObject;
-import com.vesalaakso.rbb.model.TileMapObjectType;
+import com.vesalaakso.rbb.model.resources.Gfx;
 import com.vesalaakso.rbb.util.Utils;
 
 /**
@@ -31,13 +27,6 @@ public class TileMapAreaPainter implements Painter {
 	 */
 	private TileMapContainer mapContainer;
 
-	/** The images used to draw areas */
-	private EnumMap<TileMapObjectType, Image> areaImages = Maps
-			.newEnumMap(TileMapObjectType.class);
-
-	/** The color used to draw safe areas */
-	private static Color colorSafeArea = calcSafeAreaColor();
-
 	/**
 	 * Constructs a new painter and associates it with the given map. Also loads
 	 * the gravity area image.
@@ -48,21 +37,6 @@ public class TileMapAreaPainter implements Painter {
 	 */
 	public TileMapAreaPainter(TileMapContainer currentMapContainer) {
 		this.mapContainer = currentMapContainer;
-
-		// XXX Proper loading
-		try {
-			areaImages.put(TileMapObjectType.GRAVITY, new Image(
-					"data/levels/grav-arrow.png"));
-		}
-		catch (SlickException e) {
-			Log.warn("Failed to load image for gravity arrow", e);
-		}
-	}
-
-	/** Used to initialize the color for safe areas */
-	private static Color calcSafeAreaColor() {
-		java.awt.Color tmpC = java.awt.Color.getHSBColor(0.3f, 0.5f, 0.3f);
-		return new Color(tmpC.getRed(), tmpC.getGreen(), tmpC.getBlue());
 	}
 
 	/**
@@ -86,9 +60,6 @@ public class TileMapAreaPainter implements Painter {
 		TileMapObject spawnArea = map.getSpawnArea();
 		TileMapObject finishArea = map.getFinishArea();
 
-		// First things first: Set the color we will draw with.
-		g.setColor(colorSafeArea);
-
 		// Calculate a modulating value to change the area colors dynamically.
 		float modulate = (Utils.getTime() % 4000) / 2000.0f;
 
@@ -104,7 +75,7 @@ public class TileMapAreaPainter implements Painter {
 
 		// Paint gravity areas
 		List<GravityArea> gravityAreas = map.getGravityAreas();
-		Image gravityAreaImage = areaImages.get(TileMapObjectType.GRAVITY);
+		Image gravityAreaImage = resManager.getImage(Gfx.MAP_GRAV_ARROW);
 		for (GravityArea area : gravityAreas) {
 			Color c = area.getColor();
 			c = c.brighter(modulate * .75f);

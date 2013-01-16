@@ -7,8 +7,8 @@ import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
-import com.vesalaakso.rbb.model.Audio;
 import com.vesalaakso.rbb.model.ResourceManager;
+import com.vesalaakso.rbb.model.resources.Audio;
 
 /**
  * A game state responsible for main menu logic and drawing. From here we can

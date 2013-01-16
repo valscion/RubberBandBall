@@ -1,4 +1,4 @@
-package com.vesalaakso.rbb.model;
+package com.vesalaakso.rbb.model.resources;
 
 /**
  * All audio files mapped to a sane enumeration

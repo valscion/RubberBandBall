@@ -1,4 +1,4 @@
-package com.vesalaakso.rbb.model;
+package com.vesalaakso.rbb.model.resources;
 
 import java.io.InputStream;
 import java.util.Map;
@@ -25,8 +25,9 @@ public class GfxContainer {
 	 *             if something went wrong with image loading
 	 */
 	public void init() throws SlickException {
-		// Background for the game
+		// Gotta load 'em all
 		images.put(Gfx.BACKGROUND_GAME, loadImage(Gfx.BACKGROUND_GAME));
+		images.put(Gfx.MAP_GRAV_ARROW, loadImage(Gfx.MAP_GRAV_ARROW));
 	}
 
 	/** A helper to load an image file */

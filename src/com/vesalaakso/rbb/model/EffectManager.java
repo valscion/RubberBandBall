@@ -13,6 +13,7 @@ import org.newdawn.slick.util.Log;
 
 import com.vesalaakso.rbb.controller.Resetable;
 import com.vesalaakso.rbb.controller.Updateable;
+import com.vesalaakso.rbb.model.resources.Audio;
 import com.vesalaakso.rbb.util.Utils;
 
 /**

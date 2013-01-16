@@ -1,4 +1,4 @@
-package com.vesalaakso.rbb.model;
+package com.vesalaakso.rbb.model.resources;
 
 import java.net.URL;
 import java.util.Map;

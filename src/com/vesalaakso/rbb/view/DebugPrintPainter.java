@@ -7,10 +7,10 @@ import org.newdawn.slick.Graphics;
 
 import com.vesalaakso.rbb.RubberBandBall;
 import com.vesalaakso.rbb.model.Camera;
-import com.vesalaakso.rbb.model.Font;
 import com.vesalaakso.rbb.model.Physics;
 import com.vesalaakso.rbb.model.Player;
 import com.vesalaakso.rbb.model.ResourceManager;
+import com.vesalaakso.rbb.model.resources.Font;
 import com.vesalaakso.rbb.util.Utils;
 
 /**

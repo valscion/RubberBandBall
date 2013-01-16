@@ -4,8 +4,8 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 
 import com.vesalaakso.rbb.model.Camera;
-import com.vesalaakso.rbb.model.Gfx;
 import com.vesalaakso.rbb.model.ResourceManager;
+import com.vesalaakso.rbb.model.resources.Gfx;
 
 /**
  * Draws the bg space

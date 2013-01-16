@@ -102,8 +102,8 @@ public class GameState extends BasicGameState {
 	private Physics physics;
 
 	/** A little something to stop the camera from going to distances. */
-	private CameraLimiter cameraPositionLimiter =
-		new CameraLimiter(mapContainer);
+	private CameraLimiter cameraPositionLimiter = new CameraLimiter(
+			mapContainer);
 
 	/** If the game should stop at next update()-call, this flag knows. */
 	private boolean stopAtNextUpdate;
@@ -140,7 +140,8 @@ public class GameState extends BasicGameState {
 			ResourceManager resourceManager) {
 		this.mapChangeState = mapChangeState;
 		this.gameStatus = gameStatus;
-		this.mapChanger = new MapChanger(mapContainer, gameStatus);
+		this.mapChanger =
+			new MapChanger(mapContainer, gameStatus, resourceManager);
 		this.painterContainer = new PainterContainer(resourceManager);
 		this.effectManager = new EffectManager(resourceManager);
 	}
@@ -199,8 +200,11 @@ public class GameState extends BasicGameState {
 	/**
 	 * Resets the state of the game, useful when transitions cause headaches.
 	 * Mainly resets positions of various stuff.
+	 * 
+	 * @throws SlickException
+	 *             if something horrific happened
 	 */
-	private void resetBeforeRender() {
+	private void resetBeforeRender() throws SlickException {
 		if (renderInitializedBeforeEnter) {
 			// No need to do anything.
 			return;
@@ -208,7 +212,6 @@ public class GameState extends BasicGameState {
 
 		stopAtNextUpdate = false;
 		changeToLevel = -1;
-		inputMaster.unpause();
 
 		// Reset camera at the middle of the spawn area
 		TileMapObject spawn = mapContainer.getMap().getSpawnArea();
@@ -340,17 +343,6 @@ public class GameState extends BasicGameState {
 
 		// Finally add all objects which hook to the update()-method.
 		addUpdateables();
-
-		// Then reset the map.
-		mapChanger.changeMap(1);
-		try {
-			mapChanger.runChange();
-		}
-		catch (MapException e) {
-			// So we couldn't load even the first map... that's sad.
-			Log.error("Failed to change to the first map.");
-			throw new SlickException("Failed to change to the first map.", e);
-		}
 	}
 
 	/**
@@ -406,6 +398,31 @@ public class GameState extends BasicGameState {
 	public void leave(GameContainer container, StateBasedGame game)
 			throws SlickException {
 		renderInitializedBeforeEnter = false;
+	}
+
+	/**
+	 * @see org.newdawn.slick.state.GameState#enter(GameContainer,
+	 *      StateBasedGame)
+	 */
+	@Override
+	public void enter(GameContainer container, StateBasedGame game)
+			throws SlickException {
+		// If no map has been loaded yet, load one first.
+		if (mapContainer.getMap() == null) {
+			mapChanger.changeMap(1);
+			try {
+				mapChanger.runChange();
+			}
+			catch (MapException e) {
+				// So we couldn't load even the first map... that's sad.
+				Log.error("Failed to change to the first map.");
+				throw new SlickException("Failed to change to the first map.",
+						e);
+			}
+		}
+
+		// Make controllers fire again
+		inputMaster.unpause();
 	}
 
 	@Override

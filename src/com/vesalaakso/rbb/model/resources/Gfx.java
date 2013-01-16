@@ -1,4 +1,4 @@
-package com.vesalaakso.rbb.model;
+package com.vesalaakso.rbb.model.resources;
 
 /**
  * All graphics files mapped to a sane enum
@@ -7,7 +7,9 @@ package com.vesalaakso.rbb.model;
  */
 public enum Gfx {
 	/** Game background */
-	BACKGROUND_GAME("spacebg.png");
+	BACKGROUND_GAME("spacebg.png"),
+	/** A gravitation arrow for maps */
+	MAP_GRAV_ARROW("grav-arrow.png");
 
 	/** The string for the file name of graphics file */
 	String fileName;
