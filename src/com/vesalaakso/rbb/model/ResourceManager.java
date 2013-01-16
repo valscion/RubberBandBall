@@ -1,5 +1,6 @@
 package com.vesalaakso.rbb.model;
 
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
@@ -19,6 +20,9 @@ public class ResourceManager {
 	/** The audio container musics and sound effects are stored in */
 	private AudioContainer audioContainer = new AudioContainer();
 
+	/** The graphics container images are stored in */
+	private GfxContainer gfxContainer = new GfxContainer();
+
 	/**
 	 * Initializes the resource manager
 	 * 
@@ -28,6 +32,7 @@ public class ResourceManager {
 	public void init() throws SlickException {
 		fontContainer.init();
 		audioContainer.init();
+		gfxContainer.init();
 		Log.info("Resource Manager initialized successfully");
 	}
 
@@ -62,5 +67,16 @@ public class ResourceManager {
 	 */
 	public Sound getSound(Audio audio) {
 		return audioContainer.getSound(audio);
+	}
+
+	/**
+	 * Returns a specific image
+	 * 
+	 * @param gfx
+	 *            the gfx to get
+	 * @return the graphics one wanted
+	 */
+	public Image getImage(Gfx gfx) {
+		return gfxContainer.getImage(gfx);
 	}
 }

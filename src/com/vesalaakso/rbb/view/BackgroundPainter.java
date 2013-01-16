@@ -1,8 +1,10 @@
 package com.vesalaakso.rbb.view;
 
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 
-import com.vesalaakso.rbb.model.Background;
+import com.vesalaakso.rbb.model.Camera;
+import com.vesalaakso.rbb.model.Gfx;
 import com.vesalaakso.rbb.model.ResourceManager;
 
 /**
@@ -11,21 +13,6 @@ import com.vesalaakso.rbb.model.ResourceManager;
  * @author Vesa Laakso
  */
 public class BackgroundPainter implements Painter {
-
-	/** The Background representing the bg (o'rly). */
-	private Background bg;
-
-	/**
-	 * Constructs this <code>Painter</code> and associates it with the given
-	 * <code>Background</code> model like a good MVC-specific class should do.
-	 * 
-	 * @param bg
-	 *            the <code>Background</code> representing the thing one might
-	 *            expect.
-	 */
-	public BackgroundPainter(Background bg) {
-		this.bg = bg;
-	}
 
 	/**
 	 * @see com.vesalaakso.rbb.view.Painter#isDrawnToWorldCoordinates()
@@ -43,7 +30,14 @@ public class BackgroundPainter implements Painter {
 	 */
 	@Override
 	public void paint(Graphics g, ResourceManager resManager) {
-		g.drawImage(bg.getImage(), bg.getX(), bg.getY());
+		// Get the bg image
+		Image bgImg = resManager.getImage(Gfx.BACKGROUND_GAME);
+
+		// Calculate coordinates based on camera coordinates
+		float x = Camera.get().getX() * -.1f;
+		float y = Camera.get().getY() * -.1f;
+
+		g.drawImage(bgImg, x, y);
 	}
 
 }

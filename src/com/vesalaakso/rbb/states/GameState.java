@@ -26,7 +26,6 @@ import com.vesalaakso.rbb.controller.PlayerPositioner;
 import com.vesalaakso.rbb.controller.Resetable;
 import com.vesalaakso.rbb.controller.RubberBandController;
 import com.vesalaakso.rbb.controller.Updateable;
-import com.vesalaakso.rbb.model.Background;
 import com.vesalaakso.rbb.model.Camera;
 import com.vesalaakso.rbb.model.GameStatus;
 import com.vesalaakso.rbb.model.EffectManager;
@@ -102,9 +101,6 @@ public class GameState extends BasicGameState {
 	/** Of course we need physics, here it is! */
 	private Physics physics;
 
-	/** And some eye candy. */
-	private Background background;
-
 	/** A little something to stop the camera from going to distances. */
 	private CameraLimiter cameraPositionLimiter =
 		new CameraLimiter(mapContainer);
@@ -151,7 +147,7 @@ public class GameState extends BasicGameState {
 
 	/** A helper method which adds all the painters in the correct order. */
 	private void addPainters() {
-		painterContainer.addPainter(new BackgroundPainter(background));
+		painterContainer.addPainter(new BackgroundPainter());
 		painterContainer.addPainter(new TileMapAreaPainter(mapContainer));
 		painterContainer.addPainter(new TileMapBackLayerPainter(mapContainer));
 		painterContainer.addPainter(new PlayerPainter(player));
@@ -189,7 +185,6 @@ public class GameState extends BasicGameState {
 		resetables.add(rubberBand);
 		resetables.add(physics);
 		resetables.add(effectManager);
-		resetables.add(background);
 	}
 
 	/** A helper method which adds all updateables. */
@@ -198,7 +193,6 @@ public class GameState extends BasicGameState {
 		updateables.add(cameraPositionLimiter);
 		updateables.add(physics);
 		updateables.add(playerListener);
-		updateables.add(background);
 		updateables.add(effectManager);
 	}
 
@@ -318,9 +312,6 @@ public class GameState extends BasicGameState {
 		// Remove this as the input handler, as input handling is done via
 		// InputMaster class and not this.
 		container.getInput().removeListener(this);
-
-		// Load the background image
-		background = new Background();
 
 		// Construct the object representing the player
 		player = new Player(mapContainer, gameStatus);
