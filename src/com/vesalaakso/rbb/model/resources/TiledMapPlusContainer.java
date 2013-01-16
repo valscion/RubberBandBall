@@ -1,13 +1,8 @@
 package com.vesalaakso.rbb.model.resources;
 
-import java.io.InputStream;
-import java.net.URL;
-
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMapPlus;
 import org.newdawn.slick.util.Log;
-import org.newdawn.slick.util.ResourceLoader;
-import org.newdawn.slick.util.ResourceLocation;
 
 import com.vesalaakso.rbb.RubberBandBall;
 
@@ -19,27 +14,6 @@ import com.vesalaakso.rbb.RubberBandBall;
  */
 public class TiledMapPlusContainer {
 
-	/** Package path to maps */
-	private final static String LEVELS_PACKAGE_PATH =
-		"/com/vesalaakso/rbb/data/levels/";
-
-	/** Slick <code>ResourceLocation</code> to get resources from packages */
-	private final static ResourceLocation MAP_RESOURCE_LOCATION =
-		new ResourceLocation() {
-
-			@Override
-			public InputStream getResourceAsStream(String ref) {
-				return TiledMapPlusContainer.class
-						.getResourceAsStream(LEVELS_PACKAGE_PATH + ref);
-			}
-
-			@Override
-			public URL getResource(String ref) {
-				return TiledMapPlusContainer.class
-						.getResource(LEVELS_PACKAGE_PATH + ref);
-			}
-		};
-
 	/** All the levels are stored in this array */
 	private TiledMapPlus[] maps = new TiledMapPlus[RubberBandBall.LEVEL_COUNT];
 
@@ -50,9 +24,6 @@ public class TiledMapPlusContainer {
 	 *             if something went wrong with map loading
 	 */
 	public void init() throws SlickException {
-		// Add the default resource location for location loaders
-		ResourceLoader.addResourceLocation(MAP_RESOURCE_LOCATION);
-
 		// Load all levels
 		for (int level = 1; level <= RubberBandBall.LEVEL_COUNT; level++) {
 			try {
@@ -63,9 +34,6 @@ public class TiledMapPlusContainer {
 			}
 			Log.info("Loaded level " + level);
 		}
-
-		// Remove the resource location from resource loader
-		ResourceLoader.removeResourceLocation(MAP_RESOURCE_LOCATION);
 	}
 
 	/** A helper to load a single map */

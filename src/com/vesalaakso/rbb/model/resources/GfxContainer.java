@@ -1,6 +1,5 @@
 package com.vesalaakso.rbb.model.resources;
 
-import java.io.InputStream;
 import java.util.Map;
 
 import org.newdawn.slick.Image;
@@ -33,17 +32,7 @@ public class GfxContainer {
 	/** A helper to load an image file */
 	private Image loadImage(Gfx gfx) throws SlickException {
 		Image img;
-		String resourcePath = "/com/vesalaakso/rbb/data/" + gfx.fileName;
-		InputStream in = this.getClass().getResourceAsStream(resourcePath);
-
-		if (in == null) {
-			String err =
-				String.format("Could not find image %s with file name %s", gfx,
-						gfx.fileName);
-			throw new SlickException(err);
-		}
-
-		img = new Image(in, gfx.fileName, false);
+		img = new Image(gfx.fileName);
 		return img;
 	}
 	

@@ -80,11 +80,7 @@ public class FontContainer {
 	/** A helper to load a unicode font */
 	private UnicodeFont loadFont(Font font) throws SlickException {
 		UnicodeFont f;
-
-		String filePath = "data/fonts/" + font.fileName;
-
-		f = new UnicodeFont(filePath, font.size, false, false);
-
+		f = new UnicodeFont(font.fileName, font.size, false, false);
 		return f;
 	}
 

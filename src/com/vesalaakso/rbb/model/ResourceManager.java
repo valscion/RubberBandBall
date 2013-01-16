@@ -7,6 +7,7 @@ import org.newdawn.slick.Sound;
 import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.tiled.TiledMapPlus;
 import org.newdawn.slick.util.Log;
+import org.newdawn.slick.util.ResourceLoader;
 
 import com.vesalaakso.rbb.model.resources.Audio;
 import com.vesalaakso.rbb.model.resources.AudioContainer;
@@ -14,6 +15,8 @@ import com.vesalaakso.rbb.model.resources.Font;
 import com.vesalaakso.rbb.model.resources.FontContainer;
 import com.vesalaakso.rbb.model.resources.Gfx;
 import com.vesalaakso.rbb.model.resources.GfxContainer;
+import com.vesalaakso.rbb.model.resources.MapResourceLocation;
+import com.vesalaakso.rbb.model.resources.RbbResourceLocation;
 import com.vesalaakso.rbb.model.resources.TiledMapPlusContainer;
 
 /**
@@ -42,9 +45,15 @@ public class ResourceManager {
 	 *             if some resource failed to load
 	 */
 	public void init() throws SlickException {
+		// Add a location for default stuff
+		ResourceLoader.addResourceLocation(new RbbResourceLocation());
+
 		fontContainer.init();
 		audioContainer.init();
 		gfxContainer.init();
+		
+		// Before loading map, add a location for map related resources
+		ResourceLoader.addResourceLocation(new MapResourceLocation());
 		mapContainer.init();
 		Log.info("Resource Manager initialized successfully");
 	}
