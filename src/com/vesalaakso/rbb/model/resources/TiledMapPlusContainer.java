@@ -44,7 +44,7 @@ public class TiledMapPlusContainer {
 			mapFilename = "0" + mapFilename;
 		}
 
-		TiledMapPlus map = new TiledMapPlus("/" + mapFilename);
+		TiledMapPlus map = new TiledMapPlus("levels/" + mapFilename);
 		return map;
 	}
 

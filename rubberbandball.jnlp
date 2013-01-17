@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp
+  spec="1.0+"
+  codebase="http://athene.vesalaakso.com/studio1"
+  href="rubberbandball.jnlp">
+  <information>
+    <title>Rubber Band Ball</title>
+    <vendor>Vesa Laakso productions</vendor>
+    <homepage href="http://vesalaakso.com"/>
+    <description>My Game</description>
+    <description kind="short">My Game</description>
+    <icon href="icon.gif"/>
+  </information>
+  <security>
+	<all-permissions/>
+  </security>
+  <resources>
+    <j2se href="http://java.sun.com/products/autodl/j2se" version="1.6+" max-heap-size="128m"/>
+    <jar href="rubberbandball.jar"/>  
+    <extension href="slick.jnlp"/>
+	<jar href="fizzy.jar"/>
+	<jar href="jbox2d-library-2.1.2.jar"/>
+	<jar href="guava-14.0-rc1.jar"/>
+  </resources>  
+  <application-desc main-class="com.vesalaakso.rbb.RubberBandBall"/>
+</jnlp>

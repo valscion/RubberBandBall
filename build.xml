@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." name="RubberBandBall" default="run_build">
+
+	<property name="guiJar" value="built_rbb.jar">
+	</property>
+
+	<property name="lib.dir" value="lib" />
+
+	<path id="classpath">
+		<fileset dir="${lib.dir}" includes="**/*.jar" />
+	</path>
+
+	<target name="run_build" depends="delete_old_jar,create_dirs,create_manifest,copy_all_class_files,create_jar,delete_temp_dirs">
+	</target>
+
+	<target name="delete_old_jar">
+		<delete file="${guiJar}">
+		</delete>
+	</target>
+
+	<target name="create_dirs">
+		<mkdir dir="jar_temp" />
+		<mkdir dir="jar_temp/META-INF" />
+	</target>
+
+	<target name="delete_temp_dirs">
+		<delete dir="jar_temp">
+		</delete>
+	</target>
+
+	<target name="create_manifest">
+		<manifest file="jar_temp/META-INF/MANIFEST.MF">
+			<attribute name="Manifest-Version" value="1.0" />
+			<attribute name="Version" value="1.0.0" />
+			<attribute name="Company" value="Vesa Laakso productions" />
+			<attribute name="Project" value="RubberBandBall" />
+			<attribute name="Java-Version" value="${java.version}" />
+			<attribute name="Class-Path" value="lib/fizzy.jar lib/guava-14.0-rc1.jar lib/ibxm.jar lib/jbox2d-library-2.1.2.jar lib/jogg-0.0.7.jar lib/jorbis-0.0.15.jar lib/lwjgl.jar lib/slick.jar" />
+			<attribute name="Main-Class" value="com.vesalaakso.rbb.RubberBandBall" />
+		</manifest>
+	</target>
+
+	<target name="create_jar">
+		<jar destfile="${guiJar}" manifest="jar_temp/META-INF/MANIFEST.MF" basedir="jar_temp">
+		</jar>
+	</target>
+
+	<target name="copy_all_class_files">
+		<copy todir="jar_temp">
+			<fileset dir="bin">
+				<include name="*/**" />
+			</fileset>
+		</copy>
+	</target>
+</project>

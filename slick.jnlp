@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp
+  spec="1.0+"
+  codebase="http://athene.vesalaakso.com/studio1"
+  href="slick.jnlp">
+  <information>
+    <title>Slick 2D Game Library</title>
+    <vendor>Slick 2D</vendor>
+    <homepage href="http://slick.cokeandcode.com"/>
+    <description>Slick 2D Game Library</description>
+    <description kind="short">Slick 2D Game Library</description>
+    <icon href="http://slick.cokeandcode.com/demos/icon.gif"/>
+  </information>
+  <security>
+	<all-permissions/>
+  </security>
+  <resources>
+    <j2se href="http://java.sun.com/products/autodl/j2se" version="1.4+" max-heap-size="128m"/>
+    <jar href="slick.jar"/>    <jar href="ibxm.jar"/>      
+    <jar href="jogg-0.0.7.jar"/>    
+    <jar href="jorbis-0.0.15.jar"/>      
+    <extension name="org.lwjgl" href="http://lwjgl.org/webstart/2.8.5/extension.jnlp" /> 
+    <property name="jnlp.slick.webstart" value="true"/>
+  </resources>  
+
+
+  <component-desc/>
+</jnlp>

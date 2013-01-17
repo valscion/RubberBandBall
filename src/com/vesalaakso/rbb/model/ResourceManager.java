@@ -57,7 +57,7 @@ public class ResourceManager {
 		effectManager.init();
 
 		// Before loading map, add a location for map related resources
-		ResourceLoader.addResourceLocation(new MapResourceLocation());
+		//ResourceLoader.addResourceLocation(new MapResourceLocation());
 		mapContainer.init();
 		Log.info("Resource Manager initialized successfully");
 	}
