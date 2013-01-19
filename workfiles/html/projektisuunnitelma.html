@@ -1,0 +1,117 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Studio 1, projektisuunnitelma – Vesa Laakso</title>
+	<link rel="stylesheet" type="text/css" href="resources/style.css">
+	<style type="text/css">
+	.time {
+		color: hsl(0, 50%, 50%);
+		font-style: italic;
+	}
+	#total {
+		color: hsl(0, 50%, 50%);
+		font-weight: bold;
+	}
+	</style>
+</head>
+<body>
+	<h1>Studio 1, projektisuunnitelma – <a href="http://vesalaakso.com">Vesa Laakso</a></h1>
+	<p>Tuleva Studio 1 -projektini tulee olemaan sivultapäin kuvattu taitopeli. Siinä tavoitteenasi on saada kerran liikkeelle laukaisemasi pallo paikasta A paikkaan B. Pallolle annetaan alkuvauhti ja -suunta vetämällä hiirellä pallon keskeltä kuminauha. Tämän kuminauhan pituutta ja kulmaa säätämällä hoituu koko pelin perusmekaniikka. Pelimekaniikan idea, kuten alla olevat kuvatkin, on saatu sivustolta jossa on listattu 300 eri pelimekaniikkaideaa. Tämän idean suora linkki on <a href="http://www.squidi.net/three/entry.php?id=24">http://www.squidi.net/three/entry.php?id=24</a>.</p>
+	<p class="img"><img src="resources/squidi.net_entry024-rubber1.png" alt="Pelimekaniikkaesimerkki" title="Pelimekaniikkaesimerkki, sivustolta squidi.net" /></p>
+	<p>Ensimmäisessä tasossa pelissä ei ole mitään muuta kuin pallo, seiniä ja maali. Pelin edetessä vaikeustaso kasvaa, kun peliin tulee uusia elementtejä: painovoima, piikikkäitä esteitä, lepopaikkoja joista voidaan pallo uudelleen pistää liikkeelle, painovoimakenttiä jotka vaihtavat painovoiman suuntaa ja mitä kaikkea sitä keksiikään. Mikäli ajatus tuntuu hyvältä testausvaiheessa, peliin lisätään vielä jonkinlaisia asioita, joita keräämällä saa itselleen pisteitä ja nämä pisteet sitten kertovat kuinka taitava pelaaja on.</p>
+	<p class="img"><img src="resources/squidi.net_entry024-rubber2.png" alt="Pelimekaniikkaesimerkki 2" title="Pelimekaniikkaesimerkki 2, sivustolta squidi.net" /></p>
+	<p>Tärkeimpänä ominaisuutena pelissä on luonnollisesti se, että pallon fysiikan mallinnus toimii oikein. Pallo ei saa mennä seinistä läpi ja painovoiman tulee olla realistisen tuntuinen. Mahdollisten erikoistapahtumien käsittely ja käyttäjälle tapauksesta kertominen visuaalisin palauttein on myös tärkeässä roolissa. Ohjelmassa tulee olemaan ainakin alkuvalikko, josta näkee läpäistyt tasot ja pystyy jatkamaan suoraan siitä, mihin viime kerralla jäi. Mahdolliset pisteet näkyvät myös sekä tasokohtaisesti että yhteenlaskettuna tasovalikossa.</p>
+	<h2>Tekninen toteutus</h2>
+	<p>Perusajatuksena arkkitehtuurissa on hyväksikäyttää MVC-mallia siten, että pelin mallin sisältää <code>Game</code>-luokka. Kyseinen luokka vain tallentaa tietoon tiettyihin asioihin erikoistuneiden luokkien mallit, kuten pelaajan tiedot <code>Player</code>-luokan avulla ja tilekartta <code>TileMap</code>-luokan avulla. Pelin piirtämisen hoitavat <code>AbstractPainter</code>-luokasta periytyvät oliot. Controller puolella on erillisiä luokkia jotka reagoivat erinäisiin tapahtumiin: pelin peruslogiikan pyörittämän ajastimen tickeihin, entiteettien keräämiseen, törmäyksiin ja käyttäjän syötteeseen. Ohjelma tulee toimimaan <a href="http://www.slick2d.org/">Slick2D-nimisen kirjaston</a> avulla. Slick2D on itsessään kirjoitettu 2D-pelien helpompaa toteutusta varten <a href="http://www.lwjgl.org/">LWJGL-kirjaston</a> päälle. Sillä hoidetaan piirtäminen sekä syötteiden lukeminen käyttäjältä ja Slick2D:n mukana tuleva fizzy-kirjasto tulee hoitamaan pelin fysiikan mallintamisen. Fizzy käyttää fysiikkamoottorinaan <a href="http://www.jbox2d.org/">JBox2D-kirjastoa</a>, joka on Java-kielelle käännetty versio Erin Catton tekemästä loistavasta <a href="http://www.box2d.org/">Box2D-fysiikkamoottorista</a>. Kartat tullaan tekemään <a href="http://www.mapeditor.org/">Tiled-kartteditorin</a> avulla.</p>
+	<p class="img"><a href="resources/architecture_vision.png" title="Arkkitehtuurin käsitekartta, klikkaa nähdäksesi käsitekartta suurena"><img src="resources/architecture_vision-min.png" width="512" height="317" alt="Käsitekartta arkkitehtuurista" /></a></p>
+	<h2>Työskentelyn kuvaus</h2>
+	<p>Projektin työskentelyprosessi tulee olemaan iteratiivinen ja suunnitelmat tulevat siis tarkentumaan ja muuttumaan pitkin prosessia. Koko projekti tulee kuitenkin talteen historioineen päivineen Git-versionhallintajärjestelmään, johon kirjoittelen commit-viestien yhteyteen tuntemuksia siitä, miltä koodaus maistui. Koodaustapaani kuuluu koodin täydellinen JavaDoc-kommentointi osan valmistuttua (tai jopa sitä ennen) joten erillistä dokumentaatioaikaa ei tarvitse projektille varata, se kuuluu koodaukseen.</p>
+	<h3>Aikataulutus</h3>
+	<ul>
+		<li>Viikko 0: 3. – 9.12.
+			<ul>
+				<li>suunnittelu ja suunnitelman kirjoittaminen, <span class="time">12 h</span></li>
+			</ul>
+		</li>
+		<li>Viikko 1: 10.12. – 16.12.
+			<ul>
+				<li>kalenteri täynnä kaikkea tekemistä</li>
+				<li>koodausta ja grafiikan piirtelyä, <span class="time">6 h</span>
+					<ul>
+						<li>Slick2D käyttöön</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+		<li>Viikko 2: 17.12. – 23.12.
+			<ul>
+				<li>MATIKKA OHI.</li>
+				<li>parin ensimmäisen kartan tekeminen ja ruudulle piirtäminen. <span class="time">4 h</span>
+					<ul>
+						<li>Tiled käyttöön</li>
+					</ul>
+				</li>
+				<li>koodausta, fysiikkaa ynnä muuta, <span class="time">12 h</span>
+					<ul>
+						<li>Fizzy käyttöön</li>
+						<li>mahdollisuus yksinkertaisten testien kirjoittamiseen tässä vaiheessa esille</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+		<li>Viikko 3: 24.12. – 30.12.
+			<ul>
+				<li>koodaa, koodaa, koodaa vaan, huomenna on sulla ohjelma… <span class="time">8 h</span>
+					<ul>
+						<li>valikkoa kuntoon, fonttien latailut ja piirtelyt</li>
+					</ul>
+				</li>
+				<li>lisää tasoja ja niiden suunnittelua, <span class="time">12 h</span>
+					<ul>
+						<li>ei vielä kaikkien uusien ominaisuuksien logiikkaa, mutta tapahtumankuuntelijat toimintaan.</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+		<li>Viikko 4: 31.12. – 6.1.
+			<ul>
+				<li>lisää koodausta ja testitapojen miettimistä. <span class="time">10 h</span>
+					<ul>
+						<li>koodin siistimistä ja mahdollisen refaktoroinnin harkitsemista/toteuttamista</li>
+					</ul>
+				</li>
+				<li>äänet ja mahdollista musiikkia, <span class="time">6 h</span></li>
+			</ul>
+		</li>
+		<li>Viikko 5: 7.1. – 13.1.
+			<ul>
+				<li>TUTAn tenttiä ja mahdollista matikan välikokeen uusimista, killan ja hallituksen vaihto.</li>
+				<li>Ohjelman yleisilmettä kuntoon ja testailua, <span class="time">6 h</span>
+					<ul>
+						<li>äänet ja musiikki, ellei jo aikaisemmin</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+		<li>Viikko 6: 14.1. – 20.1.
+			<ul>
+				<li>Ole ylpeä itsestäsi ja kirjoita loppuraportti. <span class="time">8 h</span></li>
+				<li>Korjaile pari bugia, <span class="time">4 h</span></li>
+			</ul>
+		</li>
+	</ul>
+	<p>Yhteensä tällä laskutavalla tuntimääräksi tulisi <span id="total">88</span> tuntia. Vaikuttaa sopivalta, haluan saada tästä projektista sellaisen, jota kehtaa näyttää kaikille ja jota jaksaa pelatakin. Luultavasti innostuksen myötä aikaa kuluu projektiin enemmänkin, sen näkee sitten myöhemmin.</p>
+	<h2>Tietolähteet</h2>
+	<p>Seuraavia tietolähteitä aion käyttää projektia tehdessäni vähintään:</p>
+	<ul>
+		<li>Slick 2D: Wiki, <a href="http://www.slick2d.org/wiki/index.php/Main_Page">http://www.slick2d.org/wiki/index.php/Main_Page</a></li>
+		<li>Slick 2D: Javadoc API, <a href="http://www.slick2d.org/javadoc/">http://www.slick2d.org/javadoc/</a></li>
+		<li>Slick 2D ja LWJGL: IRC-kanava <strong>#lwjgl</strong> @ Freenode</li>
+		<li>Äänet: Freesound, <a href="http://www.freesound.org/">http://www.freesound.org/</a></li>
+		<li>Musiikki: CoolBasic-ryhmän jäseniltä tai Freesound, huutelu irkissä</li>
+		<li>Blogipostaukset Slick 2D:n käytöstä ja peliohjelmoinnista Javalla</li>
+		<li>Googlen käyttö ongelmatilanteissa, linkkien etsiminen stackoverflow.com vastauksiin luultavasti ensisijaisesti</li>
+	</ul>
+</body>
+</html>

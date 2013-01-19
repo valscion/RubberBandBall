@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<title>Loppuraportti: Rubber Band Ball</title>
-	<link rel="stylesheet" type="text/css" href="style.css">
+	<link rel="stylesheet" type="text/css" href="resources/style.css">
 </head>
 <body>
 	<header>
@@ -40,17 +40,17 @@
 		<h2 id="ohjelman-kuvaus">1. Ohjelman kuvaus</h2>
 		<p>Rubber Band Ball on sivulta sivulta päin kuvattu, avaruusteemainen taitopeli, jossa tavoitteenasi on saada laukaistua pallomainen pelaaja paikasta A paikkaan B. Pelaaja pitää saada laukaistua alkualueelta joko vaaleanvihreänä välkkyville suoja-alueille tai maaliin. Mikäli pelaaja pysähtyy näiden alueiden ulkopuolelle, on taso hävitty ja sen joutuu aloittamaan alusta.</p>
 		<p>Lisämausteena peliin tuo toisesta tasosta alkaen vaikuttava painovoima, jonka kanssa saa etsiä oikeaa logiikkaa tasojen läpäisemiseen. Viidennessä tasossa on lisäksi painovoiman suuntaa vaihtavia kenttiä, joita pitää hyväksikäyttää tason voittamiseksi. Peli pitää kirjaa yksittäisiin tasoihin kuluneista yrityksistä sekä yksittäisten laukaisujen määrästä, joilla taso on onnistuneesti läpäisty. Tasoja pelissä on palautushetkellä valitettavasti vain viisi.</p>
-		<p class="img"><img src="scrshot1.png" alt="Kuvankaappaus pelistä" width="640" height="400" /></p>
+		<p class="img"><img src="resources/scrshot1.png" alt="Kuvankaappaus pelistä" width="640" height="400" /></p>
 		<p>Pelimekaniikan inspiraationlähde on saatu sivustolta, jossa on listattu 300 eri pelimekaniikkaideaa – toteutettu ajatus löytyy täältä: <a href="http://www.squidi.net/three/entry.php?id=24" lang="en">Three Hundred :: Mechanic #024 - Rubber Band Ball</a>.</p>
 
 		<div class="sub">
 			<h3 id="kayttoliittyma">1.1 Käyttöliittymä</h3>
 			<p>Peliin on toteutettu alkeellinen alkuvalikko, josta pääsee siirtymään itse peliin ja lukemaan ohjeet pelin pelaamista varten. Itse pelissä pelaajan laukaiseminen tapahtuu vetämällä pelaajasta hiirellä pinkki "kuminauha", jonka kulmaa ja pituutta vaihtelemalla pystytään vastaavasti muuttamaan pelaajan lähtökulmaa ja -nopeutta. Peli pitää kirjaa yksittäisen tason läpäisemiseen käytetyistä yrityksistä sekä nykyisen yrityksen aikana käytettyjen laukaisujen määrästä.</p>
-			<p class="img"><img src="scrshot2.png" alt="Kuvankaappaus pelin aikaisesta käyttöliittymästä" width="640" height="400" /></p>
+			<p class="img"><img src="resources/scrshot2.png" alt="Kuvankaappaus pelin aikaisesta käyttöliittymästä" width="640" height="400" /></p>
 			<p>Koska yksittäistä tasoa ei voi kerralla piirtää kokonaisuudessaan ruudulle, piirtää peli vain osan 2D-maailmaa kerrallaan. Sen, mitä kulloinkin kuvataan, määrittelee pelimaailmaa kuvaava kamera. Kun kamera siirtyy, siirtyy myös kuvattava alue. Kun pelaaja laukaistaan, kamera seuraa pelaajan sijaintia pehmeästi. Kun pelaaja on pysähtynyt pystytään kameraa puolestaan siirtämään viemällä hiiri ruudun reunoille, jolloin kamera siirtyy haluttuun suuntaan. Kameraa pystytään myös zoomaamaan hiiren rullalla, jolloin pystytään ulospäin zoomatessa saada selkeämpi kuva koko tasosta tai sisäänpäin zoomatessa ihastella pelaajan valloittavaa ilmettä.</p>
-			<p class="img"><img src="scrshot3.png" alt="Kuvankaappaus zoomatusta pelistä ja pelaajasta" width="320" height="200" /></p>
+			<p class="img"><img src="resources/scrshot3.png" alt="Kuvankaappaus zoomatusta pelistä ja pelaajasta" width="320" height="200" /></p>
 			<p>Peliin on myös toteutettu tehokas debug-tila, jonka saa päälle painamalla D-näppäintä. Debug-tilassa pystyy näkemään erinäisiä peliin olennaisesti liittyviä arvoja sekä mikä parasta, visualisoimaan erinäiset fysiikkamoottoriin vaikuttavat törmäysobjektit. Tämä on suurena hyötynä kehittäjälle mutta mikä ettei myös ilona pelin taustalla jylläävästä tekniikasta kiinnostuneelle pelaajalle.</p>
-			<p class="img"><img src="scrshot4.png" alt="Kuvankaappaus pelistä debug-tilassa" width="640" height="400" /></p>
+			<p class="img"><img src="resources/scrshot4.png" alt="Kuvankaappaus pelistä debug-tilassa" width="640" height="400" /></p>
 		</div>
 	</article>
 </body>
