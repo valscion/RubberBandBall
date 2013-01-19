@@ -74,13 +74,18 @@ public class CameraController extends MouseAdapter implements Updateable,
 	@Override
 	public void mouseWheelMoved(int change) {
 		if (change < 0) {
-			cameraTargetScale *= .75f;
+			cameraTargetScale *= .95f;
 			if (cameraTargetScale < Camera.MIN_SCALING) {
 				cameraTargetScale = Camera.MIN_SCALING;
 			}
 		}
 		else {
-			cameraTargetScale *= 1.25f;
+			cameraTargetScale *= 1.05f;
+		}
+
+		// When target scale is near 1, set it to 1 to ensure nice graphics.
+		if (Math.abs(cameraTargetScale - 1.0f) < 0.02f) {
+			cameraTargetScale = 1.0f;
 		}
 	}
 
