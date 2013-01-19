@@ -63,7 +63,7 @@
 		<delete dir="javadoc" />
 		<mkdir dir="javadoc" />
 
-		<javadoc sourcepath="src" defaultexcludes="yes" destdir="javadoc" author="true" version="true" use="true" windowtitle="RubberBandBall">
+		<javadoc sourcepath="src" defaultexcludes="yes" destdir="javadoc" author="true" version="true" use="true" windowtitle="Rubber Band Ball javadoc" access="package">
 			<packageset dir="src" defaultexcludes="yes">
 				<include name="com/vesalaakso/rbb/**/**" />
 			</packageset>
