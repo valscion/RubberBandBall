@@ -1,13 +1,8 @@
-/* Fontit */
-body {
-	font: 16px Helvetica, "Dejavu Sans Serif", Arial, sans-serif;
-}
-
-
 html {
 	background-color: hsl(180, 25%, 5%);
 }
 body {
+	font: 16px Helvetica, "Dejavu Sans Serif", Arial, sans-serif;
 	max-width: 800px;
 	margin-left: 10%;
 	padding-left: 15px;
@@ -36,4 +31,22 @@ a:hover {
 }
 h1 a {
 	text-decoration: none;
+}
+
+h1 {
+	font-size: 2em;
+}
+h2 {
+	font-size: 1.6em;
+}
+h3 {
+	font-size: 1.4em;
+}
+h4 {
+	font-size: 1.2em;
+}
+
+/* Ala-otsikko ja ala-otsikon ala-otsikko yms */
+.sub {
+	padding-left: 5%;
 }
