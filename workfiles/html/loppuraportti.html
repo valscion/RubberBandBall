@@ -23,7 +23,6 @@
 					<ol>
 						<li><a href="#paketit">Paketit</a></li>
 						<li><a href="#oleellisimmat-rakenteet">Oleellisimmat rakenteet</a></li>
-						<li><a href="#pelimoottori">Pelimoottori</a></li>
 						<li><a href="#ulkoiset-kirjastot">Ulkoiset kirjastot</a>
 							<ol>
 								<li><a href="#slick-grafiikka-ja-pelimoottorina">Slick grafiikka- ja pelimoottorina</a></li>
@@ -82,7 +81,14 @@
 			<p>Pelissä on yksi <a href="../../javadoc/com/vesalaakso/rbb/view/PainterContainer.html"><code>PainterContainer</code></a>-olio, johon lisätään halutussa piirtojärjestyksessä kaikki eri piirtäjäluokat. Tämän luokan <a href="../../javadoc/com/vesalaakso/rbb/view/PainterContainer.html#paintAll%28org.newdawn.slick.Graphics,%20com.vesalaakso.rbb.states.GameState%29"><code>paintAll()</code></a> metodia kutsumalla saadaan helposti pyöräytettyä läpi kaikki piirrettävät selkeästi ja ilman harmaita hiuksia. Jokainen <a href="../../javadoc/com/vesalaakso/rbb/view/Painter.html"><code>Painter</code></a>-luokka myös kertoo, haluaako se itsensä piirrettävän maailmankoordinaatetteihin vai ruutukoordinaatteihin. Maailmakoordinaatistoon piirrettävät asiat ovat riippuvaisia maailmaa kuvaavan kameran sijainnista ja skaalauksen/zoomin asteesta kun taas ruutukoordinaatteihin piirrettäviin asioihin kamera ei luonnollisestikaan vaikuta.</p>
 			<p><a href="../../javadoc/com/vesalaakso/rbb/states/GameState.html"><code>GameState</code></a>-luokka luo myös useat Model-osan luokkien instanssit ja antaa niiden viittauksen asiasta kiinnostuneille piirtäjille ja syötteiden kuuntelijoille. Esimerkiksi alla on määritelty kaaviossa (ilman debug-ominaisuuksia), miten pelaajasta vastuussa oleva <a href="../../javadoc/com/vesalaakso/rbb/model/Player.html"><code>Player</code></a>-olio luodaan, missä ja miten sitä muokataan ja minkä luokan kautta se piirretään.</p>
 			<p class="img"><img src="resources/player-diagram.png" alt="Kaavio Player-luokan olion liikkeistä pelissä" width="545" height="486" /></p>
-		</div>
+
+			<h3 id="ulkoiset-kirjastot">2.3 Ulkoiset kirjastot</h3>
+			<p>Jo projektin ideointivaiheessa totesin heti alkuun, että Swing ja Graphics2D -yhdistelmä ei tulisi riittämään projektilleni, vaan lähdin aktiivisesti etsimään apuvälineitä ja kirjastoja, joilla pelini toteuttaisin. Valitsin apuvälineikseni grafiikka- ja pelimoottoriksi <a href="http://www.slick2d.org">Slick-kirjaston</a>, fysiikkamoottoriksi Slickin yhteyteen rakennetun <a href="https://github.com/nanodeath/fizzy">fizzy</a>n ja tasoja varten Slickilläkin toimivan <a href="http://www.mapeditor.org/">Tiled</a>in.</p>
+			<div class="sub">
+				<h4 id="slick-grafiikka-ja-pelimoottorina">2.3.1 Slick grafiikka- ja pelimoottorina</h4>
+				<p>Yllättävän yksinkertaiseksi ja tehokkaaksi apuvälineeksi paljastunut <a href="http://www.slick2d.org">Slick</a> oli mieluisa yllätys. Sen kautta hoituu projektin diibadaaba ja laibalaiba.</p>
+			</div><!-- .sub -->
+		</div><!-- .sub -->
 	</article>
 </body>
 </html>
