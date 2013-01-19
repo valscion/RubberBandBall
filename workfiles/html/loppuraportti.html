@@ -22,7 +22,7 @@
 				<li><a href="#tekninen-toteutus">Tekninen toteutus</a>
 					<ol>
 						<li><a href="#paketit">Paketit</a></li>
-						<li><a href="#arkkitehtuurinen-idea">Arkkitehtuurinen idea</a></li>
+						<li><a href="#oleellisimmat-rakenteet">Oleellisimmat rakenteet</a></li>
 						<li><a href="#pelimoottori">Pelimoottori</a></li>
 						<li><a href="#ulkoiset-kirjastot">Ulkoiset kirjastot</a>
 							<ol>
@@ -47,10 +47,36 @@
 			<h3 id="kayttoliittyma">1.1 Käyttöliittymä</h3>
 			<p>Peliin on toteutettu alkeellinen alkuvalikko, josta pääsee siirtymään itse peliin ja lukemaan ohjeet pelin pelaamista varten. Itse pelissä pelaajan laukaiseminen tapahtuu vetämällä pelaajasta hiirellä pinkki "kuminauha", jonka kulmaa ja pituutta vaihtelemalla pystytään vastaavasti muuttamaan pelaajan lähtökulmaa ja -nopeutta. Peli pitää kirjaa yksittäisen tason läpäisemiseen käytetyistä yrityksistä sekä nykyisen yrityksen aikana käytettyjen laukaisujen määrästä.</p>
 			<p class="img"><img src="resources/scrshot2.png" alt="Kuvankaappaus pelin aikaisesta käyttöliittymästä" width="640" height="400" /></p>
-			<p>Koska yksittäistä tasoa ei voi kerralla piirtää kokonaisuudessaan ruudulle, piirtää peli vain osan 2D-maailmaa kerrallaan. Sen, mitä kulloinkin kuvataan, määrittelee pelimaailmaa kuvaava kamera. Kun kamera siirtyy, siirtyy myös kuvattava alue. Kun pelaaja laukaistaan, kamera seuraa pelaajan sijaintia pehmeästi. Kun pelaaja on pysähtynyt pystytään kameraa puolestaan siirtämään viemällä hiiri ruudun reunoille, jolloin kamera siirtyy haluttuun suuntaan. Kameraa pystytään myös zoomaamaan hiiren rullalla, jolloin pystytään ulospäin zoomatessa saada selkeämpi kuva koko tasosta tai sisäänpäin zoomatessa ihastella pelaajan valloittavaa ilmettä. Zoomauksen saa tarvittaessa resetoitua napauttamalla hiiren rullan pohjaan.</p>
+			<p>Koska yksittäistä tasoa ei voi kerralla piirtää kokonaisuudessaan ruudulle, piirtää peli vain osan 2D-maailmaa kerrallaan. Sen, mitä kulloinkin kuvataan, määrittelee pelimaailmaa kuvaava kamera. Kun kamera siirtyy, siirtyy myös kuvattava alue. Kun pelaaja laukaistaan, kamera seuraa pelaajan sijaintia pehmeästi. Kun pelaaja on pysähtynyt pystytään kameraa puolestaan siirtämään viemällä hiiri ruudun reunoille, jolloin kamera siirtyy haluttuun suuntaan. Kameraa pystytään myös zoomaamaan hiiren rullalla, jolloin ulospäin zoomatessa saadaan selkeämpi kuva koko tasosta tai sisäänpäin zoomatessa päästään ihastelemaan pelaajan valloittavaa ilmettä. Zoomauksen saa tarvittaessa resetoitua napauttamalla hiiren rullan pohjaan.</p>
 			<p class="img"><img src="resources/scrshot3.png" alt="Kuvankaappaus zoomatusta pelistä ja pelaajasta" width="320" height="200" /></p>
 			<p>Peliin on myös toteutettu tehokas debug-tila, jonka saa päälle painamalla D-näppäintä. Debug-tilassa pystyy näkemään erinäisiä peliin olennaisesti liittyviä arvoja sekä mikä parasta, visualisoimaan erinäiset fysiikkamoottoriin vaikuttavat törmäysobjektit. Tämä on suurena hyötynä kehittäjälle mutta mikä ettei myös ilona pelin taustalla jylläävästä tekniikasta kiinnostuneelle pelaajalle.</p>
 			<p class="img"><img src="resources/scrshot4.png" alt="Kuvankaappaus pelistä debug-tilassa" width="640" height="400" /></p>
+		</div>
+
+		<h2 id="tekninen-toteutus">2. Tekninen toteutus</h2>
+		<p>Ohjelman toteutuksessa keskityin jaottelemaan luokat selkeästi omiksi loogisiksi kokonaisuuksikseen <a href="http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller">MVC-mallia</a> mukaillen. Pyrin pitämään luokat erillisinä pieninä kokonaisuuksina, joista jokaista voisi hyvän koodaustavan mukaisesti <a href="http://programmers.stackexchange.com/questions/154228/why-is-it-good-to-split-a-program-into-multiple-classes">tarkastella helposti erillisinä kokonaisuuksina</a>.</p>
+		<p>Pelimoottori ja käyttöliittymä on toteutettu <a href="http://www.slick2d.org">Slick-kirjaston</a> avulla. Olen käyttänyt <a href="http://www.slick2d.org/wiki/index.php/State_Based_Games">State Based Games</a> tapaa rakentaa peliä ja luonut controller-luokkia, jotka reagoivat <a href="http://www.slick2d.org/wiki/index.php/Input#Event_based_input">näppäimistöstä tai hiirestä lähteviin tapahtumiin</a> ja joita voidaan päivittää pelin pääasiallisessa päivityssilmukassa eli <a href="http://www.slick2d.org/wiki/index.php/Slick2D_Framework">update()-metodissa</a>.</p>
+		<div class="sub">
+			<h3 id="paketit">2.1 Paketit</h3>
+			<p>Pääosa koodista on jaettu kolmeen pakettiin, joiden lisäksi valikot, karttojen välillä siirtymiset, resurssien lataamiset sekä valikot ovat jaoteltu erilliseen pakettiin ja luokkiin, jotka ovat vastuussa eri <a href="http://www.slick2d.org/wiki/index.php/State_Based_Games">pelin loogisista tilanteista</a>. Alla on lyhyesti selitettynä <a href="../../javadoc/index.html">kaikki pelissä määritellyt paketit</a>.</p>
+			<dl>
+				<dt>com.vesalaakso.rbb</dt>
+				<dd>Pääpaketti, jossa on vain yksi luokka, pelin <code>main</code>-metodin sisältämä <a href="../../javadoc/com/vesalaakso/rbb/RubberBandBall.html"><code>RubberBandBall</code></a></dd>
+				<dt>com.vesalaakso.rbb.controller</dt>
+				<dd>Syötteiden kuuntelijat, joita hallitsee <a href="#"><code>InputMaster</code></a>-luokka, sekä liittymät <a href="#"><code>Updateable</code></a> ja <a href="#"><code>Resetable</code></a>.</dd>
+				<dt>com.vesalaakso.rbb.model ja alapaketit</dt>
+				<dd>Pelin tilanteesta, tallennuksesta ja resursseista vastaavat luokat sekä MVC-mallia lievästi rikkova, fysiikasta vastaava luokka <code>Physics</code>.</dd>
+				<dt>com.vesalaakso.rbb.states</dt>
+				<dd><a href="http://www.slick2d.org/wiki/index.php/State_Based_Games">State Based Games</a> mallia toteuttavat luokat, joista yksi on pelitilanteen kokonaisuudesta huolehtiva <a href="#"><code>GameState</code></a>.</dd>
+				<dt>com.vesalaakso.rbb.tests</dt>
+				<dd>Alkuvaiheessa Slickiä käyttävät tekniikkademot. Eivät liity varsinaiseen peliin enää mitenkään. Näillä on hyvä testata eri kirjaston osien toimintaa uusilla koneilla.</dd>
+				<dt>com.vesalaakso.rbb.util</dt>
+				<dd>Yleishyödyllisen apuluokan <a href="#"><code>Utils</code></a> sisältämä paketti.</dd>
+				<dt>com.vesalaakso.rbb.view</dt>
+				<dd>MVC-mallin mukaisesti pelitilanteen piirtämisestä vastuussa olevat luokat.</dd>
+			</dl>
+
+			<h3 id="oleellisimmat-rakenteet">2.2 Oleellisimmat rakenteet</h3>
 		</div>
 	</article>
 </body>
