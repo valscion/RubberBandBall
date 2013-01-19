@@ -46,7 +46,7 @@
 	</target>
 
 	<target name="sign_jar">
-		<property name="keystore.location" value="keystore.ks" />
+		<property name="keystore.location" value="webstart/keystore.ks" />
 		<property name="keystore.alias" value="selfsigned" />
 		<input message="Enter keystore password" addproperty="keystore.password" />
 		<signjar jar="${guiJar}" keystore="${keystore.location}" storepass="${keystore.password}" alias="${keystore.alias}" />

@@ -1,3 +1,0 @@
-Manifest-Version: 1.0
-Main-Class: com.vesalaakso.rbb.RubberBandBall
-Class-Path: lib/fizzy.jar lib/guava-14.0-rc1.jar lib/ibxm.jar lib/jbox2d-library-2.1.2.jar lib/jogg-0.0.7.jar lib/jorbis-0.0.15.jar lib/lwjgl.jar lib/slick.jar
