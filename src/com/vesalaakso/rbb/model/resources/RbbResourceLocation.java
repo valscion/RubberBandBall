@@ -18,14 +18,18 @@ public class RbbResourceLocation implements ResourceLocation {
 	/** Package to use as a root */
 	private static final String PACKAGE = "com/vesalaakso/rbb/data/";
 
+	/** Class loader to use when fetching stuff */
+	private final ClassLoader loader = Thread.currentThread()
+			.getContextClassLoader();
+
 	@Override
 	public InputStream getResourceAsStream(String ref) {
-		return ClassLoader.getSystemResourceAsStream(PACKAGE + ref);
+		return loader.getResourceAsStream(PACKAGE + ref);
 	}
 
 	@Override
 	public URL getResource(String ref) {
-		return ClassLoader.getSystemResource(PACKAGE + ref);
+		return loader.getResource(PACKAGE + ref);
 	}
 
 }

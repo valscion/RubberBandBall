@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project basedir="." name="RubberBandBall" default="run_build">
 
-	<property name="guiJar" value="built_rbb.jar">
+	<property name="guiJar" value="rubberbandball.jar">
 	</property>
 
 	<property name="lib.dir" value="lib" />
@@ -10,7 +10,7 @@
 		<fileset dir="${lib.dir}" includes="**/*.jar" />
 	</path>
 
-	<target name="run_build" depends="delete_old_jar,create_dirs,create_manifest,copy_all_class_files,create_jar,delete_temp_dirs">
+	<target name="run_build" depends="delete_old_jar,create_dirs,create_manifest,copy_all_class_files,create_jar,sign_jar,delete_temp_dirs">
 	</target>
 
 	<target name="delete_old_jar">
@@ -43,6 +43,13 @@
 	<target name="create_jar">
 		<jar destfile="${guiJar}" manifest="jar_temp/META-INF/MANIFEST.MF" basedir="jar_temp">
 		</jar>
+	</target>
+
+	<target name="sign_jar">
+		<property name="keystore.location" value="keystore.ks" />
+		<property name="keystore.alias" value="selfsigned" />
+		<input message="Enter keystore password" addproperty="keystore.password" />
+		<signjar jar="${guiJar}" keystore="${keystore.location}" storepass="${keystore.password}" alias="${keystore.alias}" />
 	</target>
 
 	<target name="copy_all_class_files">

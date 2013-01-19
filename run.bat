@@ -1,1 +1,1 @@
-java -Djava.library.path="lib/native/windows/" -jar built_rbb.jar
+java -Djava.library.path="lib/native/windows/" -jar rubberbandball.jar

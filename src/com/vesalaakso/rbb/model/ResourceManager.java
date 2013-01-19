@@ -15,7 +15,6 @@ import com.vesalaakso.rbb.model.resources.Font;
 import com.vesalaakso.rbb.model.resources.FontContainer;
 import com.vesalaakso.rbb.model.resources.Gfx;
 import com.vesalaakso.rbb.model.resources.GfxContainer;
-import com.vesalaakso.rbb.model.resources.MapResourceLocation;
 import com.vesalaakso.rbb.model.resources.RbbResourceLocation;
 import com.vesalaakso.rbb.model.resources.TiledMapPlusContainer;
 
@@ -56,8 +55,6 @@ public class ResourceManager {
 		gfxContainer.init();
 		effectManager.init();
 
-		// Before loading map, add a location for map related resources
-		//ResourceLoader.addResourceLocation(new MapResourceLocation());
 		mapContainer.init();
 		Log.info("Resource Manager initialized successfully");
 	}
