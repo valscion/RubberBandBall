@@ -82,6 +82,7 @@ public class DebugPrintPainter implements Painter {
 				"------",
 				String.format("Camera position: (%.1f; %.1f)", cam.getX(),
 						cam.getY()),
+				String.format("Camera scale: %.3f", cam.getScaling()),
 				String.format("Mouse position (screen): (%d, %d)",
 						mouseX, mouseY),
 				String.format("Mouse position (world): (%.1f; %.1f)",
