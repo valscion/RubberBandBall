@@ -1,5 +1,7 @@
 html {
 	background-color: hsl(180, 25%, 5%);
+	background-image: url('bg-noise.png');
+	background-repeat: repeat;
 }
 body {
 	font: 16px Helvetica, "Dejavu Sans Serif", Arial, sans-serif;
@@ -49,4 +51,21 @@ h4 {
 /* Ala-otsikko ja ala-otsikon ala-otsikko yms */
 .sub {
 	padding-left: 5%;
+}
+
+/* Pakettien listaus dl/dd/dt-tagein */
+dt {
+	font-style: italic;
+}
+dd {
+	margin-bottom: 1em;
+}
+
+/* Koodinpätkät selkeästi erillisiksi */
+code {
+	background-color: hsl(180, 25%, 10%);
+	padding: 1px;
+}
+code:hover {
+	background-color: black;
 }
