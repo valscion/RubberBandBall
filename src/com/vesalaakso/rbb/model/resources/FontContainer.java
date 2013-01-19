@@ -11,8 +11,6 @@ import org.newdawn.slick.font.effects.Effect;
 import org.newdawn.slick.font.effects.ShadowEffect;
 import org.newdawn.slick.util.Log;
 
-import com.google.common.collect.Maps;
-
 /**
  * A class used to load all the fonts and to query for different fonts when
  * needed.
@@ -22,7 +20,8 @@ import com.google.common.collect.Maps;
 public class FontContainer {
 
 	/** All the fonts are stored in this map. */
-	private EnumMap<Font, UnicodeFont> fonts = Maps.newEnumMap(Font.class);
+	private EnumMap<Font, UnicodeFont> fonts =
+			new EnumMap<Font, UnicodeFont>(Font.class);
 
 	/**
 	 * Initializes all the fonts.

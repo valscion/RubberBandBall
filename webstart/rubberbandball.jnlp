@@ -20,7 +20,6 @@
     <extension href="slick.jnlp"/>
 	<jar href="fizzy.jar"/>
 	<jar href="jbox2d-library-2.1.2.jar"/>
-	<jar href="guava-14.0-rc1.jar"/>
   </resources>  
   <application-desc main-class="com.vesalaakso.rbb.RubberBandBall"/>
 </jnlp>

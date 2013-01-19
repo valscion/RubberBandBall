@@ -7,8 +7,6 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.util.ResourceLoader;
 
-import com.google.common.collect.Maps;
-
 /**
  * Handles audio and music loading and saving.
  * 
@@ -17,10 +15,12 @@ import com.google.common.collect.Maps;
 public class AudioContainer {
 
 	/** All music files are stored in this map */
-	private EnumMap<Audio, Music> musics = Maps.newEnumMap(Audio.class);
+	private EnumMap<Audio, Music> musics =
+			new EnumMap<Audio, Music>(Audio.class);
 
 	/** All sound effect files are stored in this map */
-	private EnumMap<Audio, Sound> sounds = Maps.newEnumMap(Audio.class);
+	private EnumMap<Audio, Sound> sounds =
+			new EnumMap<Audio, Sound>(Audio.class);
 
 	/**
 	 * Initializes all the audio files.

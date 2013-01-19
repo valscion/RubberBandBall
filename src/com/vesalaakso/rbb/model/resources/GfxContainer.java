@@ -5,8 +5,6 @@ import java.util.EnumMap;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
-import com.google.common.collect.Maps;
-
 /**
  * Handles graphics loading and saving.
  * 
@@ -15,7 +13,7 @@ import com.google.common.collect.Maps;
 public class GfxContainer {
 
 	/** All graphics files are stored in this map */
-	private EnumMap<Gfx, Image> images = Maps.newEnumMap(Gfx.class);
+	private EnumMap<Gfx, Image> images = new EnumMap<Gfx, Image>(Gfx.class);
 
 	/**
 	 * Initializes all the graphics files.

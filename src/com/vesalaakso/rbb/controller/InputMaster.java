@@ -1,13 +1,12 @@
 package com.vesalaakso.rbb.controller;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.newdawn.slick.ControlledInputReciever;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.KeyListener;
 import org.newdawn.slick.MouseListener;
-
-import com.google.common.collect.Lists;
 
 /**
  * Handles the coordination of different input based controllers.
@@ -20,16 +19,17 @@ public class InputMaster implements Updateable, Resetable {
 	private Input input;
 
 	/** List of controllers which would like to act upon every frame. */
-	private List<Updateable> updateables = Lists.newLinkedList();
+	private List<Updateable> updateables = new LinkedList<Updateable>();
 
 	/** List of controllers which would like to be reset when map changes. */
-	private List<Resetable> resetables = Lists.newLinkedList();
+	private List<Resetable> resetables = new LinkedList<Resetable>();
 
 	/** Added mouse listeners. */
-	private List<MouseListener> mouseListeners = Lists.newLinkedList();
+	private List<MouseListener> mouseListeners =
+			new LinkedList<MouseListener>();
 
 	/** Added key listeners. */
-	private List<KeyListener> keyListeners = Lists.newLinkedList();
+	private List<KeyListener> keyListeners = new LinkedList<KeyListener>();
 
 	/** Is the input master paused or not */
 	private boolean paused;

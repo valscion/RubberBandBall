@@ -1,5 +1,6 @@
 package com.vesalaakso.rbb.model;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +17,6 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.tiled.GroupObject;
 import org.newdawn.slick.util.Log;
 
-import com.google.common.collect.Maps;
 import com.vesalaakso.rbb.controller.PlayerCollisionListener;
 import com.vesalaakso.rbb.controller.Resetable;
 import com.vesalaakso.rbb.controller.Updateable;
@@ -39,8 +39,8 @@ public class Physics implements Updateable, Resetable {
 	private static final float MIN_ANGULAR_VELOCITY = 0.1f;
 
 	/**
-	 * The EffectManager which will create nice little effects as events in
-	 * the physics world will happen.
+	 * The EffectManager which will create nice little effects as events in the
+	 * physics world will happen.
 	 */
 	private EffectManager effectManager;
 
@@ -54,7 +54,8 @@ public class Physics implements Updateable, Resetable {
 	private float yGravity;
 
 	/** The bodies associated with the map, linked to the collidable object. */
-	private Map<Body<?>, TileMapObject> bodyTileMap = Maps.newHashMap();
+	private Map<Body<?>, TileMapObject> bodyTileMap =
+		new HashMap<Body<?>, TileMapObject>();
 
 	/** The player whose body will be added to the physics engine. */
 	private Player player;
@@ -122,7 +123,7 @@ public class Physics implements Updateable, Resetable {
 			if (xGravity == 0 && yGravity != 0) {
 				dir = playerBody.getXVelocity() > 0 ? -1 : 1;
 			}
-			else if (xGravity != 0 && yGravity == 0 ) {
+			else if (xGravity != 0 && yGravity == 0) {
 				dir = playerBody.getYVelocity() > 0 ? -1 : 1;
 			}
 

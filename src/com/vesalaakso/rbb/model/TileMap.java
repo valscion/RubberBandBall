@@ -1,5 +1,6 @@
 package com.vesalaakso.rbb.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.newdawn.slick.tiled.GroupObject;
@@ -8,7 +9,6 @@ import org.newdawn.slick.tiled.TiledMap;
 import org.newdawn.slick.tiled.TiledMapPlus;
 import org.newdawn.slick.util.Log;
 
-import com.google.common.collect.Lists;
 import com.vesalaakso.rbb.model.exceptions.MapException;
 
 /**
@@ -39,19 +39,20 @@ public class TileMap {
 	private TileMapObject spawnArea;
 
 	/** Safe areas */
-	private List<TileMapObject> safeAreas = Lists.newArrayList();
+	private List<TileMapObject> safeAreas = new ArrayList<TileMapObject>();
 
 	/** Trigger areas. */
-	private List<TileMapObject> triggerAreas = Lists.newArrayList();
+	private List<TileMapObject> triggerAreas = new ArrayList<TileMapObject>();
 
 	/** Finish area. */
 	private TileMapObject finishArea;
 
 	/** Gravity field areas */
-	private List<GravityArea> gravityAreas = Lists.newArrayList();
+	private List<GravityArea> gravityAreas = new ArrayList<GravityArea>();
 
 	/** Collision objects in the map. */
-	private List<TileMapObject> collisionObjects = Lists.newArrayList();
+	private List<TileMapObject> collisionObjects =
+			new ArrayList<TileMapObject>();
 
 	/** The resource manager to consult for tiled maps */
 	private ResourceManager resourceManager;

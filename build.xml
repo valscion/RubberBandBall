@@ -31,7 +31,7 @@
 			<attribute name="Company" value="Vesa Laakso productions" />
 			<attribute name="Project" value="RubberBandBall" />
 			<attribute name="Java-Version" value="${java.version}" />
-			<attribute name="Class-Path" value="lib/fizzy.jar lib/guava-14.0-rc1.jar lib/ibxm.jar lib/jbox2d-library-2.1.2.jar lib/jogg-0.0.7.jar lib/jorbis-0.0.15.jar lib/lwjgl.jar lib/slick.jar" />
+			<attribute name="Class-Path" value="lib/fizzy.jar lib/ibxm.jar lib/jbox2d-library-2.1.2.jar lib/jogg-0.0.7.jar lib/jorbis-0.0.15.jar lib/lwjgl.jar lib/slick.jar" />
 			<attribute name="Main-Class" value="com.vesalaakso.rbb.RubberBandBall" />
 		</manifest>
 	</target>

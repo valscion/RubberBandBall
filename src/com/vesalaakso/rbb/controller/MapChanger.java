@@ -1,10 +1,10 @@
 package com.vesalaakso.rbb.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.newdawn.slick.util.Log;
 
-import com.google.common.collect.Maps;
 import com.vesalaakso.rbb.model.GameStatus;
 import com.vesalaakso.rbb.model.ResourceManager;
 import com.vesalaakso.rbb.model.TileMap;
@@ -22,7 +22,8 @@ public class MapChanger {
 	private TileMap newMap;
 
 	/** Already initialized maps mapped to their index */
-	private Map<Integer, TileMap> initializedMapsMap = Maps.newHashMap();
+	private Map<Integer, TileMap> initializedMapsMap =
+		new HashMap<Integer, TileMap>();
 
 	/** A resource manager to consult for maps */
 	private ResourceManager resourceManager;
