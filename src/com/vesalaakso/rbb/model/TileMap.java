@@ -13,7 +13,7 @@ import com.vesalaakso.rbb.model.exceptions.MapException;
 
 /**
  * Represents a tile map. Drawing of the tile map is located in
- * {@link TileMapPainter} class.
+ * {@link com.vesalaakso.rbb.view.TileMapPainter} class.
  */
 public class TileMap {
 

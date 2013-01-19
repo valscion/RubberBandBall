@@ -116,7 +116,7 @@ public class InputMaster implements Updateable, Resetable {
 	 *            The amount of time thats passed since last update in
 	 *            milliseconds
 	 * 
-	 * @see Controller#update(int)
+	 * @see Updateable#update(int)
 	 */
 	@Override
 	public void update(int delta) {

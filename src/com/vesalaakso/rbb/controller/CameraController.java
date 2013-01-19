@@ -118,7 +118,7 @@ public class CameraController extends MouseAdapter implements Updateable,
 	}
 
 	/**
-	 * @see Controller#update(int)
+	 * @see Updateable#update(int)
 	 */
 	@Override
 	public void update(int delta) {

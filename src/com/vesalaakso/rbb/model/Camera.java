@@ -5,8 +5,8 @@ import org.newdawn.slick.geom.Vector2f;
 /**
  * A singleton class epresenting the camera. A camera is used to specify the
  * area of the world which currently will be drawn. Moving the camera will paint
- * a different area of the world. <strong>The Camera must be initialized before
- * use!</strong> Use the {@link #init(int, int)} method for it.
+ * a different area of the world and scaling it will scale all stuff painted in
+ * world coordinates.
  * 
  * @author Vesa Laakso
  * 

@@ -6,10 +6,6 @@
 
 	<property name="lib.dir" value="lib" />
 
-	<path id="classpath">
-		<fileset dir="${lib.dir}" includes="**/*.jar" />
-	</path>
-
 	<target name="run_build" depends="delete_old_jar,create_dirs,create_manifest,copy_all_class_files,create_jar,sign_jar,delete_temp_dirs">
 	</target>
 
@@ -58,5 +54,34 @@
 				<include name="*/**" />
 			</fileset>
 		</copy>
+	</target>
+
+	<!--
+	 Generate the javadoc from the RubberBandBall sources
+	-->
+	<target name="javadoc">
+		<delete dir="javadoc" />
+		<mkdir dir="javadoc" />
+
+		<javadoc sourcepath="src" defaultexcludes="yes" destdir="javadoc" author="true" version="true" use="true" windowtitle="RubberBandBall">
+			<packageset dir="src" defaultexcludes="yes">
+				<include name="com/vesalaakso/rbb/**/**" />
+			</packageset>
+			<classpath>
+				<pathelement path="lib/slick.jar" />
+				<pathelement path="lib/lwjgl.jar" />
+				<pathelement path="lib/ibxm.jar" />
+				<pathelement path="lib/jogg-0.0.7.jar" />
+				<pathelement path="lib/jorbis-0.0.15.jar" />
+				<pathelement path="lib/fizzy.jar" />
+				<pathelement path="lib/jbox2d-library-2.1.2.jar" />
+				<pathelement path="lib/guava-14.0-rc1.jar" />
+			</classpath>
+			
+			<link href="http://www.slick2d.org/javadoc/"/>
+			
+			<doctitle><![CDATA[<h1>RubberBandBall</h1>]]></doctitle>
+			<bottom><![CDATA[<i>Copyright &#169; 2013 <a href="http://vesalaakso.com">Vesa Laakso</a></i>]]></bottom>
+		</javadoc>
 	</target>
 </project>
