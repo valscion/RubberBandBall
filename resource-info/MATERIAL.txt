@@ -1,6 +1,6 @@
-sounds-directory contents
+background music and sound effects
 	-> http://www.coolbasic.com/res_sound.php?lang=fi
-spacebg.png
+space backgrounds
 	-> http://opengameart.org/content/space-backgrounds
 slick_particle_effects
 	-> http://slick.cokeandcode.com/wiki/doku.php?id=configurable_emitters&s=particle
