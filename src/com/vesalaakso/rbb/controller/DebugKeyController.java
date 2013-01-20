@@ -61,9 +61,6 @@ public class DebugKeyController extends KeyAdapter implements Updateable {
 			case DBG_CHANGE_TO_NEXT_LEVEL:
 				game.changeToNextLevel();
 				break;
-			case DBG_RESET_LEVEL:
-				game.resetLevel();
-				break;
 			case DBG_CHANGE_TO_PREV_LEVEL:
 				game.changeToPreviousLevel();
 				break;

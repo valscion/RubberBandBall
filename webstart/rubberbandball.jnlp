@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jnlp
   spec="1.0+"
-  codebase="http://athene.vesalaakso.com/studio1"
+  codebase="http://vesalaakso.com/storage/studio1/webstart"
   href="rubberbandball.jnlp">
   <information>
     <title>Rubber Band Ball</title>

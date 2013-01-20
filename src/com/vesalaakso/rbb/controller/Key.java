@@ -20,6 +20,8 @@ public enum Key {
 	CAMERA_MOVE_DOWN(Input.KEY_DOWN),
 	/** Goes back in a menu or opens pause menu, default key: ESCAPE */
 	GO_BACK(Input.KEY_ESCAPE),
+	/** Resets the current level, default key: SPACE. */
+	RESET_LEVEL(Input.KEY_SPACE),
 	/** Toggles debug mode, default key: D */
 	TOGGLE_DEBUG(Input.KEY_D),
 	/** Debug, adds player happiness. */
@@ -32,8 +34,6 @@ public enum Key {
 	DBG_SCALE_CAMERA_DOWN(Input.KEY_SUBTRACT),
 	/** Debug, changes the level to next. */
 	DBG_CHANGE_TO_NEXT_LEVEL(Input.KEY_N),
-	/** Debug, resets the current level. */
-	DBG_RESET_LEVEL(Input.KEY_M),
 	/** Debug, goes back one level. */
 	DBG_CHANGE_TO_PREV_LEVEL(Input.KEY_B);
 

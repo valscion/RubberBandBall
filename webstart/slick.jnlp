@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jnlp
   spec="1.0+"
-  codebase="http://athene.vesalaakso.com/studio1"
+  codebase="http://vesalaakso.com/storage/studio1/webstart"
   href="slick.jnlp">
   <information>
     <title>Slick 2D Game Library</title>
@@ -16,7 +16,8 @@
   </security>
   <resources>
     <j2se href="http://java.sun.com/products/autodl/j2se" version="1.4+" max-heap-size="128m"/>
-    <jar href="slick.jar"/>    <jar href="ibxm.jar"/>      
+    <jar href="slick.jar"/>
+    <jar href="ibxm.jar"/>      
     <jar href="jogg-0.0.7.jar"/>    
     <jar href="jorbis-0.0.15.jar"/>      
     <extension name="org.lwjgl" href="http://lwjgl.org/webstart/2.8.5/extension.jnlp" /> 

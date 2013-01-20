@@ -12,7 +12,7 @@ import com.vesalaakso.rbb.states.GameState;
  */
 public class MenuKeyController extends KeyAdapter implements KeyListener {
 
-	/** Game to quit when the game is exited. */
+	/** Game to quit when the game is exited or reseting the level. */
 	private GameState game;
 	
 	/**
@@ -26,14 +26,12 @@ public class MenuKeyController extends KeyAdapter implements KeyListener {
 	}
 
 	@Override
-	public void keyPressed(int keyId, char c) {
-		Key key = Key.findWithId(keyId);
-		if (key == null) {
-			return;
-		}
-		
+	public void keyPressed(Key key, char c) {
 		if (key == Key.GO_BACK) {
 			game.stop();
+		}
+		else if (key == Key.RESET_LEVEL) {
+			game.resetLevel();
 		}
 	}
 }
