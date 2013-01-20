@@ -260,35 +260,6 @@ public class TileMap {
 	}
 
 	/**
-	 * Finds the package file path to a level.
-	 * 
-	 * @param level
-	 *            the level to search for
-	 * @return a package path for the given level
-	 * @throws MapException
-	 *             if the file was not found for the given level
-	 */
-	public static String findMapResourcePath(int level) throws MapException {
-		String filename = level + ".tmx";
-		if (level >= 0 && level <= 9) {
-			// Keep it zero padded if necessary
-			filename = "0" + filename;
-		}
-
-		String path = getMapResourcesLocation() + "/" + filename;
-		return path;
-	}
-
-	/**
-	 * Returns the package path for all levels
-	 * 
-	 * @return the package path for all levels
-	 */
-	public static String getMapResourcesLocation() {
-		return "/com/vesalaakso/rbb/data/levels";
-	}
-
-	/**
 	 * Get the level this map is.
 	 * 
 	 * @return the level number of this map
