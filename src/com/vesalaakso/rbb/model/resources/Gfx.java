@@ -10,6 +10,8 @@ public enum Gfx {
 	BACKGROUND_MENU("main-menu_bg.png"),
 	/** Game background */
 	BACKGROUND_GAME("spacebg.png"),
+	/** Game play information image */
+	GAMEPLAY("gameplay.png"),
 	/** A gravitation arrow for maps */
 	MAP_GRAV_ARROW("grav-arrow.png");
 

@@ -3,12 +3,15 @@ package com.vesalaakso.rbb.states;
 import java.util.List;
 
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 import com.vesalaakso.rbb.model.ResourceManager;
 import com.vesalaakso.rbb.model.resources.Audio;
+import com.vesalaakso.rbb.model.resources.Gfx;
 
 /**
  * A game state responsible for main menu logic and drawing. From here we can
@@ -43,7 +46,7 @@ public class MainMenuState extends AbstractMenuState {
 	public void preRender(List<MenuItem> menuItems,
 		ResourceManager resourceManager) {
 		menuItems.add(new MenuItem(START_BUTTON, "Start the game", State.GAME));
-		menuItems.add(new MenuItem(OPTIONS_BUTTON, "Options",
+		menuItems.add(new MenuItem(OPTIONS_BUTTON, "Gameplay",
 				State.OPTIONS_MENU));
 		menuItems.add(new MenuItem(EXIT_BUTTON, "Exit", null));
 
@@ -77,5 +80,12 @@ public class MainMenuState extends AbstractMenuState {
 	@Override
 	public int getID() {
 		return State.MAIN_MENU.ordinal();
+	}
+
+	@Override
+	public void renderBackground(Graphics g, ResourceManager resourceManager) {
+		// Background, please
+		Image bgImg = resourceManager.getImage(Gfx.BACKGROUND_MENU);
+		g.drawImage(bgImg, 0, 0);
 	}
 }

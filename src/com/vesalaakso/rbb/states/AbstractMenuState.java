@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -16,7 +15,6 @@ import org.newdawn.slick.state.transition.Transition;
 import com.vesalaakso.rbb.RubberBandBall;
 import com.vesalaakso.rbb.model.ResourceManager;
 import com.vesalaakso.rbb.model.resources.Font;
-import com.vesalaakso.rbb.model.resources.Gfx;
 
 /**
  * An abstract class for variety of menus
@@ -76,6 +74,17 @@ public abstract class AbstractMenuState extends BasicGameState {
 	public abstract void preRender(List<MenuItem> menuItems,
 		ResourceManager resourceManager);
 
+	/**
+	 * Used to draw a background for the menu.
+	 * 
+	 * @param g
+	 *            Graphics context to draw to
+	 * @param resourceManager
+	 *            the resource manager to get the background image from.
+	 */
+	public abstract void renderBackground(Graphics g,
+		ResourceManager resourceManager);
+
 	@Override
 	public void init(GameContainer container, StateBasedGame game) {
 		// NO-OP
@@ -90,10 +99,9 @@ public abstract class AbstractMenuState extends BasicGameState {
 		if (menuItems.isEmpty()) {
 			preRender(menuItems, resourceManager);
 		}
-
-		// Background, please
-		Image bgImg = resourceManager.getImage(Gfx.BACKGROUND_MENU);
-		g.drawImage(bgImg, 0, 0);
+		
+		// Background.
+		renderBackground(g, resourceManager);
 
 		g.setFont(resourceManager.getFont(Font.MENU_ITEM));
 
