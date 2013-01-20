@@ -13,7 +13,9 @@ public enum Font {
 	/** Regular text */
 	REGULAR("LondonMM.ttf", 14),
 	/** Scores in game */
-	SCORE("neuropol_x_free.ttf", 15);
+	SCORE("neuropol_x_free.ttf", 15),
+	/** Best score in game */
+	SCORE_BEST("neuropol_x_free.ttf", 15);
 
 	/** The font file name behind the enum */
 	public final String fileName;

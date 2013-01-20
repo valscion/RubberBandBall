@@ -127,6 +127,21 @@ public class GameStatus {
 	}
 
 	/**
+	 * Gets the best score the current map has been passed or 0 if it hasn't
+	 * been passed yet.
+	 * 
+	 * @return best score of the current map
+	 */
+	public int getCurrentBest() {
+		// Validate the level
+		if (currentLevel <= 0) {
+			return 0;
+		}
+
+		return scoresPerMap[currentLevel - 1];
+	}
+
+	/**
 	 * Called when a map is completed, this updates the stored scores of maps.
 	 */
 	public void onMapCompleted() {
@@ -135,11 +150,8 @@ public class GameStatus {
 			return;
 		}
 
-		// Even a completion is a try
-		triesPerMap[currentLevel - 1]++;
-
 		int oldScore = scoresPerMap[currentLevel - 1];
-		if (oldScore > currentShotCount) {
+		if (oldScore == 0 || oldScore > currentShotCount) {
 			// We did better than last time!
 			scoresPerMap[currentLevel - 1] = currentShotCount;
 		}

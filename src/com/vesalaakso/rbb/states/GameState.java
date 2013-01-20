@@ -227,9 +227,6 @@ public class GameState extends BasicGameState {
 	 *            the level index to change to.
 	 */
 	private void changeLevel(int level) {
-		// Add one try to current level
-		gameStatus.increaseTryCount(mapContainer.getMap());
-
 		if (level < 1 || level > RubberBandBall.LEVEL_COUNT) {
 			this.changeToLevel = -1;
 			this.stop();
@@ -251,8 +248,12 @@ public class GameState extends BasicGameState {
 		changeLevel(mapContainer.getMap().getLevel() + 1);
 	}
 
-	/** Resets the current level */
+	/** Resets the current level and adds a fail, if player had been set */
 	public void resetLevel() {
+		// Add one try to current level, if player has been positioned
+		if (player.isStartPositioned()) {
+			gameStatus.onMapFailed();
+		}
 		changeLevel(mapContainer.getMap().getLevel());
 	}
 

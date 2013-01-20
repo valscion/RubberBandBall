@@ -45,12 +45,18 @@ public class GameStatusPainter implements Painter {
 		g.setFont(resManager.getFont(Font.SCORE));
 
 		float x = RubberBandBall.SCREEN_WIDTH - 200;
-		float y1 = RubberBandBall.SCREEN_HEIGHT - 50;
+		float y1 = RubberBandBall.SCREEN_HEIGHT - 80;
 		float y2 = y1 + 20;
+		float y3 = y2 + 20;
 
 		String shotsStr = "Shots: " + gameStatus.getCurrentShotCount();
 		String triesStr = "Tries: " + gameStatus.getCurrentTryCount();
+		String bestStr = "Best: " + gameStatus.getCurrentBest();
 		g.drawString(shotsStr, x, y1);
 		g.drawString(triesStr, x, y2);
+
+		// Font is different for teh best one
+		g.setFont(resManager.getFont(Font.SCORE_BEST));
+		g.drawString(bestStr, x, y3);
 	}
 }

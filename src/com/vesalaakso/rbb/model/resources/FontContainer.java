@@ -20,8 +20,8 @@ import org.newdawn.slick.util.Log;
 public class FontContainer {
 
 	/** All the fonts are stored in this map. */
-	private EnumMap<Font, UnicodeFont> fonts =
-			new EnumMap<Font, UnicodeFont>(Font.class);
+	private EnumMap<Font, UnicodeFont> fonts = new EnumMap<Font, UnicodeFont>(
+			Font.class);
 
 	/**
 	 * Initializes all the fonts.
@@ -65,6 +65,14 @@ public class FontContainer {
 		font.addAsciiGlyphs();
 		font.loadGlyphs();
 		fonts.put(Font.SCORE, font);
+
+		// Best score ;)
+		font = loadFont(Font.SCORE_BEST);
+		fEffects = font.getEffects();
+		fEffects.add(new ColorEffect(Color.getHSBColor(0.3f, 0.35f, 0.95f)));
+		font.addAsciiGlyphs();
+		font.loadGlyphs();
+		fonts.put(Font.SCORE_BEST, font);
 	}
 
 	/**
