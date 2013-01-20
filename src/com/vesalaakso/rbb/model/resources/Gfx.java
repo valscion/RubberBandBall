@@ -6,6 +6,8 @@ package com.vesalaakso.rbb.model.resources;
  * @author Vesa Laakso
  */
 public enum Gfx {
+	/** Menu background */
+	BACKGROUND_MENU("main-menu_bg.png"),
 	/** Game background */
 	BACKGROUND_GAME("spacebg.png"),
 	/** A gravitation arrow for maps */

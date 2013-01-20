@@ -23,6 +23,7 @@ public class GfxContainer {
 	 */
 	public void init() throws SlickException {
 		// Gotta load 'em all
+		images.put(Gfx.BACKGROUND_MENU, loadImage(Gfx.BACKGROUND_MENU));
 		images.put(Gfx.BACKGROUND_GAME, loadImage(Gfx.BACKGROUND_GAME));
 		images.put(Gfx.MAP_GRAV_ARROW, loadImage(Gfx.MAP_GRAV_ARROW));
 	}

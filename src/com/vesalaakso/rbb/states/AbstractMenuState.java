@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -15,6 +16,7 @@ import org.newdawn.slick.state.transition.Transition;
 import com.vesalaakso.rbb.RubberBandBall;
 import com.vesalaakso.rbb.model.ResourceManager;
 import com.vesalaakso.rbb.model.resources.Font;
+import com.vesalaakso.rbb.model.resources.Gfx;
 
 /**
  * An abstract class for variety of menus
@@ -24,19 +26,20 @@ import com.vesalaakso.rbb.model.resources.Font;
 public abstract class AbstractMenuState extends BasicGameState {
 
 	/** Width of a single item. */
-	private static final int ITEM_WIDTH = RubberBandBall.SCREEN_WIDTH / 2;
+	private static final int ITEM_WIDTH = 250;
 
 	/** Height of a single item. */
-	private static final int ITEM_HEIGHT = ITEM_WIDTH / 6;
+	private static final int ITEM_HEIGHT = ITEM_WIDTH / 4;
 
 	/** Left x position for all items. */
-	private static final int ITEM_X = ITEM_WIDTH / 2;
+	private static final int ITEM_X =
+		(int) (RubberBandBall.SCREEN_WIDTH - ITEM_WIDTH * 1.5f);
 
 	/** Start y-coordinate for items. */
-	private static final int ITEM_START_Y = ITEM_HEIGHT * 2;
+	private static final int ITEM_START_Y = 300;
 
 	/** Y offset for all items */
-	private static final int ITEM_OFFSET_Y = ITEM_HEIGHT;
+	private static final int ITEM_OFFSET_Y = (int) (ITEM_HEIGHT * 1.5f);
 
 	/** The resource manager to consult for resources */
 	private final ResourceManager resourceManager;
@@ -88,6 +91,10 @@ public abstract class AbstractMenuState extends BasicGameState {
 			preRender(menuItems, resourceManager);
 		}
 
+		// Background, please
+		Image bgImg = resourceManager.getImage(Gfx.BACKGROUND_MENU);
+		g.drawImage(bgImg, 0, 0);
+
 		g.setFont(resourceManager.getFont(Font.MENU_ITEM));
 
 		float lineHeight = g.getFont().getLineHeight();
@@ -105,7 +112,7 @@ public abstract class AbstractMenuState extends BasicGameState {
 
 			float topY = ITEM_START_Y + i * ITEM_OFFSET_Y;
 
-			g.drawRoundRect(ITEM_X, topY, ITEM_WIDTH, ITEM_HEIGHT, 20);
+			// g.drawRoundRect(ITEM_X, topY, ITEM_WIDTH, ITEM_HEIGHT, 20);
 
 			float textX = ITEM_X + (ITEM_WIDTH - item.textWidth) / 2;
 			float textY = topY + (ITEM_HEIGHT - lineHeight) / 2;
