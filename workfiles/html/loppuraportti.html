@@ -33,6 +33,15 @@
 						<li><a href="#suoritettava-jar-paketti-ja-web-start">Suoritettava jar-paketti ja Web Start</a></li>
 					</ol>
 				</li>
+				<li><a href="#kokemukset-projektista">Kokemukset projektista</a>
+					<ol>
+						<li><a href="#teknisten-ratkaisujen-toimivuus">Teknisten ratkaisujen toimivuus</a></li>
+						<li><a href="#kehityksen-aikana-ilmenneet-virheet">Kehityksen aikana ilmenneet virheet</a></li>
+						<li><a href="#oman-tyoskentelyn-arviointi">Oman työskentelyn arviointi</a></li>
+					</ol>
+				</li>
+				<li><a href="#yhteenveto">Yhteenveto</a></li>
+				<li><a href="#liitteet">Liitteet</a></li>
 			</ol>
 		</nav>
 
@@ -98,6 +107,25 @@
 			<h3 id="suoritettava-jar-paketti-ja-web-start">2.4 Suoritettava jar-paketti ja Web Start</h3>
 			<p>Koska Slickillä oli kiitettävä määrä jo valmiita <a href="http://slick.cokeandcode.com/static.php?page=demos">Web start demoja</a>, oli luonnollista olettaa että on myös täysin mahdollista tehdä sellainen omasta projektistani. Samaan syssyyn piti saada tehtyä myös ajettava jar-tiedosto. Käytin näiden aikaansaamiseen rakentamaani XML-muotoista <a href="http://ant.apache.org/">Ant</a>-konfiguraatiotiedostoa. Antilla onnistui myös kätevästi javadoc-dokumentaation muuttaminen HTML-tiedostoiksi. Web start ohjelma vaatii täydet suoritusoikeudet koneelle, jotta se oikeasti toimisi, joten se täytyi myös allekirjoittaa digitaalisesti. Tätä tarkoitusta varten Javan JDK:n mukana tulee <a href="http://docs.oracle.com/javase/tutorial/deployment/jar/signing.html">jarsigner</a>-binääri, jonka avulla pystyin myös allekirjoittamaan paketit <a href="http://en.wikipedia.org/wiki/Self-signed_certificate">itse tehdyllä sertifikaatilla</a>. Omakutoiset sertifikaatit eivät kuitenkaan ole luotettavia, mutta tässä tapauksessa en halunnut maksaa siitä että saisin kouluprojektini luotettavasti allekirjoitettua maksetulla sertifikaatilla. Ant rakentaa ajettaessaan suorituskelpoisen, allekirjoitetun jar-tiedoston projektin juureen. Web start ominaisuutta varten projektin <code>webstart</code>-kansiosta löytyy vaadittavat <a href="http://en.wikipedia.org/wiki/Java_Web_Start#Java_Network_Launching_Protocol_.28JNLP.29"><code>JNLP</code></a>-tiedostot. Kaikki itse <code>JNLP</code>-tiedostoihin linkitetyt kirjastot piti myös allekirjoittaa samalla sertifikaatilla kuin itse peli.</p>
 		</div><!-- .sub -->
+
+		<h2 id="kokemukset-projektista">3. Kokemukset projektista</h2>
+		<p>...</p>
+		<div class="sub">
+			<h3 id="teknisten-ratkaisujen-toimivuus">3.1 Teknisten ratkaisujen toimivuus</h3>
+			<p>...</p>
+
+			<h3 id="kehityksen-aikana-ilmenneet-virheet">3.2 Kehityksen aikana ilmenneet virheet</h3>
+			<p>...</p>
+
+			<h3 id="oman-tyoskentelyn-arviointi">3.3 Oman työskentelyn arviointi</h3>
+			<p>...</p>
+		</div><!-- .sub -->
+
+		<h2 id="yhteenveto">4. Yhteenveto</h2>
+		<p>...</p>
+
+		<h2 id="liitteet">5. Liitteet</h2>
+		<p>...</p>
 	</article>
 </body>
 </html>
